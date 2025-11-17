@@ -1,0 +1,112 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../providers/auth_provider.dart';
+import '../screens/auth/login_screen.dart';
+import '../screens/dashboard/dashboard_screen.dart';
+import '../screens/tasks/tasks_screen.dart';
+import '../screens/tasks/task_details_screen.dart';
+import '../screens/tasks/task_report_screen.dart';
+import '../screens/notifications/notifications_screen.dart';
+import '../screens/products/products_screen.dart';
+import '../screens/products/product_details_screen.dart';
+import '../screens/suppliers/suppliers_screen.dart';
+import '../screens/suppliers/supplier_details_screen.dart';
+import '../screens/profile/profile_screen.dart';
+
+final goRouterProvider = Provider<GoRouter>((ref) {
+  final authState = ref.watch(authStateProvider);
+
+  return GoRouter(
+    initialLocation: '/login',
+    redirect: (context, state) {
+      final isAuthenticated = authState.isAuthenticated;
+      final isLoading = authState.isLoading;
+      final isLoginRoute = state.matchedLocation == '/login';
+
+      // Wait for auth check to complete
+      if (isLoading) return null;
+
+      // Redirect to login if not authenticated and not already on login page
+      if (!isAuthenticated && !isLoginRoute) {
+        return '/login';
+      }
+
+      // Redirect to dashboard if authenticated and on login page
+      if (isAuthenticated && isLoginRoute) {
+        return '/dashboard';
+      }
+
+      return null;
+    },
+    routes: [
+      GoRoute(
+        path: '/login',
+        name: 'login',
+        builder: (context, state) => const LoginScreen(),
+      ),
+      GoRoute(
+        path: '/dashboard',
+        name: 'dashboard',
+        builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: '/tasks',
+        name: 'tasks',
+        builder: (context, state) => const TasksScreen(),
+      ),
+      GoRoute(
+        path: '/tasks/:id',
+        name: 'task-details',
+        builder: (context, state) {
+          final taskId = state.pathParameters['id']!;
+          return TaskDetailsScreen(taskId: taskId);
+        },
+      ),
+      GoRoute(
+        path: '/tasks/:id/report',
+        name: 'task-report',
+        builder: (context, state) {
+          final taskId = state.pathParameters['id']!;
+          return TaskReportScreen(taskId: taskId);
+        },
+      ),
+      GoRoute(
+        path: '/notifications',
+        name: 'notifications',
+        builder: (context, state) => const NotificationsScreen(),
+      ),
+      GoRoute(
+        path: '/products',
+        name: 'products',
+        builder: (context, state) => const ProductsScreen(),
+      ),
+      GoRoute(
+        path: '/products/:id',
+        name: 'product-details',
+        builder: (context, state) {
+          final productId = state.pathParameters['id']!;
+          return ProductDetailsScreen(productId: productId);
+        },
+      ),
+      GoRoute(
+        path: '/suppliers',
+        name: 'suppliers',
+        builder: (context, state) => const SuppliersScreen(),
+      ),
+      GoRoute(
+        path: '/suppliers/:id',
+        name: 'supplier-details',
+        builder: (context, state) {
+          final supplierId = state.pathParameters['id']!;
+          return SupplierDetailsScreen(supplierId: supplierId);
+        },
+      ),
+      GoRoute(
+        path: '/profile',
+        name: 'profile',
+        builder: (context, state) => const ProfileScreen(),
+      ),
+    ],
+  );
+});
