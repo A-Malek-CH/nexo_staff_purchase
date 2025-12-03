@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/auth_provider.dart';
-import '../screens/auth/login_screen.dart';
-import '../screens/dashboard/dashboard_screen.dart';
-import '../screens/tasks/tasks_screen.dart';
-import '../screens/tasks/task_details_screen.dart';
-import '../screens/tasks/task_report_screen.dart';
-import '../screens/notifications/notifications_screen.dart';
-import '../screens/products/products_screen.dart';
-import '../screens/products/product_details_screen.dart';
-import '../screens/suppliers/suppliers_screen.dart';
-import '../screens/suppliers/supplier_details_screen.dart';
-import '../screens/profile/profile_screen.dart';
+import '../../presentation/providers/auth_provider.dart';
+import '../../presentation/screens/auth/login_screen.dart';
+import '../../presentation/screens/dashboard/dashboard_screen.dart';
+import '../../presentation/screens/tasks/tasks_screen.dart';
+import '../../presentation/screens/tasks/task_details_screen.dart';
+import '../../presentation/screens/tasks/task_report_screen.dart';
+import '../../presentation/screens/notifications/notifications_screen.dart';
+import '../../presentation/screens/products/products_screen.dart';
+import '../../presentation/screens/products/product_details_screen.dart';
+import '../../presentation/screens/suppliers/suppliers_screen.dart';
+import '../../presentation/screens/suppliers/supplier_details_screen.dart';
+import '../../presentation/screens/profile/profile_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
