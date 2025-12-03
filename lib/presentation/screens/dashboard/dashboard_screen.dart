@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_helper.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/task_provider.dart';
+import '../../providers/order_provider.dart';
 import '../../providers/notification_provider.dart';
 import '../../widgets/app_bottom_nav.dart';
 
@@ -20,7 +20,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   void initState() {
     super.initState();
     Future.microtask(() {
-      ref.read(tasksProvider.notifier).loadTasks();
+      ref.read(ordersProvider.notifier).loadOrders();
       ref.read(notificationsProvider.notifier).loadNotifications();
     });
   }
@@ -28,7 +28,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
-    final tasksState = ref.watch(tasksProvider);
+    final ordersState = ref.watch(ordersProvider);
     final notificationsState = ref.watch(notificationsProvider);
 
     return Scaffold(
@@ -76,7 +76,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       body: RefreshIndicator(
         onRefresh: () async {
           await Future.wait([
-            ref.read(tasksProvider.notifier).refreshTasks(),
+            ref.read(ordersProvider.notifier).refreshOrders(),
             ref.read(notificationsProvider.notifier).refreshNotifications(),
           ]);
         },
@@ -103,8 +103,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 children: [
                   Expanded(
                     child: _StatCard(
-                      title: 'Today\'s Tasks',
-                      count: tasksState.todayTasks.length,
+                      title: 'Today\'s Orders',
+                      count: ordersState.todayOrders.length,
                       icon: Icons.today,
                       color: AppTheme.primaryOrange,
                     ),
@@ -112,10 +112,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   const SizedBox(width: AppTheme.spacingM),
                   Expanded(
                     child: _StatCard(
-                      title: 'Urgent',
-                      count: tasksState.urgentTasks.length,
-                      icon: Icons.priority_high,
-                      color: AppTheme.errorRed,
+                      title: 'Assigned',
+                      count: ordersState.assignedOrders.length,
+                      icon: Icons.assignment_turned_in,
+                      color: Colors.blue,
                     ),
                   ),
                 ],
@@ -126,7 +126,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   Expanded(
                     child: _StatCard(
                       title: 'Overdue',
-                      count: tasksState.overdueTasks.length,
+                      count: ordersState.overdueOrders.length,
                       icon: Icons.warning_outlined,
                       color: AppTheme.warningYellow,
                     ),
@@ -134,9 +134,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   const SizedBox(width: AppTheme.spacingM),
                   Expanded(
                     child: _StatCard(
-                      title: 'Total Tasks',
-                      count: tasksState.tasks.length,
-                      icon: Icons.assignment_outlined,
+                      title: 'Total Orders',
+                      count: ordersState.orders.length,
+                      icon: Icons.shopping_cart_outlined,
                       color: AppTheme.successGreen,
                     ),
                   ),
@@ -154,9 +154,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 children: [
                   Expanded(
                     child: _QuickActionButton(
-                      icon: Icons.assignment,
-                      label: 'View Tasks',
-                      onPressed: () => context.push('/tasks'),
+                      icon: Icons.shopping_cart,
+                      label: 'View Orders',
+                      onPressed: () => context.push('/orders'),
                     ),
                   ),
                   const SizedBox(width: AppTheme.spacingM),
@@ -191,31 +191,33 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               ),
               const SizedBox(height: AppTheme.spacingL),
 
-              // Today's Tasks Preview
-              if (tasksState.todayTasks.isNotEmpty) ...[
+              // Today's Orders Preview
+              if (ordersState.todayOrders.isNotEmpty) ...[
                 Text(
-                  'Today\'s Tasks',
+                  'Today\'s Orders',
                   style: AppTheme.headingSmall,
                 ),
                 const SizedBox(height: AppTheme.spacingM),
-                ...tasksState.todayTasks.take(3).map((task) => Card(
+                ...ordersState.todayOrders.take(3).map((order) => Card(
                       child: ListTile(
                         leading: Icon(
-                          Icons.assignment,
-                          color: _getPriorityColor(task.priority),
+                          Icons.shopping_cart,
+                          color: _getStatusColor(order.status),
                         ),
-                        title: Text(task.title),
+                        title: Text(order.orderNumber),
                         subtitle: Text(
-                          'Due: ${DateHelper.formatDeadline(task.deadline)}',
+                          order.expectedDate != null
+                              ? 'Due: ${DateHelper.formatDeadline(order.expectedDate!)}'
+                              : order.supplierId.name,
                         ),
                         trailing: const Icon(Icons.chevron_right),
-                        onTap: () => context.push('/tasks/${task.id}'),
+                        onTap: () => context.push('/orders/${order.id}'),
                       ),
                     )),
                 const SizedBox(height: AppTheme.spacingM),
                 TextButton(
-                  onPressed: () => context.push('/tasks'),
-                  child: const Text('View All Tasks'),
+                  onPressed: () => context.push('/orders'),
+                  child: const Text('View All Orders'),
                 ),
               ],
             ],
@@ -226,16 +228,20 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  Color _getPriorityColor(String priority) {
-    switch (priority) {
-      case 'urgent':
-        return AppTheme.errorRed;
-      case 'high':
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'not assigned':
+        return AppTheme.mediumGrey;
+      case 'assigned':
+        return Colors.blue;
+      case 'pending_review':
         return AppTheme.warningYellow;
-      case 'medium':
-        return AppTheme.primaryOrange;
-      case 'low':
+      case 'verified':
         return AppTheme.successGreen;
+      case 'paid':
+        return Colors.green.shade900;
+      case 'canceled':
+        return AppTheme.errorRed;
       default:
         return AppTheme.mediumGrey;
     }

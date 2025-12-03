@@ -1,0 +1,93 @@
+import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../core/constants/app_constants.dart';
+import '../../core/network/dio_client.dart';
+import '../models/order_model.dart';
+
+final orderServiceProvider = Provider<OrderService>((ref) {
+  return OrderService(ref.read(dioProvider));
+});
+
+class OrderService {
+  final Dio _dio;
+
+  OrderService(this._dio);
+
+  /// Get orders assigned to the logged-in staff
+  Future<List<Order>> getMyOrders({
+    String? status,
+    int page = 1,
+    int limit = AppConstants.pageSize,
+  }) async {
+    try {
+      final queryParams = <String, dynamic>{
+        'page': page,
+        'limit': limit,
+      };
+
+      if (status != null) queryParams['status'] = status;
+
+      final response = await _dio.get(
+        AppConstants.ordersEndpoint,
+        queryParameters: queryParams,
+      );
+
+      final List<dynamic> data = response.data['data'] ?? response.data;
+      final orders = data.map((json) => Order.fromJson(json)).toList();
+      
+      // Filter to only show orders assigned to current user (status: "assigned")
+      // If the backend doesn't filter, we do it client-side
+      return orders.where((order) => 
+        order.staffId != null && 
+        (status == null || order.status == status)
+      ).toList();
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  /// Get single order details by ID
+  Future<Order> getOrderById(String id) async {
+    try {
+      final response = await _dio.get('${AppConstants.ordersEndpoint}/$id');
+      final data = response.data['data'] ?? response.data;
+      return Order.fromJson(data);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  /// Submit order for review (change status from "assigned" to "pending_review")
+  Future<Order> submitOrderForReview(String orderId, String? notes) async {
+    try {
+      final data = <String, dynamic>{
+        'status': AppConstants.orderStatusPendingReview,
+      };
+      
+      if (notes != null && notes.isNotEmpty) {
+        data['notes'] = notes;
+      }
+
+      final response = await _dio.put(
+        '${AppConstants.ordersEndpoint}/$orderId',
+        data: data,
+      );
+      
+      final responseData = response.data['data'] ?? response.data;
+      return Order.fromJson(responseData);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  String _handleError(DioException error) {
+    if (error.response != null) {
+      final data = error.response!.data;
+      if (data is Map<String, dynamic> && data.containsKey('message')) {
+        return data['message'] as String;
+      }
+      return 'An error occurred: ${error.response!.statusMessage}';
+    }
+    return 'An unexpected error occurred.';
+  }
+}

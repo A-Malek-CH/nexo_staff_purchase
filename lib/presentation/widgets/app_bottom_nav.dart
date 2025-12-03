@@ -20,7 +20,7 @@ class AppBottomNav extends StatelessWidget {
             context.go('/dashboard');
             break;
           case 1:
-            context.go('/tasks');
+            context.go('/orders');
             break;
           case 2:
             context.go('/products');
@@ -43,9 +43,9 @@ class AppBottomNav extends StatelessWidget {
           label: 'Dashboard',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.assignment_outlined),
-          activeIcon: Icon(Icons.assignment),
-          label: 'Tasks',
+          icon: Icon(Icons.shopping_cart_outlined),
+          activeIcon: Icon(Icons.shopping_cart),
+          label: 'Orders',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.inventory_2_outlined),
