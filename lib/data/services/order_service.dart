@@ -32,7 +32,7 @@ class OrderService {
         queryParameters: queryParams,
       );
 
-      final List<dynamic> data = response.data['data'] ?? response.data;
+      final List<dynamic> data = response.data['orders'] ?? response.data;
       final orders = data.map((json) => Order.fromJson(json)).toList();
       
       // Filter to only show orders assigned to current user (status: "assigned")

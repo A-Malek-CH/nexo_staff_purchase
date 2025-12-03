@@ -95,8 +95,12 @@ class OrderDetailsScreen extends ConsumerWidget {
                   _buildInfoRow('Name', order.supplierId.name),
                   if (order.supplierId.contactPerson != null)
                     _buildInfoRow('Contact Person', order.supplierId.contactPerson!),
-                  if (order.supplierId.phone != null)
-                    _buildInfoRow('Phone', order.supplierId.phone!),
+                  if (order.supplierId.phone1 != null)
+                    _buildInfoRow('Phone', order.supplierId.phone1!),
+                  if (order.supplierId.phone2 != null)
+                    _buildInfoRow('Phone 2', order.supplierId.phone2!),
+                  if (order.supplierId.phone3 != null)
+                    _buildInfoRow('Phone 3', order.supplierId.phone3!),
                   if (order.supplierId.email != null)
                     _buildInfoRow('Email', order.supplierId.email!),
                   if (order.supplierId.address != null)
