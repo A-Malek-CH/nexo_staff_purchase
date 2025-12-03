@@ -31,9 +31,12 @@ class Product {
   @JsonKey(name: 'categoryId')
   final Category? categoryId;
   final double? price;
+  @JsonKey(name: 'minQty')
   final int? minQty;
+  @JsonKey(name: 'recommendedQty')
   final int? recommendedQty;
   final String? unit;
+  @JsonKey(name: 'currentStock')
   final int? currentStock;
   final String? imageUrl;
   @JsonKey(defaultValue: true)
