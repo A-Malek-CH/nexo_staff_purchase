@@ -7,27 +7,33 @@ part of 'user_model.dart';
 // **************************************************************************
 
 User _$UserFromJson(Map<String, dynamic> json) => User(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       email: json['email'] as String,
-      name: json['name'] as String,
-      phone: json['phone'] as String?,
+      fullname: json['fullname'] as String,
+      phone1: json['phone1'] as String?,
+      phone2: json['phone2'] as String?,
+      phone3: json['phone3'] as String?,
       avatar: json['avatar'] as String?,
       role: json['role'] as String,
-      isActive: json['is_active'] as bool,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: json['updated_at'] == null
+      isActive: json['isActive'] as bool,
+      address: json['address'] as String?,
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
           ? null
-          : DateTime.parse(json['updated_at'] as String),
+          : DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'email': instance.email,
-      'name': instance.name,
-      'phone': instance.phone,
+      'fullname': instance.fullname,
+      'phone1': instance.phone1,
+      'phone2': instance.phone2,
+      'phone3': instance.phone3,
       'avatar': instance.avatar,
       'role': instance.role,
-      'is_active': instance.isActive,
-      'created_at': instance.createdAt.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'isActive': instance.isActive,
+      'address': instance.address,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
     };

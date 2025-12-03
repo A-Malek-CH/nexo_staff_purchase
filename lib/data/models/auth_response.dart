@@ -9,9 +9,11 @@ class AuthResponse {
   final String accessToken;
   
   @JsonKey(name: 'refresh_token')
-  final String refreshToken;
+  final String? refreshToken;  // Made optional - backend doesn't return this on login
   
   final User user;
+  
+  final String? message;
   
   @JsonKey(name: 'token_type')
   final String? tokenType;
@@ -21,8 +23,9 @@ class AuthResponse {
 
   AuthResponse({
     required this.accessToken,
-    required this.refreshToken,
+    this.refreshToken,
     required this.user,
+    this.message,
     this.tokenType,
     this.expiresIn,
   });

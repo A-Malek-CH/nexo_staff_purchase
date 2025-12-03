@@ -27,14 +27,34 @@ class AuthService {
     }
   }
 
-  Future<AuthResponse> refreshToken(String refreshToken) async {
+  Future<AuthResponse> refreshToken(String currentToken) async {
     try {
       final response = await _dio.post(
         AppConstants.refreshTokenEndpoint,
-        data: RefreshTokenRequest(refreshToken: refreshToken).toJson(),
+        options: Options(
+          headers: {
+            'Authorization': 'Bearer $currentToken',
+          },
+        ),
       );
 
-      return AuthResponse.fromJson(response.data);
+      // Backend returns { message, access_token } - need to construct AuthResponse
+      // Note: This method is not used in practice. Token refresh is handled by
+      // AuthInterceptor which calls the API directly. The placeholder User data
+      // here is acceptable since this response is not utilized.
+      final data = response.data;
+      return AuthResponse(
+        accessToken: data['access_token'],
+        refreshToken: null,
+        user: User(
+          id: '',
+          email: '',
+          fullname: '',
+          role: '',
+          isActive: true,
+          createdAt: DateTime.now(),
+        ),
+      );
     } on DioException catch (e) {
       throw _handleError(e);
     }

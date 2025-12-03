@@ -4,12 +4,12 @@ class AppConstants {
   static const String appVersion = '1.0.0';
 
   // API Configuration
-  static const String baseUrl = 'https://api.nexo.com'; // Replace with actual API URL
+  static const String baseUrl = 'https://purchase-manag.vercel.app/api';
   static const String apiVersion = 'v1';
   
   // API Endpoints
   static const String loginEndpoint = '/auth/login';
-  static const String refreshTokenEndpoint = '/auth/refresh';
+  static const String refreshTokenEndpoint = '/auth/refresh-token';
   static const String logoutEndpoint = '/auth/logout';
   static const String tasksEndpoint = '/tasks';
   static const String taskReportsEndpoint = '/task-reports';
@@ -17,6 +17,9 @@ class AppConstants {
   static const String suppliersEndpoint = '/suppliers';
   static const String notificationsEndpoint = '/notifications';
   static const String profileEndpoint = '/profile';
+  static const String ordersEndpoint = '/orders';
+  static const String categoriesEndpoint = '/categories';
+  static const String adminStaffsEndpoint = '/admin/staffs';
   
   // Storage Keys
   static const String accessTokenKey = 'access_token';
