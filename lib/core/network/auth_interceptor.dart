@@ -42,23 +42,23 @@ class AuthInterceptor extends Interceptor {
       _isRefreshing = true;
 
       try {
-        // Try to refresh the token
-        final refreshToken = await secureStorage.getRefreshToken();
-        if (refreshToken != null) {
+        // Try to refresh the token using current access token
+        final currentToken = await secureStorage.getAccessToken();
+        if (currentToken != null) {
           final response = await dio.post(
             AppConstants.refreshTokenEndpoint,
-            data: {'refresh_token': refreshToken},
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $currentToken',
+              },
+            ),
           );
 
           if (response.statusCode == 200) {
             final newAccessToken = response.data['access_token'] as String?;
-            final newRefreshToken = response.data['refresh_token'] as String?;
 
             if (newAccessToken != null) {
               await secureStorage.saveAccessToken(newAccessToken);
-              if (newRefreshToken != null) {
-                await secureStorage.saveRefreshToken(newRefreshToken);
-              }
 
               // Retry the original request with new token
               final requestOptions = err.requestOptions;

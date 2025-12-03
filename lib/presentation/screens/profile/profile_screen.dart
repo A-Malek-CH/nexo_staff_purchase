@@ -63,7 +63,7 @@ class ProfileScreen extends ConsumerWidget {
                           _ProfileInfoRow(
                             icon: Icons.phone,
                             label: 'Phone',
-                            value: user.phone ?? 'Not set',
+                            value: user.phone1 ?? 'Not set',
                           ),
                           const Divider(),
                           _ProfileInfoRow(
