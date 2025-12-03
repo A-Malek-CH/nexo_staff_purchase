@@ -18,6 +18,7 @@ class Supplier {
   final String? country;
   final String? notes;
   final String? image;
+  @JsonKey(defaultValue: true)
   final bool isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;

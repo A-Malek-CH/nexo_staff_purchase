@@ -15,7 +15,7 @@ Supplier _$SupplierFromJson(Map<String, dynamic> json) => Supplier(
       country: json['country'] as String?,
       notes: json['notes'] as String?,
       image: json['image'] as String?,
-      isActive: json['isActive'] as bool,
+      isActive: (json['isActive'] as bool?) ?? true,
       createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt'] as String),
       updatedAt: json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt'] as String),
     );
