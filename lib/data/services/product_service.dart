@@ -33,7 +33,7 @@ class ProductService {
         queryParameters: queryParams,
       );
 
-      final List<dynamic> data = response.data['data'] ?? response.data;
+      final List<dynamic> data = response.data['products'] ?? response.data;
       return data.map((json) => Product.fromJson(json)).toList();
     } on DioException catch (e) {
       throw _handleError(e);
