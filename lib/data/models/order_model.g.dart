@@ -42,9 +42,10 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       canceledDate: json['canceled_date'] == null
           ? null
           : DateTime.parse(json['canceled_date'] as String),
-      statusHistory: (json['status_history'] as List<dynamic>)
-          .map((e) => StatusHistoryEntry.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      statusHistory: (json['status_history'] as List<dynamic>?)
+              ?.map((e) => StatusHistoryEntry.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          [],
     );
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{

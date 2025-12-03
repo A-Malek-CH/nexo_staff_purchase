@@ -27,6 +27,7 @@ class Order {
   final DateTime? verifiedDate;
   final DateTime? paidDate;
   final DateTime? canceledDate;
+  @JsonKey(defaultValue: [])
   final List<StatusHistoryEntry> statusHistory;
 
   Order({

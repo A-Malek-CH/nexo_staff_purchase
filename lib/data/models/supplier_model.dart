@@ -18,7 +18,8 @@ class Supplier {
   final String? country;
   final String? notes;
   final String? image;
-  final bool isActive;
+  @JsonKey(defaultValue: true)
+  final bool? isActive;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -36,7 +37,7 @@ class Supplier {
     this.country,
     this.notes,
     this.image,
-    required this.isActive,
+    this.isActive,
     this.createdAt,
     this.updatedAt,
   });
