@@ -4,6 +4,7 @@ import '../../core/constants/app_constants.dart';
 import '../../core/network/dio_client.dart';
 import '../models/auth_request.dart';
 import '../models/auth_response.dart';
+import '../models/user_model.dart';
 
 final authServiceProvider = Provider<AuthService>((ref) {
   return AuthService(ref.read(dioProvider));
