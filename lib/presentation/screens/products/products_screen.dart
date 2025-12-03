@@ -101,9 +101,9 @@ class _ProductsScreenState extends ConsumerState<ProductsScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 4),
-                                  if (product.categoryId?.name != null)
+                                  if (product.categoryName != null)
                                     Text(
-                                      product.categoryId!.name!,
+                                      product.categoryName!,
                                       style: AppTheme.bodySmall.copyWith(
                                         color: AppTheme.mediumGrey,
                                       ),
