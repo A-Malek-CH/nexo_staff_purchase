@@ -39,12 +39,15 @@ class AuthService {
       );
 
       // Backend returns { message, access_token } - need to construct AuthResponse
+      // Note: This method is not used in practice. Token refresh is handled by
+      // AuthInterceptor which calls the API directly. The placeholder User data
+      // here is acceptable since this response is not utilized.
       final data = response.data;
       return AuthResponse(
         accessToken: data['access_token'],
         refreshToken: null,
         user: User(
-          id: '',  // Will be populated from stored user data
+          id: '',
           email: '',
           fullname: '',
           role: '',

@@ -71,6 +71,7 @@ class AuthRepository {
     final authResponse = await _authService.refreshToken(currentToken);
     
     await _secureStorage.saveAccessToken(authResponse.accessToken);
-    // Note: Backend doesn't return new refresh token, we keep using the access token
+    // Note: The new authentication flow uses the current access token for refreshing.
+    // No refresh token storage is needed.
   }
 }
