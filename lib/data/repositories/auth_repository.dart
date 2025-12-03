@@ -23,7 +23,9 @@ class AuthRepository {
     
     // Save tokens and user data
     await _secureStorage.saveAccessToken(authResponse.accessToken);
-    await _secureStorage.saveRefreshToken(authResponse.refreshToken);
+    if (authResponse.refreshToken != null) {
+      await _secureStorage.saveRefreshToken(authResponse.refreshToken!);
+    }
     await _secureStorage.saveUserData(jsonEncode(authResponse.user.toJson()));
     await _secureStorage.setLoggedIn(true);
     
@@ -61,14 +63,14 @@ class AuthRepository {
   }
 
   Future<void> refreshToken() async {
-    final refreshToken = await _secureStorage.getRefreshToken();
-    if (refreshToken == null) {
-      throw Exception('No refresh token available');
+    final currentToken = await _secureStorage.getAccessToken();
+    if (currentToken == null) {
+      throw Exception('No access token available');
     }
 
-    final authResponse = await _authService.refreshToken(refreshToken);
+    final authResponse = await _authService.refreshToken(currentToken);
     
     await _secureStorage.saveAccessToken(authResponse.accessToken);
-    await _secureStorage.saveRefreshToken(authResponse.refreshToken);
+    // Note: Backend doesn't return new refresh token, we keep using the access token
   }
 }
