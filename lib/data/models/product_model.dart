@@ -17,7 +17,7 @@ class Product {
   final String? imageUrl;
   final List<String>? images;
   @JsonKey(defaultValue: true)
-  final bool? isActive;
+  final bool isActive;
   final String? notes;
   final DateTime? createdAt;
   final DateTime? updatedAt;
@@ -35,7 +35,7 @@ class Product {
     this.currentStock,
     this.imageUrl,
     this.images,
-    this.isActive,
+    required this.isActive,
     this.notes,
     this.createdAt,
     this.updatedAt,

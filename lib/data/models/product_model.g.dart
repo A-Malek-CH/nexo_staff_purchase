@@ -14,7 +14,7 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       currentStock: json['current_stock'] as int?,
       imageUrl: json['image_url'] as String?,
       images: (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
-      isActive: json['is_active'] as bool? ?? true,
+      isActive: (json['is_active'] as bool?) ?? true,
       notes: json['notes'] as String?,
       createdAt: json['created_at'] == null ? null : DateTime.parse(json['created_at'] as String),
       updatedAt: json['updated_at'] == null ? null : DateTime.parse(json['updated_at'] as String),

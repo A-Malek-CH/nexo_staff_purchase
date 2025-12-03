@@ -134,19 +134,10 @@ class _SuppliersScreenState extends ConsumerState<SuppliersScreen> {
                                     ],
                                   ),
                                   const SizedBox(height: AppTheme.spacingM),
-                                  if (supplier.phone1 != null || supplier.phone2 != null || supplier.phone3 != null) ...[
+                                  if (_hasPhoneNumbers(supplier)) ...[
                                     const Divider(),
                                     const SizedBox(height: AppTheme.spacingS),
-                                    if (supplier.phone1 != null)
-                                      _buildInfoRow(Icons.phone, supplier.phone1!),
-                                    if (supplier.phone2 != null) ...[
-                                      const SizedBox(height: 4),
-                                      _buildInfoRow(Icons.phone, supplier.phone2!),
-                                    ],
-                                    if (supplier.phone3 != null) ...[
-                                      const SizedBox(height: 4),
-                                      _buildInfoRow(Icons.phone, supplier.phone3!),
-                                    ],
+                                    ..._buildPhoneNumbers(supplier),
                                   ],
                                   if (supplier.address != null) ...[
                                     const SizedBox(height: 4),
@@ -161,6 +152,25 @@ class _SuppliersScreenState extends ConsumerState<SuppliersScreen> {
       ),
       bottomNavigationBar: const AppBottomNav(currentIndex: 3),
     );
+  }
+
+  bool _hasPhoneNumbers(Supplier supplier) {
+    return supplier.phone1 != null || 
+           supplier.phone2 != null || 
+           supplier.phone3 != null;
+  }
+
+  List<Widget> _buildPhoneNumbers(Supplier supplier) {
+    final phones = [supplier.phone1, supplier.phone2, supplier.phone3]
+        .where((phone) => phone != null)
+        .toList();
+    
+    return List.generate(phones.length, (index) {
+      return Padding(
+        padding: EdgeInsets.only(top: index > 0 ? 4 : 0),
+        child: _buildInfoRow(Icons.phone, phones[index]!),
+      );
+    });
   }
 
   Widget _buildInfoRow(IconData icon, String text) {
