@@ -34,11 +34,19 @@ class AppConstants {
   // Pagination
   static const int pageSize = 20;
   
-  // Task Status
+  // Task Status (Legacy - kept for backward compatibility)
   static const String taskStatusPending = 'pending';
   static const String taskStatusInProgress = 'in_progress';
   static const String taskStatusCompleted = 'completed';
   static const String taskStatusCancelled = 'cancelled';
+  
+  // Order Status
+  static const String orderStatusNotAssigned = 'not assigned';
+  static const String orderStatusAssigned = 'assigned';
+  static const String orderStatusPendingReview = 'pending_review';
+  static const String orderStatusVerified = 'verified';
+  static const String orderStatusPaid = 'paid';
+  static const String orderStatusCanceled = 'canceled';
   
   // Task Priority
   static const String priorityLow = 'low';
