@@ -3,19 +3,39 @@ import 'package:json_annotation/json_annotation.dart';
 part 'product_model.g.dart';
 
 @JsonSerializable()
+class Category {
+  @JsonKey(name: '_id')
+  final String id;
+  final String? name;
+  final String? description;
+  final String? image;
+
+  Category({
+    required this.id,
+    this.name,
+    this.description,
+    this.image,
+  });
+
+  factory Category.fromJson(Map<String, dynamic> json) => _$CategoryFromJson(json);
+  Map<String, dynamic> toJson() => _$CategoryToJson(this);
+}
+
+@JsonSerializable()
 class Product {
+  @JsonKey(name: '_id')
   final String id;
   final String name;
   final String? description;
-  final String? sku;
-  final String? categoryId;
-  final String? categoryName;
+  final String? barcode;
+  @JsonKey(name: 'categoryId')
+  final Category? categoryId;
   final double? price;
-  final int? minQuantity;
+  final int? minQty;
+  final int? recommendedQty;
   final String? unit;
   final int? currentStock;
   final String? imageUrl;
-  final List<String>? images;
   @JsonKey(defaultValue: true)
   final bool isActive;
   final String? notes;
@@ -26,16 +46,15 @@ class Product {
     required this.id,
     required this.name,
     this.description,
-    this.sku,
+    this.barcode,
     this.categoryId,
-    this.categoryName,
     this.price,
-    this.minQuantity,
+    this.minQty,
+    this.recommendedQty,
     this.unit,
     this.currentStock,
     this.imageUrl,
-    this.images,
-    required this.isActive,
+    this.isActive = true,
     this.notes,
     this.createdAt,
     this.updatedAt,
@@ -45,19 +64,21 @@ class Product {
       _$ProductFromJson(json);
   Map<String, dynamic> toJson() => _$ProductToJson(this);
 
+  // Helper to get category name
+  String? get categoryName => categoryId?.name;
+
   Product copyWith({
     String? id,
     String? name,
     String? description,
-    String? sku,
-    String? categoryId,
-    String? categoryName,
+    String? barcode,
+    Category? categoryId,
     double? price,
-    int? minQuantity,
+    int? minQty,
+    int? recommendedQty,
     String? unit,
     int? currentStock,
     String? imageUrl,
-    List<String>? images,
     bool? isActive,
     String? notes,
     DateTime? createdAt,
@@ -67,15 +88,14 @@ class Product {
       id: id ?? this.id,
       name: name ?? this.name,
       description: description ?? this.description,
-      sku: sku ?? this.sku,
+      barcode: barcode ?? this.barcode,
       categoryId: categoryId ?? this.categoryId,
-      categoryName: categoryName ?? this.categoryName,
       price: price ?? this.price,
-      minQuantity: minQuantity ?? this.minQuantity,
+      minQty: minQty ?? this.minQty,
+      recommendedQty: recommendedQty ?? this.recommendedQty,
       unit: unit ?? this.unit,
       currentStock: currentStock ?? this.currentStock,
       imageUrl: imageUrl ?? this.imageUrl,
-      images: images ?? this.images,
       isActive: isActive ?? this.isActive,
       notes: notes ?? this.notes,
       createdAt: createdAt ?? this.createdAt,

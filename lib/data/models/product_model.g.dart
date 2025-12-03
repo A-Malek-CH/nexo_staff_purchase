@@ -1,19 +1,39 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'product_model.dart';
 
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+Category _$CategoryFromJson(Map<String, dynamic> json) => Category(
+      id: json['_id'] as String,
+      name: json['name'] as String?,
+      description: json['description'] as String?,
+      image: json['image'] as String?,
+    );
+
+Map<String, dynamic> _$CategoryToJson(Category instance) => <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'description': instance.description,
+      'image': instance.image,
+    };
+
 Product _$ProductFromJson(Map<String, dynamic> json) => Product(
-      id: json['id'] as String,
+      id: json['_id'] as String,
       name: json['name'] as String,
       description: json['description'] as String?,
-      sku: json['sku'] as String?,
-      categoryId: json['category_id'] as String?,
-      categoryName: json['category_name'] as String?,
+      barcode: json['barcode'] as String?,
+      categoryId: json['categoryId'] == null
+          ? null
+          : Category.fromJson(json['categoryId'] as Map<String, dynamic>),
       price: (json['price'] as num?)?.toDouble(),
-      minQuantity: json['min_quantity'] as int?,
+      minQty: (json['min_qty'] as int?) ?? (json['minQty'] as int?),
+      recommendedQty: (json['recommended_qty'] as int?) ?? (json['recommendedQty'] as int?),
       unit: json['unit'] as String?,
-      currentStock: json['current_stock'] as int?,
+      currentStock: (json['current_stock'] as int?) ?? (json['currentStock'] as int?),
       imageUrl: json['image_url'] as String?,
-      images: (json['images'] as List<dynamic>?)?.map((e) => e as String).toList(),
       isActive: (json['is_active'] as bool?) ?? true,
       notes: json['notes'] as String?,
       createdAt: json['created_at'] == null ? null : DateTime.parse(json['created_at'] as String),
@@ -21,18 +41,17 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
     );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
-      'id': instance.id,
+      '_id': instance.id,
       'name': instance.name,
       'description': instance.description,
-      'sku': instance.sku,
-      'category_id': instance.categoryId,
-      'category_name': instance.categoryName,
+      'barcode': instance.barcode,
+      'categoryId': instance.categoryId?.toJson(),
       'price': instance.price,
-      'min_quantity': instance.minQuantity,
+      'min_qty': instance.minQty,
+      'recommended_qty': instance.recommendedQty,
       'unit': instance.unit,
       'current_stock': instance.currentStock,
       'image_url': instance.imageUrl,
-      'images': instance.images,
       'is_active': instance.isActive,
       'notes': instance.notes,
       'created_at': instance.createdAt?.toIso8601String(),
