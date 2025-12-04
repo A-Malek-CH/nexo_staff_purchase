@@ -12,10 +12,12 @@ class User {
   final String? phone2;
   final String? phone3;
   final String? avatar;
+  @JsonKey(defaultValue: 'staff')
   final String role;
+  @JsonKey(defaultValue: true)
   final bool isActive;
   final String? address;
-  final DateTime createdAt;
+  final DateTime? createdAt;
   final DateTime? updatedAt;
 
   User({
@@ -26,10 +28,10 @@ class User {
     this.phone2,
     this.phone3,
     this.avatar,
-    required this.role,
-    required this.isActive,
+    this.role = 'staff',
+    this.isActive = true,
     this.address,
-    required this.createdAt,
+    this.createdAt,
     this.updatedAt,
   });
 

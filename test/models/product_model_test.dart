@@ -90,9 +90,9 @@ void main() {
       expect(json['_id'], "692590d96d9cec11d1eeb875");
       expect(json['name'], "ifri 50 cl");
       expect(json['unit'], "pack");
-      expect(json['current_stock'], 0);
-      expect(json['min_qty'], 10);
-      expect(json['recommended_qty'], 30);
+      expect(json['currentStock'], 0);
+      expect(json['minQty'], 10);
+      expect(json['recommendedQty'], 30);
       expect(json['categoryId'], isNotNull);
       expect(json['categoryId']['_id'], "692590af6d9cec11d1eeb86f");
       expect(json['categoryId']['name'], "Boissons");

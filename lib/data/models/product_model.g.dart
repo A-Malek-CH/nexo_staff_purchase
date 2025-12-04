@@ -33,11 +33,11 @@ Product _$ProductFromJson(Map<String, dynamic> json) => Product(
       recommendedQty: (json['recommendedQty'] as int?),
       unit: json['unit'] as String?,
       currentStock: (json['currentStock'] as int?),
-      imageUrl: json['image_url'] as String?,
-      isActive: (json['is_active'] as bool?) ?? true,
+      imageUrl: json['imageUrl'] as String?,
+      isActive: (json['isActive'] as bool?) ?? true,
       notes: json['notes'] as String?,
-      createdAt: json['created_at'] == null ? null : DateTime.parse(json['created_at'] as String),
-      updatedAt: json['updated_at'] == null ? null : DateTime.parse(json['updated_at'] as String),
+      createdAt: json['createdAt'] == null ? null : DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null ? null : DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
@@ -51,9 +51,9 @@ Map<String, dynamic> _$ProductToJson(Product instance) => <String, dynamic>{
       'recommendedQty': instance.recommendedQty,
       'unit': instance.unit,
       'currentStock': instance.currentStock,
-      'image_url': instance.imageUrl,
-      'is_active': instance.isActive,
+      'imageUrl': instance.imageUrl,
+      'isActive': instance.isActive,
       'notes': instance.notes,
-      'created_at': instance.createdAt?.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
+      'createdAt': instance.createdAt?.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
     };
