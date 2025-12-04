@@ -61,12 +61,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                 child: const Text('Assigned'),
               ),
               PopupMenuItem(
-                value: 'status:${AppConstants.orderStatusPendingReview}',
-                child: const Text('Pending Review'),
-              ),
-              PopupMenuItem(
-                value: 'status:${AppConstants.orderStatusVerified}',
-                child: const Text('Verified'),
+                value: 'status:${AppConstants.orderStatusConfirmed}',
+                child: const Text('Confirmed'),
               ),
               PopupMenuItem(
                 value: 'status:${AppConstants.orderStatusPaid}',
@@ -183,9 +179,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
         return AppTheme.mediumGrey;
       case AppConstants.orderStatusAssigned:
         return Colors.blue;
-      case AppConstants.orderStatusPendingReview:
-        return AppTheme.warningYellow;
-      case AppConstants.orderStatusVerified:
+      case AppConstants.orderStatusConfirmed:
         return AppTheme.successGreen;
       case AppConstants.orderStatusPaid:
         return Colors.green.shade900;
@@ -202,9 +196,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
         return Icons.pending_outlined;
       case AppConstants.orderStatusAssigned:
         return Icons.assignment_turned_in;
-      case AppConstants.orderStatusPendingReview:
-        return Icons.pending;
-      case AppConstants.orderStatusVerified:
+      case AppConstants.orderStatusConfirmed:
         return Icons.verified;
       case AppConstants.orderStatusPaid:
         return Icons.payment;
@@ -221,10 +213,8 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
         return 'NOT ASSIGNED';
       case AppConstants.orderStatusAssigned:
         return 'ASSIGNED';
-      case AppConstants.orderStatusPendingReview:
-        return 'PENDING REVIEW';
-      case AppConstants.orderStatusVerified:
-        return 'VERIFIED';
+      case AppConstants.orderStatusConfirmed:
+        return 'CONFIRMED';
       case AppConstants.orderStatusPaid:
         return 'PAID';
       case AppConstants.orderStatusCanceled:

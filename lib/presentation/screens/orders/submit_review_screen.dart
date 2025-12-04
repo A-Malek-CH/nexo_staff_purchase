@@ -117,7 +117,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Order submitted for review successfully'),
+            content: Text('Order confirmed successfully'),
             backgroundColor: AppTheme.successGreen,
           ),
         );
@@ -146,7 +146,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Submit for Review'),
+        title: const Text('Confirm Order'),
       ),
       body: SingleChildScrollView(
         padding: AppTheme.paddingM,
@@ -266,7 +266,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
                           ),
                         )
                       : const Icon(Icons.send),
-                  label: Text(_isSubmitting ? 'Submitting...' : 'Submit for Review'),
+                  label: Text(_isSubmitting ? 'Confirming...' : 'Confirm Order'),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(16),
                   ),

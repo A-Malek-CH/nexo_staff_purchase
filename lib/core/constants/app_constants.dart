@@ -43,8 +43,7 @@ class AppConstants {
   // Order Status
   static const String orderStatusNotAssigned = 'not assigned';
   static const String orderStatusAssigned = 'assigned';
-  static const String orderStatusPendingReview = 'pending_review';
-  static const String orderStatusVerified = 'verified';
+  static const String orderStatusConfirmed = 'confirmed';
   static const String orderStatusPaid = 'paid';
   static const String orderStatusCanceled = 'canceled';
   

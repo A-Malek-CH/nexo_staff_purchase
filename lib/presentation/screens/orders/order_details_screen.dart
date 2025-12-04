@@ -147,8 +147,8 @@ class OrderDetailsScreen extends ConsumerWidget {
               width: double.infinity,
               child: ElevatedButton.icon(
                 onPressed: () => context.push('/orders/submit', extra: order),
-                icon: const Icon(Icons.send),
-                label: const Text('Submit for Review'),
+                icon: const Icon(Icons.check_circle),
+                label: const Text('Confirm Order'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.all(16),
                 ),
@@ -239,10 +239,13 @@ class OrderDetailsScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Remaining: ${item.remainingQte}', style: AppTheme.bodySmall),
-              Text(
-                'Total: \$${(item.quantity * item.unitCost).toStringAsFixed(2)}',
-                style: AppTheme.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+              Flexible(child: Text('Remaining: ${item.remainingQte}', style: AppTheme.bodySmall)),
+              Flexible(
+                child: Text(
+                  'Total: \$${(item.quantity * item.unitCost).toStringAsFixed(2)}',
+                  style: AppTheme.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -310,9 +313,7 @@ class OrderDetailsScreen extends ConsumerWidget {
         return AppTheme.mediumGrey;
       case AppConstants.orderStatusAssigned:
         return Colors.blue;
-      case AppConstants.orderStatusPendingReview:
-        return AppTheme.warningYellow;
-      case AppConstants.orderStatusVerified:
+      case AppConstants.orderStatusConfirmed:
         return AppTheme.successGreen;
       case AppConstants.orderStatusPaid:
         return Colors.green.shade900;
@@ -329,10 +330,8 @@ class OrderDetailsScreen extends ConsumerWidget {
         return 'Not Assigned';
       case AppConstants.orderStatusAssigned:
         return 'Assigned';
-      case AppConstants.orderStatusPendingReview:
-        return 'Pending Review';
-      case AppConstants.orderStatusVerified:
-        return 'Verified';
+      case AppConstants.orderStatusConfirmed:
+        return 'Confirmed';
       case AppConstants.orderStatusPaid:
         return 'Paid';
       case AppConstants.orderStatusCanceled:
