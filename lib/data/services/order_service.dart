@@ -60,7 +60,7 @@ class OrderService {
     }
   }
 
-  /// Submit order for review with image proof (change status from "assigned" to "confirmed")
+  /// Confirm order with image proof (change status from "assigned" to "confirmed")
   /// API Response Format: { "message": "...", "order": { ... } }
   Future<Order> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     try {
