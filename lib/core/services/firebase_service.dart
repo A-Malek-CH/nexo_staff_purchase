@@ -72,7 +72,15 @@ class FirebaseService {
     });
   }
   
-  /// Listen for token refresh
-  /// Returns a StreamSubscription that should be cancelled when no longer needed
+  /// Stream of FCM token refresh events
+  /// 
+  /// Token refresh occurs when:
+  /// - The app deletes Instance ID
+  /// - The app is restored on a new device
+  /// - The user uninstalls/reinstalls the app
+  /// - The user clears app data
+  /// 
+  /// Consumers should listen to this stream and update the token on the backend
+  /// Remember to cancel the stream subscription when no longer needed
   static Stream<String> get onTokenRefresh => _messaging.onTokenRefresh;
 }

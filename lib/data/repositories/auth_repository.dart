@@ -34,16 +34,15 @@ class AuthRepository {
     await _secureStorage.saveUserData(jsonEncode(authResponse.user.toJson()));
     await _secureStorage.setLoggedIn(true);
     
-    // Register FCM token after successful login
-    try {
-      final fcmToken = await FirebaseService.getToken();
+    // Register FCM token after successful login (asynchronously, don't block login)
+    FirebaseService.getToken().then((fcmToken) {
       if (fcmToken != null) {
-        await _fcmTokenService.registerToken(fcmToken);
+        _fcmTokenService.registerToken(fcmToken);
       }
-    } catch (e) {
+    }).catchError((e) {
       // Log error but don't fail login - notifications are optional
       debugPrint('Failed to register FCM token during login: $e');
-    }
+    });
     
     return authResponse.user;
   }
