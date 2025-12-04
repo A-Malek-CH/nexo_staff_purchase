@@ -167,7 +167,7 @@ class _OrdersScreenState extends ConsumerState<OrdersScreen> {
                                 ],
                               ),
                               trailing: const Icon(Icons.chevron_right),
-                              onTap: () => context.push('/orders/${order.id}'),
+                              onTap: () => context.push('/orders/details', extra: order),
                             ),
                           );
                         },

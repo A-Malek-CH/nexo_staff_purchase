@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../models/order_model.dart';
 import '../services/order_service.dart';
@@ -28,9 +29,9 @@ class OrderRepository {
     return await _orderService.getOrderById(id);
   }
 
-  /// Submit order for review
-  Future<Order> submitOrderForReview(String orderId, String? notes) async {
-    return await _orderService.submitOrderForReview(orderId, notes);
+  /// Submit order for review with image proof
+  Future<Order> submitOrderForReview(String orderId, File imageFile, String? notes) async {
+    return await _orderService.submitOrderForReview(orderId, imageFile, notes);
   }
 
   /// Filter today's orders

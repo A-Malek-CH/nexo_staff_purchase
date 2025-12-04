@@ -5,47 +5,22 @@ import '../../../core/theme/app_theme.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/utils/date_helper.dart';
 import '../../../data/models/order_model.dart';
-import '../../../data/repositories/order_repository.dart';
-
-final orderDetailsProvider = FutureProvider.family<Order, String>((ref, orderId) async {
-  return ref.read(orderRepositoryProvider).getOrderById(orderId);
-});
 
 class OrderDetailsScreen extends ConsumerWidget {
-  final String orderId;
+  final Order order;
 
   const OrderDetailsScreen({
     super.key,
-    required this.orderId,
+    required this.order,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final orderAsync = ref.watch(orderDetailsProvider(orderId));
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Details'),
       ),
-      body: orderAsync.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Icon(Icons.error_outline, size: 64, color: AppTheme.errorRed),
-              const SizedBox(height: AppTheme.spacingM),
-              Text(error.toString(), style: AppTheme.bodyMedium),
-              const SizedBox(height: AppTheme.spacingM),
-              ElevatedButton(
-                onPressed: () => ref.refresh(orderDetailsProvider(orderId)),
-                child: const Text('Retry'),
-              ),
-            ],
-          ),
-        ),
-        data: (order) => _buildOrderDetails(context, order),
-      ),
+      body: _buildOrderDetails(context, order),
     );
   }
 
@@ -167,7 +142,7 @@ class OrderDetailsScreen extends ConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                onPressed: () => context.push('/orders/${order.id}/submit'),
+                onPressed: () => context.push('/orders/submit', extra: order),
                 icon: const Icon(Icons.send),
                 label: const Text('Submit for Review'),
                 style: ElevatedButton.styleFrom(
