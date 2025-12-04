@@ -37,7 +37,7 @@ class Supplier {
     this.country,
     this.notes,
     this.image,
-    required this.isActive,
+    this.isActive = true,
     this.createdAt,
     this.updatedAt,
   });
