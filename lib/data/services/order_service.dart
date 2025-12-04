@@ -60,7 +60,7 @@ class OrderService {
     }
   }
 
-  /// Submit order for review with image proof (change status from "assigned" to "pending_review")
+  /// Confirm order with image proof (change status from "assigned" to "confirmed")
   /// API Response Format: { "message": "...", "order": { ... } }
   Future<Order> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     try {
@@ -98,8 +98,11 @@ class OrderService {
       });
 
       final response = await _dio.post(
-        '${AppConstants.ordersEndpoint}/$orderId/review',
+        '${AppConstants.ordersEndpoint}/$orderId/confirm',
         data: formData,
+        options: Options(
+          contentType: 'multipart/form-data',
+        ),
       );
       
       // API returns the updated order in the 'order' field
