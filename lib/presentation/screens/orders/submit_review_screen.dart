@@ -299,7 +299,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 120,
+            width: 100,
             child: Text(
               '$label:',
               style: AppTheme.bodySmall.copyWith(
@@ -313,6 +313,8 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
               style: AppTheme.bodyMedium.copyWith(
                 fontWeight: FontWeight.w500,
               ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

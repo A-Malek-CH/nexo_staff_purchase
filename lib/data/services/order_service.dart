@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart' as path;
 import '../../core/constants/app_constants.dart';
 import '../../core/network/dio_client.dart';
 import '../models/order_model.dart';
@@ -62,8 +64,36 @@ class OrderService {
   /// API Response Format: { "message": "...", "order": { ... } }
   Future<Order> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     try {
+      // Get file extension and determine content type
+      final fileName = path.basename(imageFile.path);
+      final extension = path.extension(imageFile.path).toLowerCase();
+      
+      // Map extension to MediaType
+      MediaType contentType;
+      switch (extension) {
+        case '.jpg':
+        case '.jpeg':
+          contentType = MediaType('image', 'jpeg');
+          break;
+        case '.png':
+          contentType = MediaType('image', 'png');
+          break;
+        case '.webp':
+          contentType = MediaType('image', 'webp');
+          break;
+        case '.gif':
+          contentType = MediaType('image', 'gif');
+          break;
+        default:
+          contentType = MediaType('image', 'jpeg');
+      }
+
       final formData = FormData.fromMap({
-        'image': await MultipartFile.fromFile(imageFile.path),
+        'image': await MultipartFile.fromFile(
+          imageFile.path,
+          filename: fileName,
+          contentType: contentType,
+        ),
         if (notes != null && notes.isNotEmpty) 'notes': notes,
       });
 
