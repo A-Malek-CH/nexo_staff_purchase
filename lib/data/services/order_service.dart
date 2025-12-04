@@ -100,9 +100,6 @@ class OrderService {
       final response = await _dio.post(
         '${AppConstants.ordersEndpoint}/$orderId/review',
         data: formData,
-        options: Options(
-          contentType: 'multipart/form-data',
-        ),
       );
       
       // API returns the updated order in the 'order' field
