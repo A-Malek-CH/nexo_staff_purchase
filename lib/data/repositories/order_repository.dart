@@ -30,7 +30,7 @@ class OrderRepository {
   }
 
   /// Submit order for review with image proof
-  Future<Order> submitOrderForReview(String orderId, File imageFile, String? notes) async {
+  Future<void> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     return await _orderService.submitOrderForReview(orderId, imageFile, notes);
   }
 

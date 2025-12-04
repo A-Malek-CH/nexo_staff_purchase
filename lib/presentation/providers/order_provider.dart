@@ -99,14 +99,9 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
 
   Future<void> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     try {
-      final updatedOrder = await _orderRepository.submitOrderForReview(orderId, imageFile, notes);
-      
-      // Update the order in the list
-      final updatedOrders = state.orders.map((order) {
-        return order.id == orderId ? updatedOrder : order;
-      }).toList();
-      
-      state = state.copyWith(orders: updatedOrders);
+      await _orderRepository.submitOrderForReview(orderId, imageFile, notes);
+      // Refresh the orders list after successful confirmation
+      await loadOrders(status: state.selectedStatus ?? AppConstants.orderStatusAssigned);
     } catch (e) {
       state = state.copyWith(error: e.toString());
       rethrow;
