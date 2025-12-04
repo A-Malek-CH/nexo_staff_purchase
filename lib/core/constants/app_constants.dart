@@ -4,10 +4,12 @@ class AppConstants {
   static const String appVersion = '1.0.0';
 
   // API Configuration
-  static const String baseUrl = 'https://purchase-manag.vercel.app/api';
+  // Development backend URL for testing notifications
+  static const String baseUrl = 'https://purchase-manag-git-development-haithem-fellahs-projects.vercel.app/api';
   static const String apiVersion = 'v1';
   
   // API Endpoints
+  static const String authEndpoint = '$baseUrl/auth';
   static const String loginEndpoint = '/auth/login';
   static const String refreshTokenEndpoint = '/auth/refresh-token';
   static const String logoutEndpoint = '/auth/logout';
