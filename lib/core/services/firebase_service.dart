@@ -73,7 +73,6 @@ class FirebaseService {
   }
   
   /// Listen for token refresh
-  static void onTokenRefresh(Function(String) callback) {
-    _messaging.onTokenRefresh.listen(callback);
-  }
+  /// Returns a StreamSubscription that should be cancelled when no longer needed
+  static Stream<String> get onTokenRefresh => _messaging.onTokenRefresh;
 }
