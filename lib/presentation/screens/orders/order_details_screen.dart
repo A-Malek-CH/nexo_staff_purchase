@@ -40,10 +40,14 @@ class OrderDetailsScreen extends ConsumerWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Order #${order.orderNumber}',
-                        style: AppTheme.headingMedium,
+                      Flexible(
+                        child: Text(
+                          'Order #${order.orderNumber}',
+                          style: AppTheme.headingMedium,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
+                      const SizedBox(width: 8),
                       _buildStatusBadge(order.status),
                     ],
                   ),
@@ -180,7 +184,7 @@ class OrderDetailsScreen extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
-            width: 120,
+            width: 100,
             child: Text(
               '$label:',
               style: AppTheme.bodySmall.copyWith(
@@ -194,6 +198,8 @@ class OrderDetailsScreen extends ConsumerWidget {
               style: AppTheme.bodyMedium.copyWith(
                 fontWeight: FontWeight.w500,
               ),
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -220,10 +226,13 @@ class OrderDetailsScreen extends ConsumerWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('Quantity: ${item.quantity}', style: AppTheme.bodySmall),
-              Text(
-                '\$${item.unitCost.toStringAsFixed(2)} each',
-                style: AppTheme.bodySmall,
+              Flexible(child: Text('Quantity: ${item.quantity}', style: AppTheme.bodySmall)),
+              Flexible(
+                child: Text(
+                  '\$${item.unitCost.toStringAsFixed(2)} each',
+                  style: AppTheme.bodySmall,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
