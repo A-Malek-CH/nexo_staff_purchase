@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/storage/secure_storage_service.dart';
 import '../../core/services/firebase_service.dart';
@@ -41,7 +42,7 @@ class AuthRepository {
       }
     } catch (e) {
       // Log error but don't fail login - notifications are optional
-      print('Failed to register FCM token during login: $e');
+      debugPrint('Failed to register FCM token during login: $e');
     }
     
     return authResponse.user;

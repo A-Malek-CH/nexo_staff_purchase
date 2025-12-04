@@ -7,13 +7,20 @@ class FirebaseService {
   
   /// Initialize Firebase
   static Future<void> initialize() async {
-    await Firebase.initializeApp();
-    
-    // Request notification permissions
-    await _requestPermissions();
-    
-    // Setup message handlers
-    _setupMessageHandlers();
+    try {
+      await Firebase.initializeApp();
+      
+      // Request notification permissions
+      await _requestPermissions();
+      
+      // Setup message handlers
+      _setupMessageHandlers();
+    } catch (e) {
+      if (kDebugMode) {
+        debugPrint('Error initializing Firebase: $e');
+      }
+      // Don't rethrow - allow app to continue without notifications
+    }
   }
   
   /// Request notification permissions
@@ -26,7 +33,7 @@ class FirebaseService {
     );
     
     if (kDebugMode) {
-      print('Notification permission status: ${settings.authorizationStatus}');
+      debugPrint('Notification permission status: ${settings.authorizationStatus}');
     }
   }
   
@@ -35,12 +42,12 @@ class FirebaseService {
     try {
       final token = await _messaging.getToken();
       if (kDebugMode) {
-        print('FCM Token: $token');
+        debugPrint('FCM Token: $token');
       }
       return token;
     } catch (e) {
       if (kDebugMode) {
-        print('Error getting FCM token: $e');
+        debugPrint('Error getting FCM token: $e');
       }
       return null;
     }
@@ -51,7 +58,7 @@ class FirebaseService {
     // Handle foreground messages
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (kDebugMode) {
-        print('Foreground message received: ${message.notification?.title}');
+        debugPrint('Foreground message received: ${message.notification?.title}');
       }
       // TODO: Show local notification or in-app alert
     });
@@ -59,7 +66,7 @@ class FirebaseService {
     // Handle when user taps notification (app in background)
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       if (kDebugMode) {
-        print('Notification tapped: ${message.notification?.title}');
+        debugPrint('Notification tapped: ${message.notification?.title}');
       }
       // TODO: Navigate to order details
     });

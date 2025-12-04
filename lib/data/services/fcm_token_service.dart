@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/network/dio_client.dart';
@@ -21,7 +22,7 @@ class FcmTokenService {
       );
     } on DioException catch (e) {
       // Log error but don't crash - notifications are optional
-      print('Failed to register FCM token: ${e.message}');
+      debugPrint('Failed to register FCM token: ${e.message}');
     }
   }
 }
