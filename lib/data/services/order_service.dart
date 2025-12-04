@@ -61,8 +61,8 @@ class OrderService {
   }
 
   /// Confirm order with image proof (change status from "assigned" to "confirmed")
-  /// API Response Format: { "message": "...", "order": { ... } }
-  Future<Order> submitOrderForReview(String orderId, File imageFile, String? notes) async {
+  /// Returns void since the response is unpopulated and we don't need to parse it
+  Future<void> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     try {
       // Get file extension and determine content type
       final fileName = path.basename(imageFile.path);
@@ -105,9 +105,11 @@ class OrderService {
         ),
       );
       
-      // API returns the updated order in the 'order' field
-      final responseData = response.data['order'] ?? response.data;
-      return Order.fromJson(responseData);
+      // Just verify success - don't parse the unpopulated response
+      if (response.statusCode != 200) {
+        throw 'Order confirmation failed with status ${response.statusCode}';
+      }
+      // Success! No need to return the order since response is unpopulated
     } on DioException catch (e) {
       throw _handleError(e);
     }
