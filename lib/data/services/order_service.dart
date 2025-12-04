@@ -107,7 +107,7 @@ class OrderService {
       
       // Just verify success - don't parse the unpopulated response
       if (response.statusCode != 200) {
-        throw 'Order confirmation failed';
+        throw 'Order confirmation failed with status ${response.statusCode}';
       }
       // Success! No need to return the order since response is unpopulated
     } on DioException catch (e) {
