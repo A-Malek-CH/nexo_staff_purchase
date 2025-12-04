@@ -1,22 +1,26 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/storage/secure_storage_service.dart';
+import '../../core/services/firebase_service.dart';
 import '../models/auth_response.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
+import '../services/fcm_token_service.dart';
 
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepository(
     ref.read(authServiceProvider),
     ref.read(secureStorageServiceProvider),
+    ref.read(fcmTokenServiceProvider),
   );
 });
 
 class AuthRepository {
   final AuthService _authService;
   final SecureStorageService _secureStorage;
+  final FcmTokenService _fcmTokenService;
 
-  AuthRepository(this._authService, this._secureStorage);
+  AuthRepository(this._authService, this._secureStorage, this._fcmTokenService);
 
   Future<User> login(String email, String password) async {
     final authResponse = await _authService.login(email, password);
@@ -28,6 +32,17 @@ class AuthRepository {
     }
     await _secureStorage.saveUserData(jsonEncode(authResponse.user.toJson()));
     await _secureStorage.setLoggedIn(true);
+    
+    // Register FCM token after successful login
+    try {
+      final fcmToken = await FirebaseService.getToken();
+      if (fcmToken != null) {
+        await _fcmTokenService.registerToken(fcmToken);
+      }
+    } catch (e) {
+      // Log error but don't fail login - notifications are optional
+      print('Failed to register FCM token during login: $e');
+    }
     
     return authResponse.user;
   }
