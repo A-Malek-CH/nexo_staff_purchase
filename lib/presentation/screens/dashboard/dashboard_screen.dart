@@ -234,9 +234,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         return AppTheme.mediumGrey;
       case 'assigned':
         return Colors.blue;
-      case 'pending_review':
-        return AppTheme.warningYellow;
-      case 'verified':
+      case 'confirmed':
         return AppTheme.successGreen;
       case 'paid':
         return Colors.green.shade900;

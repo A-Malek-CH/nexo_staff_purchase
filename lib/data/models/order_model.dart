@@ -15,7 +15,7 @@ class Order {
   final Supplier supplierId;
   @JsonKey(name: 'staffId')
   final User? staffId;
-  final String status; // "not assigned", "assigned", "pending_review", "verified", "paid", "canceled"
+  final String status; // "not assigned", "assigned", "confirmed", "paid", "canceled"
   final double totalAmount;
   final List<ProductOrder> items;
   final String? notes;
