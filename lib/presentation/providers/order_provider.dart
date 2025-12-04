@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/order_model.dart';
 import '../../data/repositories/order_repository.dart';
@@ -96,9 +97,9 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
     );
   }
 
-  Future<void> submitOrderForReview(String orderId, String? notes) async {
+  Future<void> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     try {
-      final updatedOrder = await _orderRepository.submitOrderForReview(orderId, notes);
+      final updatedOrder = await _orderRepository.submitOrderForReview(orderId, imageFile, notes);
       
       // Update the order in the list
       final updatedOrders = state.orders.map((order) {

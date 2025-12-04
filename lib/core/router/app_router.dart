@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import '../../data/models/order_model.dart';
 import '../../presentation/providers/auth_provider.dart';
 import '../../presentation/screens/auth/login_screen.dart';
 import '../../presentation/screens/dashboard/dashboard_screen.dart';
 import '../../presentation/screens/orders/orders_screen.dart';
 import '../../presentation/screens/orders/order_details_screen.dart';
-import '../../presentation/screens/orders/order_submit_screen.dart';
+import '../../presentation/screens/orders/submit_review_screen.dart';
 import '../../presentation/screens/notifications/notifications_screen.dart';
 import '../../presentation/screens/products/products_screen.dart';
 import '../../presentation/screens/products/product_details_screen.dart';
@@ -56,19 +57,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const OrdersScreen(),
       ),
       GoRoute(
-        path: '/orders/:id',
+        path: '/orders/details',
         name: 'order-details',
         builder: (context, state) {
-          final orderId = state.pathParameters['id']!;
-          return OrderDetailsScreen(orderId: orderId);
+          final order = state.extra as Order;
+          return OrderDetailsScreen(order: order);
         },
       ),
       GoRoute(
-        path: '/orders/:id/submit',
+        path: '/orders/submit',
         name: 'order-submit',
         builder: (context, state) {
-          final orderId = state.pathParameters['id']!;
-          return OrderSubmitScreen(orderId: orderId);
+          final order = state.extra as Order;
+          return SubmitReviewScreen(order: order);
         },
       ),
       GoRoute(

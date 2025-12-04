@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/constants/app_constants.dart';
@@ -57,23 +58,22 @@ class OrderService {
     }
   }
 
-  /// Submit order for review (change status from "assigned" to "pending_review")
-  Future<Order> submitOrderForReview(String orderId, String? notes) async {
+  /// Submit order for review with image proof (change status from "assigned" to "pending_review")
+  /// API Response Format: { "message": "...", "order": { ... } }
+  Future<Order> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     try {
-      final data = <String, dynamic>{
-        'status': AppConstants.orderStatusPendingReview,
-      };
-      
-      if (notes != null && notes.isNotEmpty) {
-        data['notes'] = notes;
-      }
+      final formData = FormData.fromMap({
+        'image': await MultipartFile.fromFile(imageFile.path),
+        if (notes != null && notes.isNotEmpty) 'notes': notes,
+      });
 
-      final response = await _dio.put(
-        '${AppConstants.ordersEndpoint}/$orderId',
-        data: data,
+      final response = await _dio.post(
+        '${AppConstants.ordersEndpoint}/$orderId/review',
+        data: formData,
       );
       
-      final responseData = response.data['data'] ?? response.data;
+      // API returns the updated order in the 'order' field
+      final responseData = response.data['order'] ?? response.data;
       return Order.fromJson(responseData);
     } on DioException catch (e) {
       throw _handleError(e);
