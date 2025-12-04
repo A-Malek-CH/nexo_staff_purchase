@@ -59,6 +59,7 @@ class OrderService {
   }
 
   /// Submit order for review with image proof (change status from "assigned" to "pending_review")
+  /// API Response Format: { "message": "...", "order": { ... } }
   Future<Order> submitOrderForReview(String orderId, File imageFile, String? notes) async {
     try {
       final formData = FormData.fromMap({
@@ -71,6 +72,7 @@ class OrderService {
         data: formData,
       );
       
+      // API returns the updated order in the 'order' field
       final responseData = response.data['order'] ?? response.data;
       return Order.fromJson(responseData);
     } on DioException catch (e) {
