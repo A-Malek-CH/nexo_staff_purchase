@@ -98,7 +98,7 @@ class OrderService {
       });
 
       final response = await _dio.post(
-        '${AppConstants.ordersEndpoint}/$orderId/confirm',
+        '${AppConstants.ordersEndpoint}/$orderId/review',
         data: formData,
         options: Options(
           contentType: 'multipart/form-data',
