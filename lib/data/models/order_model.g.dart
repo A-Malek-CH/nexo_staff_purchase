@@ -8,41 +8,41 @@ part of 'order_model.dart';
 
 Order _$OrderFromJson(Map<String, dynamic> json) => Order(
       id: json['_id'] as String,
-      orderNumber: json['order_number'] as String,
+      orderNumber: json['orderNumber'] as String,
       bon: json['bon'] as String?,
-      supplierId: Supplier.fromJson(json['supplier_id'] as Map<String, dynamic>),
-      staffId: json['staff_id'] == null
+      supplierId: Supplier.fromJson(json['supplierId'] as Map<String, dynamic>),
+      staffId: json['staffId'] == null
           ? null
-          : User.fromJson(json['staff_id'] as Map<String, dynamic>),
+          : User.fromJson(json['staffId'] as Map<String, dynamic>),
       status: json['status'] as String,
-      totalAmount: (json['total_amount'] as num).toDouble(),
+      totalAmount: (json['totalAmount'] as num).toDouble(),
       items: (json['items'] as List<dynamic>)
           .map((e) => ProductOrder.fromJson(e as Map<String, dynamic>))
           .toList(),
       notes: json['notes'] as String?,
-      createdAt: DateTime.parse(json['created_at'] as String),
-      updatedAt: json['updated_at'] == null
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: json['updatedAt'] == null
           ? null
-          : DateTime.parse(json['updated_at'] as String),
-      expectedDate: json['expected_date'] == null
+          : DateTime.parse(json['updatedAt'] as String),
+      expectedDate: json['expectedDate'] == null
           ? null
-          : DateTime.parse(json['expected_date'] as String),
-      assignedDate: json['assigned_date'] == null
+          : DateTime.parse(json['expectedDate'] as String),
+      assignedDate: json['assignedDate'] == null
           ? null
-          : DateTime.parse(json['assigned_date'] as String),
-      pendingReviewDate: json['pending_review_date'] == null
+          : DateTime.parse(json['assignedDate'] as String),
+      pendingReviewDate: json['pendingReviewDate'] == null
           ? null
-          : DateTime.parse(json['pending_review_date'] as String),
-      verifiedDate: json['verified_date'] == null
+          : DateTime.parse(json['pendingReviewDate'] as String),
+      verifiedDate: json['verifiedDate'] == null
           ? null
-          : DateTime.parse(json['verified_date'] as String),
-      paidDate: json['paid_date'] == null
+          : DateTime.parse(json['verifiedDate'] as String),
+      paidDate: json['paidDate'] == null
           ? null
-          : DateTime.parse(json['paid_date'] as String),
-      canceledDate: json['canceled_date'] == null
+          : DateTime.parse(json['paidDate'] as String),
+      canceledDate: json['canceledDate'] == null
           ? null
-          : DateTime.parse(json['canceled_date'] as String),
-      statusHistory: (json['status_history'] as List<dynamic>?)
+          : DateTime.parse(json['canceledDate'] as String),
+      statusHistory: (json['statusHistory'] as List<dynamic>?)
               ?.map((e) => StatusHistoryEntry.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
@@ -50,48 +50,48 @@ Order _$OrderFromJson(Map<String, dynamic> json) => Order(
 
 Map<String, dynamic> _$OrderToJson(Order instance) => <String, dynamic>{
       '_id': instance.id,
-      'order_number': instance.orderNumber,
+      'orderNumber': instance.orderNumber,
       'bon': instance.bon,
-      'supplier_id': instance.supplierId.toJson(),
-      'staff_id': instance.staffId?.toJson(),
+      'supplierId': instance.supplierId.toJson(),
+      'staffId': instance.staffId?.toJson(),
       'status': instance.status,
-      'total_amount': instance.totalAmount,
+      'totalAmount': instance.totalAmount,
       'items': instance.items.map((e) => e.toJson()).toList(),
       'notes': instance.notes,
-      'created_at': instance.createdAt.toIso8601String(),
-      'updated_at': instance.updatedAt?.toIso8601String(),
-      'expected_date': instance.expectedDate?.toIso8601String(),
-      'assigned_date': instance.assignedDate?.toIso8601String(),
-      'pending_review_date': instance.pendingReviewDate?.toIso8601String(),
-      'verified_date': instance.verifiedDate?.toIso8601String(),
-      'paid_date': instance.paidDate?.toIso8601String(),
-      'canceled_date': instance.canceledDate?.toIso8601String(),
-      'status_history': instance.statusHistory.map((e) => e.toJson()).toList(),
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt?.toIso8601String(),
+      'expectedDate': instance.expectedDate?.toIso8601String(),
+      'assignedDate': instance.assignedDate?.toIso8601String(),
+      'pendingReviewDate': instance.pendingReviewDate?.toIso8601String(),
+      'verifiedDate': instance.verifiedDate?.toIso8601String(),
+      'paidDate': instance.paidDate?.toIso8601String(),
+      'canceledDate': instance.canceledDate?.toIso8601String(),
+      'statusHistory': instance.statusHistory.map((e) => e.toJson()).toList(),
     };
 
 ProductOrder _$ProductOrderFromJson(Map<String, dynamic> json) => ProductOrder(
       id: json['_id'] as String,
-      productId: Product.fromJson(json['product_id'] as Map<String, dynamic>),
+      productId: Product.fromJson(json['productId'] as Map<String, dynamic>),
       quantity: json['quantity'] as int,
-      expirationDate: json['expiration_date'] == null
+      expirationDate: json['expirationDate'] == null
           ? null
-          : DateTime.parse(json['expiration_date'] as String),
-      unitCost: (json['unit_cost'] as num).toDouble(),
-      remainingQte: json['remaining_qte'] as int,
-      isExpired: json['is_expired'] as bool,
-      expiredQuantity: json['expired_quantity'] as int,
+          : DateTime.parse(json['expirationDate'] as String),
+      unitCost: (json['unitCost'] as num).toDouble(),
+      remainingQte: json['remainingQte'] as int,
+      isExpired: json['isExpired'] as bool,
+      expiredQuantity: json['expiredQuantity'] as int,
     );
 
 Map<String, dynamic> _$ProductOrderToJson(ProductOrder instance) =>
     <String, dynamic>{
       '_id': instance.id,
-      'product_id': instance.productId.toJson(),
+      'productId': instance.productId.toJson(),
       'quantity': instance.quantity,
-      'expiration_date': instance.expirationDate?.toIso8601String(),
-      'unit_cost': instance.unitCost,
-      'remaining_qte': instance.remainingQte,
-      'is_expired': instance.isExpired,
-      'expired_quantity': instance.expiredQuantity,
+      'expirationDate': instance.expirationDate?.toIso8601String(),
+      'unitCost': instance.unitCost,
+      'remainingQte': instance.remainingQte,
+      'isExpired': instance.isExpired,
+      'expiredQuantity': instance.expiredQuantity,
     };
 
 StatusHistoryEntry _$StatusHistoryEntryFromJson(Map<String, dynamic> json) =>
