@@ -62,7 +62,13 @@ class OrderService {
 
   /// Confirm order with image proof (change status from "assigned" to "confirmed")
   /// Returns void since the response is unpopulated and we don't need to parse it
-  Future<void> submitOrderForReview(String orderId, File imageFile, String? notes) async {
+  Future<void> submitOrderForReview(
+    String orderId, 
+    File imageFile, 
+    String? notes, {
+    Map<String, int>? editedQuantities,
+    Map<String, double>? editedPrices,
+  }) async {
     try {
       // Get file extension and determine content type
       final fileName = path.basename(imageFile.path);
@@ -88,14 +94,60 @@ class OrderService {
           contentType = MediaType('image', 'jpeg');
       }
 
-      final formData = FormData.fromMap({
+      final Map<String, dynamic> formDataMap = {
         'image': await MultipartFile.fromFile(
           imageFile.path,
           filename: fileName,
           contentType: contentType,
         ),
         if (notes != null && notes.isNotEmpty) 'notes': notes,
-      });
+      };
+
+      // Add edited quantities and prices if provided
+      if (editedQuantities != null && editedQuantities.isNotEmpty) {
+        // Send as JSON string or individual fields based on API requirements
+        // Assuming API accepts items as array of objects with id, quantity, price
+        final List<Map<String, dynamic>> items = [];
+        
+        editedQuantities.forEach((itemId, quantity) {
+          items.add({
+            'id': itemId,
+            'quantity': quantity,
+            if (editedPrices != null && editedPrices.containsKey(itemId))
+              'unitCost': editedPrices[itemId],
+          });
+        });
+        
+        // Also add items that only have price changes
+        if (editedPrices != null) {
+          editedPrices.forEach((itemId, price) {
+            if (!editedQuantities.containsKey(itemId)) {
+              items.add({
+                'id': itemId,
+                'unitCost': price,
+              });
+            }
+          });
+        }
+        
+        if (items.isNotEmpty) {
+          formDataMap['items'] = items.map((item) => item.toString()).join(',');
+        }
+      } else if (editedPrices != null && editedPrices.isNotEmpty) {
+        final List<Map<String, dynamic>> items = [];
+        editedPrices.forEach((itemId, price) {
+          items.add({
+            'id': itemId,
+            'unitCost': price,
+          });
+        });
+        
+        if (items.isNotEmpty) {
+          formDataMap['items'] = items.map((item) => item.toString()).join(',');
+        }
+      }
+
+      final formData = FormData.fromMap(formDataMap);
 
       final response = await _dio.post(
         '${AppConstants.ordersEndpoint}/$orderId/review',

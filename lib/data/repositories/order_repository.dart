@@ -30,8 +30,20 @@ class OrderRepository {
   }
 
   /// Submit order for review with image proof
-  Future<void> submitOrderForReview(String orderId, File imageFile, String? notes) async {
-    return await _orderService.submitOrderForReview(orderId, imageFile, notes);
+  Future<void> submitOrderForReview(
+    String orderId, 
+    File imageFile, 
+    String? notes, {
+    Map<String, int>? editedQuantities,
+    Map<String, double>? editedPrices,
+  }) async {
+    return await _orderService.submitOrderForReview(
+      orderId, 
+      imageFile, 
+      notes,
+      editedQuantities: editedQuantities,
+      editedPrices: editedPrices,
+    );
   }
 
   /// Filter today's orders
