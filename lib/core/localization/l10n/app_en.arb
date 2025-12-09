@@ -198,5 +198,20 @@
   "noInternetConnection": "No internet connection",
   "tryAgainLater": "Please try again later",
   "unexpectedError": "An unexpected error occurred",
-  "loadingFailed": "Failed to load data"
+  "loadingFailed": "Failed to load data",
+  
+  "_comment_orderDetails": "Order Details",
+  "orderDetails": "Order Details",
+  "itemDetails": "Item Details",
+  "expirationDate": "Expiration Date",
+  "remaining": "Remaining",
+  "expired": "Expired",
+  
+  "_comment_actions": "Actions",
+  "refresh": "Refresh",
+  "update": "Update",
+  "remove": "Remove",
+  "add": "Add",
+  "clear": "Clear",
+  "apply": "Apply"
 }

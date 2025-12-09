@@ -153,5 +153,20 @@
   "noInternetConnection": "لا يوجد اتصال بالإنترنت",
   "tryAgainLater": "يرجى المحاولة مرة أخرى لاحقاً",
   "unexpectedError": "حدث خطأ غير متوقع",
-  "loadingFailed": "فشل في تحميل البيانات"
+  "loadingFailed": "فشل في تحميل البيانات",
+  
+  "_comment_orderDetails": "تفاصيل الطلب",
+  "orderDetails": "تفاصيل الطلب",
+  "itemDetails": "تفاصيل العنصر",
+  "expirationDate": "تاريخ الانتهاء",
+  "remaining": "المتبقي",
+  "expired": "منتهي الصلاحية",
+  
+  "_comment_actions": "الإجراءات",
+  "refresh": "تحديث",
+  "update": "تحديث",
+  "remove": "إزالة",
+  "add": "إضافة",
+  "clear": "مسح",
+  "apply": "تطبيق"
 }
