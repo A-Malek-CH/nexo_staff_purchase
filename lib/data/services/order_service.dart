@@ -105,48 +105,9 @@ class OrderService {
       };
 
       // Add edited quantities and prices if provided
-      if (editedQuantities != null && editedQuantities.isNotEmpty) {
-        // Send as JSON string - API will receive items as array of objects with id, quantity, unitCost
-        final List<Map<String, dynamic>> items = [];
-        
-        editedQuantities.forEach((itemId, quantity) {
-          items.add({
-            'id': itemId,
-            'quantity': quantity,
-            if (editedPrices != null && editedPrices.containsKey(itemId))
-              'unitCost': editedPrices[itemId],
-          });
-        });
-        
-        // Also add items that only have price changes
-        if (editedPrices != null) {
-          editedPrices.forEach((itemId, price) {
-            if (!editedQuantities.containsKey(itemId)) {
-              items.add({
-                'id': itemId,
-                'unitCost': price,
-              });
-            }
-          });
-        }
-        
-        if (items.isNotEmpty) {
-          // Encode as JSON string for multipart form data
-          formDataMap['items'] = json.encode(items);
-        }
-      } else if (editedPrices != null && editedPrices.isNotEmpty) {
-        final List<Map<String, dynamic>> items = [];
-        editedPrices.forEach((itemId, price) {
-          items.add({
-            'id': itemId,
-            'unitCost': price,
-          });
-        });
-        
-        if (items.isNotEmpty) {
-          // Encode as JSON string for multipart form data
-          formDataMap['items'] = json.encode(items);
-        }
+      final itemsJson = _buildEditedItemsJson(editedQuantities, editedPrices);
+      if (itemsJson != null) {
+        formDataMap['items'] = itemsJson;
       }
 
       final formData = FormData.fromMap(formDataMap);
@@ -167,6 +128,45 @@ class OrderService {
     } on DioException catch (e) {
       throw _handleError(e);
     }
+  }
+
+  /// Build JSON string for edited items to be sent to API
+  String? _buildEditedItemsJson(
+    Map<String, int>? editedQuantities,
+    Map<String, double>? editedPrices,
+  ) {
+    if ((editedQuantities == null || editedQuantities.isEmpty) &&
+        (editedPrices == null || editedPrices.isEmpty)) {
+      return null;
+    }
+
+    final List<Map<String, dynamic>> items = [];
+    
+    // Add items with quantity changes (and prices if both changed)
+    if (editedQuantities != null) {
+      editedQuantities.forEach((itemId, quantity) {
+        items.add({
+          'id': itemId,
+          'quantity': quantity,
+          if (editedPrices != null && editedPrices.containsKey(itemId))
+            'unitCost': editedPrices[itemId],
+        });
+      });
+    }
+    
+    // Add items with only price changes
+    if (editedPrices != null) {
+      editedPrices.forEach((itemId, price) {
+        if (editedQuantities == null || !editedQuantities.containsKey(itemId)) {
+          items.add({
+            'id': itemId,
+            'unitCost': price,
+          });
+        }
+      });
+    }
+    
+    return items.isNotEmpty ? json.encode(items) : null;
   }
 
   String _handleError(DioException error) {

@@ -542,9 +542,30 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
   }
 
   Widget _buildChangesSummary(AppLocalizations l10n) {
-    _collectEditedValues();
+    // Collect edited values inline for display purposes only
+    final Map<String, int> tempEditedQuantities = {};
+    final Map<String, double> tempEditedPrices = {};
     
-    if (_editedQuantities.isEmpty && _editedPrices.isEmpty) {
+    for (var item in widget.order.items) {
+      final qtyText = _quantityControllers[item.id]?.text ?? '';
+      final priceText = _priceControllers[item.id]?.text ?? '';
+      
+      if (qtyText.isNotEmpty) {
+        final qty = int.tryParse(qtyText);
+        if (qty != null && qty != item.quantity) {
+          tempEditedQuantities[item.id] = qty;
+        }
+      }
+      
+      if (priceText.isNotEmpty) {
+        final price = double.tryParse(priceText);
+        if (price != null && price != item.unitCost) {
+          tempEditedPrices[item.id] = price;
+        }
+      }
+    }
+    
+    if (tempEditedQuantities.isEmpty && tempEditedPrices.isEmpty) {
       return const SizedBox.shrink();
     }
 
@@ -572,29 +593,29 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
             ),
             const SizedBox(height: AppTheme.spacingM),
             
-            if (_editedQuantities.isEmpty && _editedPrices.isEmpty)
+            if (tempEditedQuantities.isEmpty && tempEditedPrices.isEmpty)
               Text(
                 l10n.noChanges,
                 style: AppTheme.bodyMedium,
               )
             else
               ...widget.order.items.where((item) {
-                return _editedQuantities.containsKey(item.id) || 
-                       _editedPrices.containsKey(item.id);
+                return tempEditedQuantities.containsKey(item.id) || 
+                       tempEditedPrices.containsKey(item.id);
               }).map((item) {
                 final changes = <String>[];
                 
-                if (_editedQuantities.containsKey(item.id)) {
+                if (tempEditedQuantities.containsKey(item.id)) {
                   changes.add('${l10n.quantity}: ${l10n.changedFrom(
                     item.quantity.toString(),
-                    _editedQuantities[item.id].toString(),
+                    tempEditedQuantities[item.id].toString(),
                   )}');
                 }
                 
-                if (_editedPrices.containsKey(item.id)) {
+                if (tempEditedPrices.containsKey(item.id)) {
                   changes.add('${l10n.unitPrice}: ${l10n.changedFrom(
                     '\$${item.unitCost.toStringAsFixed(2)}',
-                    '\$${_editedPrices[item.id]!.toStringAsFixed(2)}',
+                    '\$${tempEditedPrices[item.id]!.toStringAsFixed(2)}',
                   )}');
                 }
                 
