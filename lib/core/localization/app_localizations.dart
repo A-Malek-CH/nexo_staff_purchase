@@ -152,6 +152,7 @@ class AppLocalizations {
   String get selectImageRequired => translate('selectImageRequired');
   String imagePickFailed(String error) => translate('imagePickFailed', params: {'error': error});
   String get editPriceQuantity => translate('editPriceQuantity');
+  String get reviewAndAdjustHint => translate('reviewAndAdjustHint');
   String get productName => translate('productName');
   String get quantity => translate('quantity');
   String get unitPrice => translate('unitPrice');

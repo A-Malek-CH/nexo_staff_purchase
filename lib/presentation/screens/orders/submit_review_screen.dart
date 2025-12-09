@@ -53,8 +53,12 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
   @override
   void dispose() {
     _notesController.dispose();
-    _quantityControllers.values.forEach((controller) => controller.dispose());
-    _priceControllers.values.forEach((controller) => controller.dispose());
+    for (final controller in _quantityControllers.values) {
+      controller.dispose();
+    }
+    for (final controller in _priceControllers.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -243,7 +247,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
               ),
               const SizedBox(height: AppTheme.spacingS),
               Text(
-                'Review and adjust prices and quantities for each item',
+                l10n.reviewAndAdjustHint,
                 style: AppTheme.bodySmall.copyWith(color: AppTheme.mediumGrey),
               ),
               const SizedBox(height: AppTheme.spacingM),

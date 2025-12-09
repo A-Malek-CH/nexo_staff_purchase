@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
@@ -105,8 +106,7 @@ class OrderService {
 
       // Add edited quantities and prices if provided
       if (editedQuantities != null && editedQuantities.isNotEmpty) {
-        // Send as JSON string or individual fields based on API requirements
-        // Assuming API accepts items as array of objects with id, quantity, price
+        // Send as JSON string - API will receive items as array of objects with id, quantity, unitCost
         final List<Map<String, dynamic>> items = [];
         
         editedQuantities.forEach((itemId, quantity) {
@@ -131,7 +131,8 @@ class OrderService {
         }
         
         if (items.isNotEmpty) {
-          formDataMap['items'] = items.map((item) => item.toString()).join(',');
+          // Encode as JSON string for multipart form data
+          formDataMap['items'] = json.encode(items);
         }
       } else if (editedPrices != null && editedPrices.isNotEmpty) {
         final List<Map<String, dynamic>> items = [];
@@ -143,7 +144,8 @@ class OrderService {
         });
         
         if (items.isNotEmpty) {
-          formDataMap['items'] = items.map((item) => item.toString()).join(',');
+          // Encode as JSON string for multipart form data
+          formDataMap['items'] = json.encode(items);
         }
       }
 

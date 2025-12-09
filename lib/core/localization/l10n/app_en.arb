@@ -129,6 +129,7 @@
     }
   },
   "editPriceQuantity": "Edit Price & Quantity",
+  "reviewAndAdjustHint": "Review and adjust prices and quantities for each item",
   "productName": "Product Name",
   "quantity": "Quantity",
   "unitPrice": "Unit Price",

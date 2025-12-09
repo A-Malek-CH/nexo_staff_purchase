@@ -108,6 +108,7 @@
   "selectImageRequired": "يرجى اختيار صورة الفاتورة / الإيصال",
   "imagePickFailed": "فشل في اختيار الصورة: {error}",
   "editPriceQuantity": "تعديل السعر والكمية",
+  "reviewAndAdjustHint": "راجع وعدل الأسعار والكميات لكل عنصر",
   "productName": "اسم المنتج",
   "quantity": "الكمية",
   "unitPrice": "سعر الوحدة",
