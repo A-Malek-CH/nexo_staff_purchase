@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http_parser/http_parser.dart';
@@ -62,7 +63,13 @@ class OrderService {
 
   /// Confirm order with image proof (change status from "assigned" to "confirmed")
   /// Returns void since the response is unpopulated and we don't need to parse it
-  Future<void> submitOrderForReview(String orderId, File imageFile, String? notes) async {
+  Future<void> submitOrderForReview(
+    String orderId, 
+    File imageFile, 
+    String? notes, {
+    Map<String, int>? editedQuantities,
+    Map<String, double>? editedPrices,
+  }) async {
     try {
       // Get file extension and determine content type
       final fileName = path.basename(imageFile.path);
@@ -88,14 +95,22 @@ class OrderService {
           contentType = MediaType('image', 'jpeg');
       }
 
-      final formData = FormData.fromMap({
+      final Map<String, dynamic> formDataMap = {
         'image': await MultipartFile.fromFile(
           imageFile.path,
           filename: fileName,
           contentType: contentType,
         ),
         if (notes != null && notes.isNotEmpty) 'notes': notes,
-      });
+      };
+
+      // Add edited quantities and prices if provided
+      final itemsJson = _buildEditedItemsJson(editedQuantities, editedPrices);
+      if (itemsJson != null) {
+        formDataMap['items'] = itemsJson;
+      }
+
+      final formData = FormData.fromMap(formDataMap);
 
       final response = await _dio.post(
         '${AppConstants.ordersEndpoint}/$orderId/review',
@@ -113,6 +128,45 @@ class OrderService {
     } on DioException catch (e) {
       throw _handleError(e);
     }
+  }
+
+  /// Build JSON string for edited items to be sent to API
+  String? _buildEditedItemsJson(
+    Map<String, int>? editedQuantities,
+    Map<String, double>? editedPrices,
+  ) {
+    if ((editedQuantities == null || editedQuantities.isEmpty) &&
+        (editedPrices == null || editedPrices.isEmpty)) {
+      return null;
+    }
+
+    final List<Map<String, dynamic>> items = [];
+    
+    // Add items with quantity changes (and prices if both changed)
+    if (editedQuantities != null) {
+      editedQuantities.forEach((itemId, quantity) {
+        items.add({
+          'id': itemId,
+          'quantity': quantity,
+          if (editedPrices != null && editedPrices.containsKey(itemId))
+            'unitCost': editedPrices[itemId],
+        });
+      });
+    }
+    
+    // Add items with only price changes
+    if (editedPrices != null) {
+      editedPrices.forEach((itemId, price) {
+        if (editedQuantities == null || !editedQuantities.containsKey(itemId)) {
+          items.add({
+            'id': itemId,
+            'unitCost': price,
+          });
+        }
+      });
+    }
+    
+    return items.isNotEmpty ? json.encode(items) : null;
   }
 
   String _handleError(DioException error) {

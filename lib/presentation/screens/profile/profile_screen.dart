@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/helpers.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../../providers/auth_provider.dart';
+import '../../providers/locale_provider.dart';
 import '../../widgets/app_bottom_nav.dart';
 
 class ProfileScreen extends ConsumerWidget {
@@ -12,10 +14,12 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateProvider);
     final user = authState.user;
+    final locale = ref.watch(localeProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profile'),
+        title: Text(l10n.profile),
       ),
       body: user == null
           ? const Center(child: CircularProgressIndicator())
@@ -56,20 +60,76 @@ class ProfileScreen extends ConsumerWidget {
                         children: [
                           _ProfileInfoRow(
                             icon: Icons.badge,
-                            label: 'Role',
+                            label: l10n.role,
                             value: user.role,
                           ),
                           const Divider(),
                           _ProfileInfoRow(
                             icon: Icons.phone,
-                            label: 'Phone',
-                            value: user.phone1 ?? 'Not set',
+                            label: l10n.phone,
+                            value: user.phone1 ?? l10n.phoneNotSet,
                           ),
                           const Divider(),
                           _ProfileInfoRow(
                             icon: Icons.access_time,
-                            label: 'Member Since',
+                            label: l10n.memberSince,
                             value: user.createdAt.toString().split(' ')[0],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: AppTheme.spacingL),
+                  
+                  // Language Settings Card
+                  Card(
+                    child: Padding(
+                      padding: AppTheme.paddingM,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.language,
+                                color: AppTheme.primaryOrange,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                l10n.languageSettings,
+                                style: AppTheme.headingSmall,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: AppTheme.spacingM),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                l10n.selectLanguage,
+                                style: AppTheme.bodyMedium,
+                              ),
+                              SegmentedButton<String>(
+                                segments: [
+                                  ButtonSegment<String>(
+                                    value: 'en',
+                                    label: Text(l10n.english),
+                                    icon: const Icon(Icons.language),
+                                  ),
+                                  ButtonSegment<String>(
+                                    value: 'ar',
+                                    label: Text(l10n.arabic),
+                                    icon: const Icon(Icons.language),
+                                  ),
+                                ],
+                                selected: {locale.languageCode},
+                                onSelectionChanged: (Set<String> newSelection) {
+                                  ref.read(localeProvider.notifier).setLocale(
+                                        Locale(newSelection.first),
+                                      );
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -84,9 +144,9 @@ class ProfileScreen extends ConsumerWidget {
                       onPressed: () async {
                         final confirmed = await UIHelper.showConfirmDialog(
                           context,
-                          title: 'Logout',
-                          message: 'Are you sure you want to logout?',
-                          confirmText: 'Logout',
+                          title: l10n.logoutConfirmTitle,
+                          message: l10n.logoutConfirmMessage,
+                          confirmText: l10n.logout,
                         );
                         
                         if (confirmed) {
@@ -94,7 +154,7 @@ class ProfileScreen extends ConsumerWidget {
                         }
                       },
                       icon: const Icon(Icons.logout),
-                      label: const Text('Logout'),
+                      label: Text(l10n.logout),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppTheme.errorRed,
                       ),

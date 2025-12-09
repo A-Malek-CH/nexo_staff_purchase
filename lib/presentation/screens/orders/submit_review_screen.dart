@@ -1,11 +1,13 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/utils/date_helper.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../../../data/models/order_model.dart';
 import '../../providers/order_provider.dart';
 
@@ -27,10 +29,36 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
   final _imagePicker = ImagePicker();
   File? _selectedImage;
   bool _isSubmitting = false;
+  
+  // Maps to store edited values: itemId -> value
+  final Map<String, TextEditingController> _quantityControllers = {};
+  final Map<String, TextEditingController> _priceControllers = {};
+  final Map<String, int> _editedQuantities = {};
+  final Map<String, double> _editedPrices = {};
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize controllers for each item
+    for (var item in widget.order.items) {
+      _quantityControllers[item.id] = TextEditingController(
+        text: item.quantity.toString(),
+      );
+      _priceControllers[item.id] = TextEditingController(
+        text: item.unitCost.toStringAsFixed(2),
+      );
+    }
+  }
 
   @override
   void dispose() {
     _notesController.dispose();
+    for (final controller in _quantityControllers.values) {
+      controller.dispose();
+    }
+    for (final controller in _priceControllers.values) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
@@ -50,9 +78,10 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
       }
     } catch (e) {
       if (mounted) {
+        final l10n = AppLocalizations.of(context)!;
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to pick image: ${e.toString()}'),
+            content: Text(l10n.imagePickFailed(e.toString())),
             backgroundColor: AppTheme.errorRed,
           ),
         );
@@ -61,6 +90,8 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
   }
 
   void _showImageSourceDialog() {
+    final l10n = AppLocalizations.of(context)!;
+    
     showModalBottomSheet(
       context: context,
       builder: (context) => SafeArea(
@@ -68,7 +99,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
           children: [
             ListTile(
               leading: const Icon(Icons.camera_alt),
-              title: const Text('Take Photo'),
+              title: Text(l10n.takePhoto),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.camera);
@@ -76,7 +107,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
             ),
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Choose from Gallery'),
+              title: Text(l10n.chooseFromGallery),
               onTap: () {
                 Navigator.pop(context);
                 _pickImage(ImageSource.gallery);
@@ -88,20 +119,49 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
     );
   }
 
+  void _collectEditedValues() {
+    // Collect edited values from controllers
+    _editedQuantities.clear();
+    _editedPrices.clear();
+    
+    for (var item in widget.order.items) {
+      final qtyText = _quantityControllers[item.id]?.text ?? '';
+      final priceText = _priceControllers[item.id]?.text ?? '';
+      
+      if (qtyText.isNotEmpty) {
+        final qty = int.tryParse(qtyText);
+        if (qty != null && qty != item.quantity) {
+          _editedQuantities[item.id] = qty;
+        }
+      }
+      
+      if (priceText.isNotEmpty) {
+        final price = double.tryParse(priceText);
+        if (price != null && price != item.unitCost) {
+          _editedPrices[item.id] = price;
+        }
+      }
+    }
+  }
+
   Future<void> _submitOrder() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
+    final l10n = AppLocalizations.of(context)!;
+
     if (_selectedImage == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please select a bill/receipt image'),
+        SnackBar(
+          content: Text(l10n.selectImageRequired),
           backgroundColor: AppTheme.errorRed,
         ),
       );
       return;
     }
+
+    _collectEditedValues();
 
     setState(() {
       _isSubmitting = true;
@@ -112,12 +172,14 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
             widget.order.id,
             _selectedImage!,
             _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
+            editedQuantities: _editedQuantities,
+            editedPrices: _editedPrices,
           );
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Order confirmed successfully'),
+          SnackBar(
+            content: Text(l10n.orderConfirmedSuccess),
             backgroundColor: AppTheme.successGreen,
           ),
         );
@@ -128,7 +190,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to submit order: ${e.toString()}'),
+            content: Text(l10n.orderConfirmFailed(e.toString())),
             backgroundColor: AppTheme.errorRed,
           ),
         );
@@ -144,9 +206,11 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Confirm Order'),
+        title: Text(l10n.confirmOrder),
       ),
       body: SingleChildScrollView(
         padding: AppTheme.paddingM,
@@ -162,28 +226,49 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Order Summary', style: AppTheme.headingSmall),
+                      Text(l10n.orderSummary, style: AppTheme.headingSmall),
                       const SizedBox(height: AppTheme.spacingM),
-                      _buildInfoRow('Order Number', widget.order.orderNumber),
-                      _buildInfoRow('Supplier', widget.order.supplierId.name),
-                      _buildInfoRow('Total Amount', '\$${widget.order.totalAmount.toStringAsFixed(2)}'),
+                      _buildInfoRow(l10n.orderNumber, widget.order.orderNumber),
+                      _buildInfoRow(l10n.supplier, widget.order.supplierId.name),
+                      _buildInfoRow(l10n.totalAmount, '\$${widget.order.totalAmount.toStringAsFixed(2)}'),
                       if (widget.order.expectedDate != null)
-                        _buildInfoRow('Expected Date', DateHelper.formatDate(widget.order.expectedDate!)),
-                      _buildInfoRow('Products', '${widget.order.items.length} items'),
+                        _buildInfoRow(l10n.expectedDate, DateHelper.formatDate(widget.order.expectedDate!)),
+                      _buildInfoRow(l10n.products, '${widget.order.items.length} ${l10n.items}'),
                     ],
                   ),
                 ),
               ),
               const SizedBox(height: AppTheme.spacingL),
 
-              // Image Upload Section
+              // Edit Price & Quantity Section
               Text(
-                'Bill/Receipt Photo *',
+                l10n.editPriceQuantity,
                 style: AppTheme.headingSmall,
               ),
               const SizedBox(height: AppTheme.spacingS),
               Text(
-                'Upload a photo of the bill or receipt as proof of purchase',
+                l10n.reviewAndAdjustHint,
+                style: AppTheme.bodySmall.copyWith(color: AppTheme.mediumGrey),
+              ),
+              const SizedBox(height: AppTheme.spacingM),
+              
+              ...widget.order.items.map((item) => _buildEditableItemCard(item, l10n)),
+              
+              const SizedBox(height: AppTheme.spacingL),
+
+              // Changes Summary
+              _buildChangesSummary(l10n),
+              
+              const SizedBox(height: AppTheme.spacingL),
+
+              // Image Upload Section
+              Text(
+                l10n.billReceiptPhoto,
+                style: AppTheme.headingSmall,
+              ),
+              const SizedBox(height: AppTheme.spacingS),
+              Text(
+                l10n.uploadProofOfPurchase,
                 style: AppTheme.bodySmall.copyWith(color: AppTheme.mediumGrey),
               ),
               const SizedBox(height: AppTheme.spacingM),
@@ -221,7 +306,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
                 OutlinedButton.icon(
                   onPressed: _isSubmitting ? null : _showImageSourceDialog,
                   icon: const Icon(Icons.camera_alt),
-                  label: const Text('Select Image'),
+                  label: Text(l10n.selectImage),
                   style: OutlinedButton.styleFrom(
                     minimumSize: const Size(double.infinity, 56),
                   ),
@@ -230,12 +315,12 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
 
               // Notes Section
               Text(
-                'Notes (Optional)',
+                l10n.notesOptional,
                 style: AppTheme.headingSmall,
               ),
               const SizedBox(height: AppTheme.spacingS),
               Text(
-                'Add any additional notes or comments about this order',
+                l10n.addNotesHint,
                 style: AppTheme.bodySmall.copyWith(color: AppTheme.mediumGrey),
               ),
               const SizedBox(height: AppTheme.spacingM),
@@ -244,9 +329,9 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
                 controller: _notesController,
                 maxLines: 6,
                 enabled: !_isSubmitting,
-                decoration: const InputDecoration(
-                  hintText: 'Enter your notes here...',
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  hintText: l10n.enterNotesHere,
+                  border: const OutlineInputBorder(),
                 ),
               ),
               const SizedBox(height: AppTheme.spacingL),
@@ -266,7 +351,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
                           ),
                         )
                       : const Icon(Icons.send),
-                  label: Text(_isSubmitting ? 'Confirming...' : 'Confirm Order'),
+                  label: Text(_isSubmitting ? l10n.confirming : l10n.confirmOrder),
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.all(16),
                   ),
@@ -282,7 +367,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.all(16),
                   ),
-                  child: const Text('Cancel'),
+                  child: Text(l10n.cancel),
                 ),
               ),
             ],
@@ -318,6 +403,246 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildEditableItemCard(ProductOrder item, AppLocalizations l10n) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: AppTheme.spacingM),
+      child: Padding(
+        padding: AppTheme.paddingM,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Product Name
+            Text(
+              item.productId.name,
+              style: AppTheme.bodyLarge.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: AppTheme.spacingM),
+            
+            Row(
+              children: [
+                // Quantity Field
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.quantity,
+                        style: AppTheme.bodySmall.copyWith(
+                          color: AppTheme.mediumGrey,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      TextFormField(
+                        controller: _quantityControllers[item.id],
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                        ],
+                        enabled: !_isSubmitting,
+                        decoration: InputDecoration(
+                          hintText: item.quantity.toString(),
+                          border: const OutlineInputBorder(),
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return l10n.fieldRequired;
+                          }
+                          final qty = int.tryParse(value);
+                          if (qty == null) {
+                            return l10n.invalidNumber;
+                          }
+                          if (qty <= 0) {
+                            return l10n.numberMustBePositive;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        l10n.originalQuantity(item.quantity.toString()),
+                        style: AppTheme.bodySmall.copyWith(
+                          color: AppTheme.mediumGrey,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: AppTheme.spacingM),
+                
+                // Unit Price Field
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        l10n.unitPrice,
+                        style: AppTheme.bodySmall.copyWith(
+                          color: AppTheme.mediumGrey,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      TextFormField(
+                        controller: _priceControllers[item.id],
+                        keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')),
+                        ],
+                        enabled: !_isSubmitting,
+                        decoration: InputDecoration(
+                          hintText: item.unitCost.toStringAsFixed(2),
+                          border: const OutlineInputBorder(),
+                          prefixText: '\$ ',
+                          contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 8,
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return l10n.fieldRequired;
+                          }
+                          final price = double.tryParse(value);
+                          if (price == null) {
+                            return l10n.invalidNumber;
+                          }
+                          if (price <= 0) {
+                            return l10n.numberMustBePositive;
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        l10n.originalPrice(item.unitCost.toStringAsFixed(2)),
+                        style: AppTheme.bodySmall.copyWith(
+                          color: AppTheme.mediumGrey,
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildChangesSummary(AppLocalizations l10n) {
+    // Collect edited values inline for display purposes only
+    final Map<String, int> tempEditedQuantities = {};
+    final Map<String, double> tempEditedPrices = {};
+    
+    for (var item in widget.order.items) {
+      final qtyText = _quantityControllers[item.id]?.text ?? '';
+      final priceText = _priceControllers[item.id]?.text ?? '';
+      
+      if (qtyText.isNotEmpty) {
+        final qty = int.tryParse(qtyText);
+        if (qty != null && qty != item.quantity) {
+          tempEditedQuantities[item.id] = qty;
+        }
+      }
+      
+      if (priceText.isNotEmpty) {
+        final price = double.tryParse(priceText);
+        if (price != null && price != item.unitCost) {
+          tempEditedPrices[item.id] = price;
+        }
+      }
+    }
+    
+    if (tempEditedQuantities.isEmpty && tempEditedPrices.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Card(
+      color: AppTheme.primaryOrange.withOpacity(0.1),
+      child: Padding(
+        padding: AppTheme.paddingM,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                const Icon(
+                  Icons.edit_note,
+                  color: AppTheme.primaryOrange,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  l10n.changesSummary,
+                  style: AppTheme.headingSmall.copyWith(
+                    color: AppTheme.primaryOrange,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: AppTheme.spacingM),
+            
+            if (tempEditedQuantities.isEmpty && tempEditedPrices.isEmpty)
+              Text(
+                l10n.noChanges,
+                style: AppTheme.bodyMedium,
+              )
+            else
+              ...widget.order.items.where((item) {
+                return tempEditedQuantities.containsKey(item.id) || 
+                       tempEditedPrices.containsKey(item.id);
+              }).map((item) {
+                final changes = <String>[];
+                
+                if (tempEditedQuantities.containsKey(item.id)) {
+                  changes.add('${l10n.quantity}: ${l10n.changedFrom(
+                    item.quantity.toString(),
+                    tempEditedQuantities[item.id].toString(),
+                  )}');
+                }
+                
+                if (tempEditedPrices.containsKey(item.id)) {
+                  changes.add('${l10n.unitPrice}: ${l10n.changedFrom(
+                    '\$${item.unitCost.toStringAsFixed(2)}',
+                    '\$${tempEditedPrices[item.id]!.toStringAsFixed(2)}',
+                  )}');
+                }
+                
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        item.productId.name,
+                        style: AppTheme.bodyMedium.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ...changes.map((change) => Padding(
+                        padding: const EdgeInsets.only(left: 16, top: 4),
+                        child: Text(
+                          '• $change',
+                          style: AppTheme.bodySmall,
+                        ),
+                      )),
+                    ],
+                  ),
+                );
+              }),
+          ],
+        ),
       ),
     );
   }

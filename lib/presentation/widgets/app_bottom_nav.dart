@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_localizations.dart';
 
 class AppBottomNav extends StatelessWidget {
   final int currentIndex;
@@ -12,6 +13,8 @@ class AppBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) {
@@ -36,31 +39,31 @@ class AppBottomNav extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       selectedItemColor: AppTheme.primaryOrange,
       unselectedItemColor: AppTheme.mediumGrey,
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.dashboard_outlined),
-          activeIcon: Icon(Icons.dashboard),
-          label: 'Dashboard',
+          icon: const Icon(Icons.dashboard_outlined),
+          activeIcon: const Icon(Icons.dashboard),
+          label: l10n.dashboard,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart_outlined),
-          activeIcon: Icon(Icons.shopping_cart),
-          label: 'Orders',
+          icon: const Icon(Icons.shopping_cart_outlined),
+          activeIcon: const Icon(Icons.shopping_cart),
+          label: l10n.orders,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.inventory_2_outlined),
-          activeIcon: Icon(Icons.inventory_2),
-          label: 'Products',
+          icon: const Icon(Icons.inventory_2_outlined),
+          activeIcon: const Icon(Icons.inventory_2),
+          label: l10n.products,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.business_outlined),
-          activeIcon: Icon(Icons.business),
-          label: 'Suppliers',
+          icon: const Icon(Icons.business_outlined),
+          activeIcon: const Icon(Icons.business),
+          label: l10n.suppliers,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person_outlined),
-          activeIcon: Icon(Icons.person),
-          label: 'Profile',
+          icon: const Icon(Icons.person_outlined),
+          activeIcon: const Icon(Icons.person),
+          label: l10n.profile,
         ),
       ],
     );
