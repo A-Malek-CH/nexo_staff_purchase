@@ -61,11 +61,24 @@
   
   "_comment_dashboard": "Dashboard",
   "dashboard": "Dashboard",
+  "welcomeBack": "Welcome back, {name}!",
+  "@welcomeBack": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "todaysOrders": "Today's Orders",
   "assignedOrders": "Assigned Orders",
+  "assigned": "Assigned",
   "overdueOrders": "Overdue Orders",
+  "overdue": "Overdue",
+  "totalOrders": "Total Orders",
   "noOrdersYet": "No orders yet",
   "viewAll": "View All",
+  "quickActions": "Quick Actions",
+  "viewOrders": "View Orders",
   
   "_comment_orders": "Orders",
   "orders": "Orders",

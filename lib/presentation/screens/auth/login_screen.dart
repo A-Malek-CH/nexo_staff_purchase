@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/helpers.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -51,6 +52,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authStateProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor: AppTheme.creamBackground,
@@ -74,14 +76,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   
                   // Title
                   Text(
-                    'Nexo Staff App',
+                    l10n.appName,
                     style: AppTheme.headingLarge,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: AppTheme.spacingS),
                   
                   Text(
-                    'Sign in to continue',
+                    l10n.signInToContinue,
                     style: AppTheme.bodyMedium,
                     textAlign: TextAlign.center,
                   ),
@@ -91,11 +93,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      labelText: 'Email',
-                      prefixIcon: Icon(Icons.email_outlined),
+                    decoration: InputDecoration(
+                      labelText: l10n.email,
+                      prefixIcon: const Icon(Icons.email_outlined),
                     ),
-                    validator: Validators.validateEmail,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return l10n.emailRequired;
+                      }
+                      if (!value.contains('@')) {
+                        return l10n.emailInvalid;
+                      }
+                      return null;
+                    },
                     enabled: !authState.isLoading,
                   ),
                   const SizedBox(height: AppTheme.spacingM),
@@ -105,7 +115,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     controller: _passwordController,
                     obscureText: _obscurePassword,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: l10n.password,
                       prefixIcon: const Icon(Icons.lock_outlined),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -120,7 +130,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         },
                       ),
                     ),
-                    validator: Validators.validatePassword,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return l10n.passwordRequired;
+                      }
+                      if (value.length < 6) {
+                        return l10n.passwordMinLength;
+                      }
+                      return null;
+                    },
                     enabled: !authState.isLoading,
                   ),
                   const SizedBox(height: AppTheme.spacingXL),
@@ -139,7 +157,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                 strokeWidth: 2,
                               ),
                             )
-                          : const Text('Sign In'),
+                          : Text(l10n.signIn),
                     ),
                   ),
                   

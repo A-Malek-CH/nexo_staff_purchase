@@ -61,11 +61,17 @@
   
   "_comment_dashboard": "لوحة التحكم",
   "dashboard": "لوحة التحكم",
+  "welcomeBack": "مرحباً بعودتك، {name}!",
   "todaysOrders": "طلبات اليوم",
   "assignedOrders": "الطلبات المعينة",
+  "assigned": "معين",
   "overdueOrders": "الطلبات المتأخرة",
+  "overdue": "متأخر",
+  "totalOrders": "إجمالي الطلبات",
   "noOrdersYet": "لا توجد طلبات حتى الآن",
   "viewAll": "عرض الكل",
+  "quickActions": "إجراءات سريعة",
+  "viewOrders": "عرض الطلبات",
   
   "_comment_orders": "الطلبات",
   "orders": "الطلبات",

@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_helper.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/order_provider.dart';
 import '../../providers/notification_provider.dart';
@@ -30,10 +31,11 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final authState = ref.watch(authStateProvider);
     final ordersState = ref.watch(ordersProvider);
     final notificationsState = ref.watch(notificationsProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Dashboard'),
+        title: Text(l10n.dashboard),
         actions: [
           // Notifications Badge
           Stack(
@@ -88,7 +90,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             children: [
               // Welcome Message
               Text(
-                'Welcome back, ${authState.user?.name ?? "User"}!',
+                l10n.welcomeBack(authState.user?.name ?? "User"),
                 style: AppTheme.headingMedium,
               ),
               const SizedBox(height: AppTheme.spacingS),
@@ -103,7 +105,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 children: [
                   Expanded(
                     child: _StatCard(
-                      title: 'Today\'s Orders',
+                      title: l10n.todaysOrders,
                       count: ordersState.todayOrders.length,
                       icon: Icons.today,
                       color: AppTheme.primaryOrange,
@@ -112,7 +114,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   const SizedBox(width: AppTheme.spacingM),
                   Expanded(
                     child: _StatCard(
-                      title: 'Assigned',
+                      title: l10n.assigned,
                       count: ordersState.assignedOrders.length,
                       icon: Icons.assignment_turned_in,
                       color: Colors.blue,
@@ -125,7 +127,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 children: [
                   Expanded(
                     child: _StatCard(
-                      title: 'Overdue',
+                      title: l10n.overdue,
                       count: ordersState.overdueOrders.length,
                       icon: Icons.warning_outlined,
                       color: AppTheme.warningYellow,
@@ -134,7 +136,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   const SizedBox(width: AppTheme.spacingM),
                   Expanded(
                     child: _StatCard(
-                      title: 'Total Orders',
+                      title: l10n.totalOrders,
                       count: ordersState.orders.length,
                       icon: Icons.shopping_cart_outlined,
                       color: AppTheme.successGreen,
@@ -146,7 +148,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
               // Quick Actions
               Text(
-                'Quick Actions',
+                l10n.quickActions,
                 style: AppTheme.headingSmall,
               ),
               const SizedBox(height: AppTheme.spacingM),
@@ -155,7 +157,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   Expanded(
                     child: _QuickActionButton(
                       icon: Icons.shopping_cart,
-                      label: 'View Orders',
+                      label: l10n.viewOrders,
                       onPressed: () => context.push('/orders'),
                     ),
                   ),
@@ -163,7 +165,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   Expanded(
                     child: _QuickActionButton(
                       icon: Icons.inventory_2,
-                      label: 'Products',
+                      label: l10n.products,
                       onPressed: () => context.push('/products'),
                     ),
                   ),
@@ -175,7 +177,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   Expanded(
                     child: _QuickActionButton(
                       icon: Icons.business,
-                      label: 'Suppliers',
+                      label: l10n.suppliers,
                       onPressed: () => context.push('/suppliers'),
                     ),
                   ),
@@ -183,7 +185,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   Expanded(
                     child: _QuickActionButton(
                       icon: Icons.person,
-                      label: 'Profile',
+                      label: l10n.profile,
                       onPressed: () => context.push('/profile'),
                     ),
                   ),
@@ -194,7 +196,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               // Today's Orders Preview
               if (ordersState.todayOrders.isNotEmpty) ...[
                 Text(
-                  'Today\'s Orders',
+                  l10n.todaysOrders,
                   style: AppTheme.headingSmall,
                 ),
                 const SizedBox(height: AppTheme.spacingM),

@@ -105,11 +105,17 @@ class AppLocalizations {
 
   // Dashboard
   String get dashboard => translate('dashboard');
+  String welcomeBack(String name) => translate('welcomeBack', params: {'name': name});
   String get todaysOrders => translate('todaysOrders');
   String get assignedOrders => translate('assignedOrders');
+  String get assigned => translate('assigned');
   String get overdueOrders => translate('overdueOrders');
+  String get overdue => translate('overdue');
+  String get totalOrders => translate('totalOrders');
   String get noOrdersYet => translate('noOrdersYet');
   String get viewAll => translate('viewAll');
+  String get quickActions => translate('quickActions');
+  String get viewOrders => translate('viewOrders');
 
   // Orders
   String get orders => translate('orders');
