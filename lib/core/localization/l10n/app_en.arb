@@ -1,11 +1,9 @@
 {
   "@@locale": "en",
   
-  "_comment_app": "App General",
   "appName": "Nexo Staff App",
   "appTitle": "Nexo Staff App",
   
-  "_comment_common": "Common",
   "ok": "OK",
   "cancel": "Cancel",
   "save": "Save",
@@ -29,7 +27,6 @@
   "required": "Required",
   "optional": "Optional",
   
-  "_comment_auth": "Authentication",
   "signIn": "Sign In",
   "signInToContinue": "Sign in to continue",
   "email": "Email",
@@ -38,7 +35,6 @@
   "logoutConfirmTitle": "Logout",
   "logoutConfirmMessage": "Are you sure you want to logout?",
   
-  "_comment_validation": "Validation Messages",
   "emailRequired": "Email is required",
   "emailInvalid": "Please enter a valid email",
   "passwordRequired": "Password is required",
@@ -47,7 +43,6 @@
   "invalidNumber": "Please enter a valid number",
   "numberMustBePositive": "Number must be positive",
   
-  "_comment_profile": "Profile",
   "profile": "Profile",
   "role": "Role",
   "phone": "Phone",
@@ -59,7 +54,6 @@
   "english": "English",
   "arabic": "Arabic",
   
-  "_comment_dashboard": "Dashboard",
   "dashboard": "Dashboard",
   "welcomeBack": "Welcome back, {name}!",
   "@welcomeBack": {
@@ -80,7 +74,6 @@
   "quickActions": "Quick Actions",
   "viewOrders": "View Orders",
   
-  "_comment_orders": "Orders",
   "orders": "Orders",
   "orderNumber": "Order Number",
   "orderSummary": "Order Summary",
@@ -106,14 +99,12 @@
     }
   },
   
-  "_comment_orderStatus": "Order Status",
   "statusNotAssigned": "Not Assigned",
   "statusAssigned": "Assigned",
   "statusConfirmed": "Confirmed",
   "statusPaid": "Paid",
   "statusCanceled": "Canceled",
   
-  "_comment_submitReview": "Submit Review Screen",
   "billReceiptPhoto": "Bill/Receipt Photo *",
   "uploadProofOfPurchase": "Upload a photo of the bill or receipt as proof of purchase",
   "selectImage": "Select Image",
@@ -163,13 +154,11 @@
     }
   },
   
-  "_comment_notifications": "Notifications",
   "notifications": "Notifications",
   "noNotifications": "No notifications",
   "markAsRead": "Mark as Read",
   "markAllAsRead": "Mark All as Read",
   
-  "_comment_products": "Products",
   "product": "Product",
   "category": "Category",
   "price": "Price",
@@ -177,38 +166,32 @@
   "inStock": "In Stock",
   "outOfStock": "Out of Stock",
   
-  "_comment_suppliers": "Suppliers",
   "suppliers": "Suppliers",
   "supplierName": "Supplier Name",
   "contactInfo": "Contact Info",
   
-  "_comment_tasks": "Tasks",
   "tasks": "Tasks",
   "taskDetails": "Task Details",
   "taskName": "Task Name",
   "taskStatus": "Task Status",
   "dueDate": "Due Date",
   
-  "_comment_navigation": "Navigation",
   "home": "Home",
   "myOrders": "My Orders",
   "myTasks": "My Tasks",
   
-  "_comment_errors": "Error Messages",
   "somethingWentWrong": "Something went wrong",
   "noInternetConnection": "No internet connection",
   "tryAgainLater": "Please try again later",
   "unexpectedError": "An unexpected error occurred",
   "loadingFailed": "Failed to load data",
   
-  "_comment_orderDetails": "Order Details",
   "orderDetails": "Order Details",
   "itemDetails": "Item Details",
   "expirationDate": "Expiration Date",
   "remaining": "Remaining",
   "expired": "Expired",
   
-  "_comment_actions": "Actions",
   "refresh": "Refresh",
   "update": "Update",
   "remove": "Remove",
