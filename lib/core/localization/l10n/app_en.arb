@@ -1,0 +1,189 @@
+{
+  "@@locale": "en",
+  
+  "_comment_app": "App General",
+  "appName": "Nexo Staff App",
+  "appTitle": "Nexo Staff App",
+  
+  "_comment_common": "Common",
+  "ok": "OK",
+  "cancel": "Cancel",
+  "save": "Save",
+  "delete": "Delete",
+  "edit": "Edit",
+  "confirm": "Confirm",
+  "yes": "Yes",
+  "no": "No",
+  "submit": "Submit",
+  "search": "Search",
+  "filter": "Filter",
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success",
+  "retry": "Retry",
+  "close": "Close",
+  "back": "Back",
+  "next": "Next",
+  "previous": "Previous",
+  "done": "Done",
+  "required": "Required",
+  "optional": "Optional",
+  
+  "_comment_auth": "Authentication",
+  "signIn": "Sign In",
+  "signInToContinue": "Sign in to continue",
+  "email": "Email",
+  "password": "Password",
+  "logout": "Logout",
+  "logoutConfirmTitle": "Logout",
+  "logoutConfirmMessage": "Are you sure you want to logout?",
+  
+  "_comment_validation": "Validation Messages",
+  "emailRequired": "Email is required",
+  "emailInvalid": "Please enter a valid email",
+  "passwordRequired": "Password is required",
+  "passwordMinLength": "Password must be at least 6 characters",
+  "fieldRequired": "This field is required",
+  "invalidNumber": "Please enter a valid number",
+  "numberMustBePositive": "Number must be positive",
+  
+  "_comment_profile": "Profile",
+  "profile": "Profile",
+  "role": "Role",
+  "phone": "Phone",
+  "phoneNotSet": "Not set",
+  "memberSince": "Member Since",
+  "language": "Language",
+  "languageSettings": "Language Settings",
+  "selectLanguage": "Select Language",
+  "english": "English",
+  "arabic": "Arabic",
+  
+  "_comment_dashboard": "Dashboard",
+  "dashboard": "Dashboard",
+  "todaysOrders": "Today's Orders",
+  "assignedOrders": "Assigned Orders",
+  "overdueOrders": "Overdue Orders",
+  "noOrdersYet": "No orders yet",
+  "viewAll": "View All",
+  
+  "_comment_orders": "Orders",
+  "orders": "Orders",
+  "orderNumber": "Order Number",
+  "orderSummary": "Order Summary",
+  "supplier": "Supplier",
+  "totalAmount": "Total Amount",
+  "expectedDate": "Expected Date",
+  "products": "Products",
+  "items": "items",
+  "status": "Status",
+  "notes": "Notes",
+  "notesOptional": "Notes (Optional)",
+  "addNotesHint": "Add any additional notes or comments about this order",
+  "enterNotesHere": "Enter your notes here...",
+  "confirmOrder": "Confirm Order",
+  "confirming": "Confirming...",
+  "orderConfirmedSuccess": "Order confirmed successfully",
+  "orderConfirmFailed": "Failed to submit order: {error}",
+  "@orderConfirmFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "_comment_orderStatus": "Order Status",
+  "statusNotAssigned": "Not Assigned",
+  "statusAssigned": "Assigned",
+  "statusConfirmed": "Confirmed",
+  "statusPaid": "Paid",
+  "statusCanceled": "Canceled",
+  
+  "_comment_submitReview": "Submit Review Screen",
+  "billReceiptPhoto": "Bill/Receipt Photo *",
+  "uploadProofOfPurchase": "Upload a photo of the bill or receipt as proof of purchase",
+  "selectImage": "Select Image",
+  "takePhoto": "Take Photo",
+  "chooseFromGallery": "Choose from Gallery",
+  "selectImageRequired": "Please select a bill/receipt image",
+  "imagePickFailed": "Failed to pick image: {error}",
+  "@imagePickFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "editPriceQuantity": "Edit Price & Quantity",
+  "productName": "Product Name",
+  "quantity": "Quantity",
+  "unitPrice": "Unit Price",
+  "originalPrice": "Original: ${price}",
+  "@originalPrice": {
+    "placeholders": {
+      "price": {
+        "type": "String"
+      }
+    }
+  },
+  "originalQuantity": "Original: {qty}",
+  "@originalQuantity": {
+    "placeholders": {
+      "qty": {
+        "type": "String"
+      }
+    }
+  },
+  "changesSummary": "Changes Summary",
+  "noChanges": "No changes made",
+  "changedFrom": "Changed from {oldValue} to {newValue}",
+  "@changedFrom": {
+    "placeholders": {
+      "oldValue": {
+        "type": "String"
+      },
+      "newValue": {
+        "type": "String"
+      }
+    }
+  },
+  
+  "_comment_notifications": "Notifications",
+  "notifications": "Notifications",
+  "noNotifications": "No notifications",
+  "markAsRead": "Mark as Read",
+  "markAllAsRead": "Mark All as Read",
+  
+  "_comment_products": "Products",
+  "product": "Product",
+  "category": "Category",
+  "price": "Price",
+  "stock": "Stock",
+  "inStock": "In Stock",
+  "outOfStock": "Out of Stock",
+  
+  "_comment_suppliers": "Suppliers",
+  "suppliers": "Suppliers",
+  "supplierName": "Supplier Name",
+  "contactInfo": "Contact Info",
+  
+  "_comment_tasks": "Tasks",
+  "tasks": "Tasks",
+  "taskDetails": "Task Details",
+  "taskName": "Task Name",
+  "taskStatus": "Task Status",
+  "dueDate": "Due Date",
+  
+  "_comment_navigation": "Navigation",
+  "home": "Home",
+  "myOrders": "My Orders",
+  "myTasks": "My Tasks",
+  
+  "_comment_errors": "Error Messages",
+  "somethingWentWrong": "Something went wrong",
+  "noInternetConnection": "No internet connection",
+  "tryAgainLater": "Please try again later",
+  "unexpectedError": "An unexpected error occurred",
+  "loadingFailed": "Failed to load data"
+}
