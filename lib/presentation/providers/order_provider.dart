@@ -97,18 +97,20 @@ class OrdersNotifier extends StateNotifier<OrdersState> {
     );
   }
 
-  Future<void> submitOrderForReview(
+  Future<void> submitReview(
     String orderId, 
-    File imageFile, 
+    File? imageFile, 
     String? notes, {
+    double? totalAmount,
     Map<String, int>? editedQuantities,
     Map<String, double>? editedPrices,
   }) async {
     try {
-      await _orderRepository.submitOrderForReview(
+      await _orderRepository.submitReview(
         orderId, 
         imageFile, 
         notes,
+        totalAmount: totalAmount,
         editedQuantities: editedQuantities,
         editedPrices: editedPrices,
       );

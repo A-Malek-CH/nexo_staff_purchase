@@ -17,13 +17,43 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
 
+    signingConfigs {
+        create("release") {
+            keyAlias = "release"
+            keyPassword = "Legroom4-Yummy7-Qualifier4-Skyrocket9-Railing9"
+            storeFile = file("nexo-pizza-staff-purchase-app-release-key.jks")
+            storePassword = "Legroom4-Yummy7-Qualifier4-Skyrocket9-Railing9"
+        }
+        // FIX: Changed from 'create' to 'getByName' because debug config already exists
+        getByName("debug") {
+            keyAlias = "debug"
+            keyPassword = "Husband7-Domain5-Recoil4-Happening1-Dweeb5"
+            storeFile = file("nexo-pizza-staff-purchase-app-debug-key.jks")
+            storePassword = "Husband7-Domain5-Recoil4-Happening1-Dweeb5"
+        }
+    }
+
+    buildTypes {
+        getByName("release") {
+            // This connects the release config to the build
+            signingConfig = signingConfigs.getByName("release")
+
+            // Standard optimization settings
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
+        getByName("debug") {
+            signingConfig = signingConfigs.getByName("debug")
+        }
+    }
+
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.nexo_staff_purchase"
+        applicationId = "com.nexopizza.staffpurchase"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
         minSdk = flutter.minSdkVersion
@@ -31,14 +61,6 @@ android {
         versionCode = flutter.versionCode
         versionName = flutter.versionName
         multiDexEnabled = true
-    }
-
-    buildTypes {
-        release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
-        }
     }
 }
 

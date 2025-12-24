@@ -63,54 +63,42 @@ class OrderService {
 
   /// Confirm order with image proof (change status from "assigned" to "confirmed")
   /// Returns void since the response is unpopulated and we don't need to parse it
-  Future<void> submitOrderForReview(
+  Future<void> submitReview(
     String orderId, 
-    File imageFile, 
+    File? imageFile, 
     String? notes, {
+    double? totalAmount,
     Map<String, int>? editedQuantities,
     Map<String, double>? editedPrices,
   }) async {
     try {
-      // Get file extension and determine content type
-      final fileName = path.basename(imageFile.path);
-      final extension = path.extension(imageFile.path).toLowerCase();
-      
-      // Map extension to MediaType
-      MediaType contentType;
-      switch (extension) {
-        case '.jpg':
-        case '.jpeg':
-          contentType = MediaType('image', 'jpeg');
-          break;
-        case '.png':
-          contentType = MediaType('image', 'png');
-          break;
-        case '.webp':
-          contentType = MediaType('image', 'webp');
-          break;
-        case '.gif':
-          contentType = MediaType('image', 'gif');
-          break;
-        default:
-          contentType = MediaType('image', 'jpeg');
+      final formData = FormData();
+
+      // Add text fields
+      if (notes != null && notes.isNotEmpty) {
+        formData.fields.add(MapEntry('notes', notes));
       }
 
-      final Map<String, dynamic> formDataMap = {
-        'image': await MultipartFile.fromFile(
-          imageFile.path,
-          filename: fileName,
-          contentType: contentType,
-        ),
-        if (notes != null && notes.isNotEmpty) 'notes': notes,
-      };
+      if (totalAmount != null) {
+        formData.fields.add(MapEntry('totalAmount', totalAmount.toString()));
+      }
 
-      // Add edited quantities and prices if provided
+      // Add edited quantities and prices if provided (always send, defaults to empty list if no changes)
       final itemsJson = _buildEditedItemsJson(editedQuantities, editedPrices);
-      if (itemsJson != null) {
-        formDataMap['items'] = itemsJson;
-      }
+      formData.fields.add(MapEntry('itemsUpdates', itemsJson));
 
-      final formData = FormData.fromMap(formDataMap);
+      // Add image file if provided
+      if (imageFile != null) {
+        final fileName = path.basename(imageFile.path);
+        formData.files.add(MapEntry(
+          'image',
+          await MultipartFile.fromFile(
+            imageFile.path,
+            filename: fileName,
+            contentType: MediaType('image', 'jpeg'),
+          ),
+        ));
+      }
 
       final response = await _dio.post(
         '${AppConstants.ordersEndpoint}/$orderId/review',
@@ -131,42 +119,29 @@ class OrderService {
   }
 
   /// Build JSON string for edited items to be sent to API
-  String? _buildEditedItemsJson(
+  String _buildEditedItemsJson(
     Map<String, int>? editedQuantities,
     Map<String, double>? editedPrices,
   ) {
-    if ((editedQuantities == null || editedQuantities.isEmpty) &&
-        (editedPrices == null || editedPrices.isEmpty)) {
-      return null;
+    if (editedQuantities == null || editedQuantities.isEmpty) {
+      return "[]";
     }
 
     final List<Map<String, dynamic>> items = [];
     
-    // Add items with quantity changes (and prices if both changed)
-    if (editedQuantities != null) {
-      editedQuantities.forEach((itemId, quantity) {
-        items.add({
-          'id': itemId,
-          'quantity': quantity,
-          if (editedPrices != null && editedPrices.containsKey(itemId))
-            'unitCost': editedPrices[itemId],
-        });
+    // Since we now always send all items from the UI, we can just iterate over editedQuantities
+    // which contains all item IDs in the order.
+    editedQuantities.forEach((itemId, quantity) {
+      final double? price = editedPrices?[itemId];
+      
+      items.add({
+        'itemId': itemId,
+        'quantity': quantity,
+        if (price != null) 'unitCost': price,
       });
-    }
+    });
     
-    // Add items with only price changes
-    if (editedPrices != null) {
-      editedPrices.forEach((itemId, price) {
-        if (editedQuantities == null || !editedQuantities.containsKey(itemId)) {
-          items.add({
-            'id': itemId,
-            'unitCost': price,
-          });
-        }
-      });
-    }
-    
-    return items.isNotEmpty ? json.encode(items) : null;
+    return json.encode(items);
   }
 
   String _handleError(DioException error) {

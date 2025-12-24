@@ -120,7 +120,7 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
   }
 
   void _collectEditedValues() {
-    // Collect edited values from controllers
+    // Collect ALL values (edited or not) for all items
     _editedQuantities.clear();
     _editedPrices.clear();
     
@@ -128,19 +128,11 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
       final qtyText = _quantityControllers[item.id]?.text ?? '';
       final priceText = _priceControllers[item.id]?.text ?? '';
       
-      if (qtyText.isNotEmpty) {
-        final qty = int.tryParse(qtyText);
-        if (qty != null && qty != item.quantity) {
-          _editedQuantities[item.id] = qty;
-        }
-      }
+      final qty = int.tryParse(qtyText) ?? item.quantity;
+      final price = double.tryParse(priceText) ?? item.unitCost;
       
-      if (priceText.isNotEmpty) {
-        final price = double.tryParse(priceText);
-        if (price != null && price != item.unitCost) {
-          _editedPrices[item.id] = price;
-        }
-      }
+      _editedQuantities[item.id] = qty;
+      _editedPrices[item.id] = price;
     }
   }
 
@@ -163,15 +155,24 @@ class _SubmitReviewScreenState extends ConsumerState<SubmitReviewScreen> {
 
     _collectEditedValues();
 
+    // Always recalculate total based on current (possibly edited) values
+    double finalTotalAmount = 0;
+    for (var item in widget.order.items) {
+      final qty = _editedQuantities[item.id] ?? item.quantity;
+      final price = _editedPrices[item.id] ?? item.unitCost;
+      finalTotalAmount += qty * price;
+    }
+
     setState(() {
       _isSubmitting = true;
     });
 
     try {
-      await ref.read(ordersProvider.notifier).submitOrderForReview(
+      await ref.read(ordersProvider.notifier).submitReview(
             widget.order.id,
-            _selectedImage!,
+            _selectedImage,
             _notesController.text.trim().isEmpty ? null : _notesController.text.trim(),
+            totalAmount: finalTotalAmount,
             editedQuantities: _editedQuantities,
             editedPrices: _editedPrices,
           );

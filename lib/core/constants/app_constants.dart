@@ -5,7 +5,7 @@ class AppConstants {
 
   // API Configuration
   // Development backend URL for testing notifications
-  static const String baseUrl = 'https://purchase-manag-git-development-nexoaizzas-projects.vercel.app/api';
+  static const String baseUrl = 'https://purchase-manag-nexo.vercel.app/api';
   static const String apiVersion = 'v1';
   
   // API Endpoints
