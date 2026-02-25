@@ -65,7 +65,7 @@ class _TaskDetailsScreenState extends ConsumerState<TaskDetailsScreen> {
                         children: [
                           Flexible(
                             child: Text(
-                              task.title,
+                              'Task #${task.taskNumber}',
                               style: AppTheme.headingMedium,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -76,11 +76,10 @@ class _TaskDetailsScreenState extends ConsumerState<TaskDetailsScreen> {
                       ),
                       const SizedBox(height: AppTheme.spacingM),
                       _buildInfoRow(l10n.taskStatus, task.status.toUpperCase()),
-                      _buildInfoRow(l10n.dueDate, DateHelper.formatDeadline(task.deadline)),
-                      _buildInfoRow('Priority', task.priority.toUpperCase()),
+                      if (task.deadline != null)
+                        _buildInfoRow(l10n.dueDate, DateHelper.formatDeadline(task.deadline!)),
+                      _buildInfoRow('Staff', task.staffId.fullname),
                       _buildInfoRow('Created', DateHelper.formatDate(task.createdAt)),
-                      if (task.completedAt != null)
-                        _buildInfoRow('Completed', DateHelper.formatDate(task.completedAt!)),
                     ],
                   ),
                 ),
@@ -103,41 +102,6 @@ class _TaskDetailsScreenState extends ConsumerState<TaskDetailsScreen> {
                   ),
                 ),
               if (task.description != null && task.description!.isNotEmpty)
-                const SizedBox(height: AppTheme.spacingM),
-
-              // Supplier Info
-              if (task.supplierName != null)
-                Card(
-                  child: Padding(
-                    padding: AppTheme.paddingM,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Supplier', style: AppTheme.headingSmall),
-                        const SizedBox(height: AppTheme.spacingS),
-                        Text(task.supplierName!, style: AppTheme.bodyMedium),
-                      ],
-                    ),
-                  ),
-                ),
-              if (task.supplierName != null) const SizedBox(height: AppTheme.spacingM),
-
-              // Notes
-              if (task.notes != null && task.notes!.isNotEmpty)
-                Card(
-                  child: Padding(
-                    padding: AppTheme.paddingM,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text('Notes', style: AppTheme.headingSmall),
-                        const SizedBox(height: AppTheme.spacingS),
-                        Text(task.notes!, style: AppTheme.bodyMedium),
-                      ],
-                    ),
-                  ),
-                ),
-              if (task.notes != null && task.notes!.isNotEmpty)
                 const SizedBox(height: AppTheme.spacingM),
 
               // Mark as Done Button

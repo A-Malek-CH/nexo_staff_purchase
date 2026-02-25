@@ -1,58 +1,48 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nexo_staff_purchase/data/models/task_model.dart';
-import 'package:nexo_staff_purchase/data/models/task_item_model.dart';
 
 void main() {
   group('Task Model Tests', () {
+    final sampleStaffJson = {
+      '_id': 'staff-001',
+      'fullname': 'John Doe',
+      'email': 'john@example.com',
+    };
+
     final sampleTaskJson = {
-      'id': 'task-001',
-      'title': 'Buy office supplies',
+      '_id': 'task-001',
+      'taskNumber': 42,
+      'staffId': sampleStaffJson,
       'description': 'Purchase pens, notebooks and paper',
       'status': 'pending',
-      'priority': 'medium',
       'deadline': '2025-12-31T09:00:00.000Z',
-      'supplier_id': 'sup-001',
-      'supplier_name': 'Office World',
-      'assigned_to': 'user-001',
-      'assigned_by': 'admin-001',
-      'items': <dynamic>[],
-      'notes': 'Get receipts',
-      'created_at': '2025-12-01T08:00:00.000Z',
-      'updated_at': null,
-      'completed_at': null,
+      'createdAt': '2025-12-01T08:00:00.000Z',
+      'updatedAt': '2025-12-02T08:00:00.000Z',
     };
 
     test('should parse Task from JSON', () {
       final task = Task.fromJson(sampleTaskJson);
 
       expect(task.id, 'task-001');
-      expect(task.title, 'Buy office supplies');
+      expect(task.taskNumber, 42);
+      expect(task.staffId.id, 'staff-001');
+      expect(task.staffId.fullname, 'John Doe');
+      expect(task.staffId.email, 'john@example.com');
       expect(task.description, 'Purchase pens, notebooks and paper');
       expect(task.status, 'pending');
-      expect(task.priority, 'medium');
       expect(task.deadline, DateTime.parse('2025-12-31T09:00:00.000Z'));
-      expect(task.supplierId, 'sup-001');
-      expect(task.supplierName, 'Office World');
-      expect(task.assignedTo, 'user-001');
-      expect(task.assignedBy, 'admin-001');
-      expect(task.items, isEmpty);
-      expect(task.notes, 'Get receipts');
       expect(task.createdAt, DateTime.parse('2025-12-01T08:00:00.000Z'));
-      expect(task.updatedAt, isNull);
-      expect(task.completedAt, isNull);
+      expect(task.updatedAt, DateTime.parse('2025-12-02T08:00:00.000Z'));
     });
 
     test('should serialize Task to JSON', () {
       final task = Task.fromJson(sampleTaskJson);
       final json = task.toJson();
 
-      expect(json['id'], 'task-001');
-      expect(json['title'], 'Buy office supplies');
+      expect(json['_id'], 'task-001');
+      expect(json['taskNumber'], 42);
       expect(json['status'], 'pending');
-      expect(json['priority'], 'medium');
-      expect(json['supplier_id'], 'sup-001');
-      expect(json['assigned_to'], 'user-001');
-      expect(json['assigned_by'], 'admin-001');
+      expect((json['staffId'] as Map)['_id'], 'staff-001');
     });
 
     test('should support copyWith', () {
@@ -61,48 +51,27 @@ void main() {
 
       expect(updated.status, 'completed');
       expect(updated.id, task.id);
-      expect(updated.title, task.title);
+      expect(updated.taskNumber, task.taskNumber);
       expect(updated.deadline, task.deadline);
     });
 
-    test('should parse Task with completed status', () {
+    test('should parse Task with null deadline', () {
       final json = Map<String, dynamic>.from(sampleTaskJson);
-      json['status'] = 'completed';
-      json['completed_at'] = '2025-12-15T10:00:00.000Z';
+      json['deadline'] = null;
 
       final task = Task.fromJson(json);
 
-      expect(task.status, 'completed');
-      expect(task.completedAt, DateTime.parse('2025-12-15T10:00:00.000Z'));
+      expect(task.status, 'pending');
+      expect(task.deadline, isNull);
     });
 
-    test('should parse Task with items list', () {
-      final json = Map<String, dynamic>.from(sampleTaskJson);
-      json['items'] = [
-        {
-          'id': 'item-001',
-          'task_id': 'task-001',
-          'product_id': 'prod-001',
-          'product_name': 'Blue Pen',
-          'requested_quantity': 10,
-          'actual_quantity': null,
-          'requested_price': 2.5,
-          'actual_price': null,
-          'status': 'pending',
-          'is_available': true,
-          'notes': null,
-          'receipt_url': null,
-          'photo_url': null,
-          'purchased_at': null,
-        }
-      ];
+    test('should parse Task without deadline key', () {
+      final json = Map<String, dynamic>.from(sampleTaskJson)
+        ..remove('deadline');
 
       final task = Task.fromJson(json);
 
-      expect(task.items.length, 1);
-      expect(task.items.first.id, 'item-001');
-      expect(task.items.first.productName, 'Blue Pen');
-      expect(task.items.first.requestedQuantity, 10);
+      expect(task.deadline, isNull);
     });
   });
 }

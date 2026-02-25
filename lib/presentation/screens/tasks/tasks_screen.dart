@@ -16,7 +16,6 @@ class TasksScreen extends ConsumerStatefulWidget {
 
 class _TasksScreenState extends ConsumerState<TasksScreen> {
   String? _selectedStatus;
-  String? _selectedPriority;
 
   @override
   void initState() {
@@ -40,14 +39,10 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
               setState(() {
                 if (value == 'clear') {
                   _selectedStatus = null;
-                  _selectedPriority = null;
                   ref.read(tasksProvider.notifier).clearFilters();
                 } else if (value.startsWith('status:')) {
                   _selectedStatus = value.split(':')[1];
                   ref.read(tasksProvider.notifier).loadTasks(status: _selectedStatus);
-                } else if (value.startsWith('priority:')) {
-                  _selectedPriority = value.split(':')[1];
-                  ref.read(tasksProvider.notifier).loadTasks(priority: _selectedPriority);
                 }
               });
             },
@@ -72,27 +67,6 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
               PopupMenuItem(
                 value: 'status:${AppConstants.taskStatusCompleted}',
                 child: const Text('Completed'),
-              ),
-              const PopupMenuDivider(),
-              const PopupMenuItem(
-                enabled: false,
-                child: Text('Priority', style: TextStyle(fontWeight: FontWeight.bold)),
-              ),
-              PopupMenuItem(
-                value: 'priority:${AppConstants.priorityUrgent}',
-                child: const Text('Urgent'),
-              ),
-              PopupMenuItem(
-                value: 'priority:${AppConstants.priorityHigh}',
-                child: const Text('High'),
-              ),
-              PopupMenuItem(
-                value: 'priority:${AppConstants.priorityMedium}',
-                child: const Text('Medium'),
-              ),
-              PopupMenuItem(
-                value: 'priority:${AppConstants.priorityLow}',
-                child: const Text('Low'),
               ),
             ],
           ),
@@ -127,20 +101,21 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                         itemCount: tasksState.tasks.length,
                         itemBuilder: (context, index) {
                           final task = tasksState.tasks[index];
-                          final isOverdue = DateHelper.isOverdue(task.deadline) &&
+                          final isOverdue = task.deadline != null &&
+                              DateHelper.isOverdue(task.deadline!) &&
                               task.status != AppConstants.taskStatusCompleted;
 
                           return Card(
                             child: ListTile(
                               leading: CircleAvatar(
-                                backgroundColor: _getPriorityColor(task.priority).withOpacity(0.2),
+                                backgroundColor: _getStatusColor(task.status).withOpacity(0.2),
                                 child: Icon(
                                   _getStatusIcon(task.status),
-                                  color: _getPriorityColor(task.priority),
+                                  color: _getStatusColor(task.status),
                                 ),
                               ),
                               title: Text(
-                                task.title,
+                                'Task #${task.taskNumber}',
                                 style: AppTheme.bodyLarge.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -149,35 +124,27 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const SizedBox(height: 4),
-                                  Row(
-                                    children: [
-                                      Icon(
-                                        Icons.access_time,
-                                        size: 14,
-                                        color: isOverdue ? AppTheme.errorRed : AppTheme.mediumGrey,
-                                      ),
-                                      const SizedBox(width: 4),
-                                      Text(
-                                        DateHelper.formatDeadline(task.deadline),
-                                        style: AppTheme.bodySmall.copyWith(
-                                          color: isOverdue ? AppTheme.errorRed : null,
+                                  if (task.deadline != null)
+                                    Row(
+                                      children: [
+                                        Icon(
+                                          Icons.access_time,
+                                          size: 14,
+                                          color: isOverdue ? AppTheme.errorRed : AppTheme.mediumGrey,
                                         ),
-                                      ),
-                                    ],
-                                  ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          DateHelper.formatDeadline(task.deadline!),
+                                          style: AppTheme.bodySmall.copyWith(
+                                            color: isOverdue ? AppTheme.errorRed : null,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                                   const SizedBox(height: 4),
-                                  Wrap(
-                                    spacing: 8,
-                                    children: [
-                                      _StatusChip(
-                                        label: task.status.toUpperCase(),
-                                        color: _getStatusColor(task.status),
-                                      ),
-                                      _StatusChip(
-                                        label: task.priority.toUpperCase(),
-                                        color: _getPriorityColor(task.priority),
-                                      ),
-                                    ],
+                                  _StatusChip(
+                                    label: task.status.toUpperCase(),
+                                    color: _getStatusColor(task.status),
                                   ),
                                 ],
                               ),
@@ -190,21 +157,6 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
       ),
       bottomNavigationBar: const AppBottomNav(currentIndex: 1),
     );
-  }
-
-  Color _getPriorityColor(String priority) {
-    switch (priority) {
-      case AppConstants.priorityUrgent:
-        return AppTheme.errorRed;
-      case AppConstants.priorityHigh:
-        return AppTheme.warningYellow;
-      case AppConstants.priorityMedium:
-        return AppTheme.primaryOrange;
-      case AppConstants.priorityLow:
-        return AppTheme.successGreen;
-      default:
-        return AppTheme.mediumGrey;
-    }
   }
 
   Color _getStatusColor(String status) {
