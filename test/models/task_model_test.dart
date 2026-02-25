@@ -11,15 +11,15 @@ void main() {
       'status': 'pending',
       'priority': 'medium',
       'deadline': '2025-12-31T09:00:00.000Z',
-      'supplierId': 'sup-001',
-      'supplierName': 'Office World',
-      'assignedTo': 'user-001',
-      'assignedBy': 'admin-001',
+      'supplier_id': 'sup-001',
+      'supplier_name': 'Office World',
+      'assigned_to': 'user-001',
+      'assigned_by': 'admin-001',
       'items': <dynamic>[],
       'notes': 'Get receipts',
-      'createdAt': '2025-12-01T08:00:00.000Z',
-      'updatedAt': null,
-      'completedAt': null,
+      'created_at': '2025-12-01T08:00:00.000Z',
+      'updated_at': null,
+      'completed_at': null,
     };
 
     test('should parse Task from JSON', () {
@@ -50,9 +50,9 @@ void main() {
       expect(json['title'], 'Buy office supplies');
       expect(json['status'], 'pending');
       expect(json['priority'], 'medium');
-      expect(json['supplierId'], 'sup-001');
-      expect(json['assignedTo'], 'user-001');
-      expect(json['assignedBy'], 'admin-001');
+      expect(json['supplier_id'], 'sup-001');
+      expect(json['assigned_to'], 'user-001');
+      expect(json['assigned_by'], 'admin-001');
     });
 
     test('should support copyWith', () {
@@ -68,7 +68,7 @@ void main() {
     test('should parse Task with completed status', () {
       final json = Map<String, dynamic>.from(sampleTaskJson);
       json['status'] = 'completed';
-      json['completedAt'] = '2025-12-15T10:00:00.000Z';
+      json['completed_at'] = '2025-12-15T10:00:00.000Z';
 
       final task = Task.fromJson(json);
 
@@ -81,19 +81,19 @@ void main() {
       json['items'] = [
         {
           'id': 'item-001',
-          'taskId': 'task-001',
-          'productId': 'prod-001',
-          'productName': 'Blue Pen',
-          'requestedQuantity': 10,
-          'actualQuantity': null,
-          'requestedPrice': 2.5,
-          'actualPrice': null,
+          'task_id': 'task-001',
+          'product_id': 'prod-001',
+          'product_name': 'Blue Pen',
+          'requested_quantity': 10,
+          'actual_quantity': null,
+          'requested_price': 2.5,
+          'actual_price': null,
           'status': 'pending',
-          'isAvailable': true,
+          'is_available': true,
           'notes': null,
-          'receiptUrl': null,
-          'photoUrl': null,
-          'purchasedAt': null,
+          'receipt_url': null,
+          'photo_url': null,
+          'purchased_at': null,
         }
       ];
 
