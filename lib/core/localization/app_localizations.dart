@@ -187,6 +187,9 @@ class AppLocalizations {
   String get taskName => translate('taskName');
   String get taskStatus => translate('taskStatus');
   String get dueDate => translate('dueDate');
+  String get markAsDone => translate('markAsDone');
+  String get markingAsDone => translate('markingAsDone');
+  String get taskMarkedDone => translate('taskMarkedDone');
 
   // Navigation
   String get home => translate('home');

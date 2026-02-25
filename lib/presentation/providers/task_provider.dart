@@ -2,6 +2,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/models/task_model.dart';
 import '../../data/repositories/task_repository.dart';
 
+final taskDetailProvider = FutureProvider.family<Task, String>((ref, taskId) async {
+  return ref.read(taskRepositoryProvider).getTaskById(taskId);
+});
+
 final tasksProvider = StateNotifierProvider<TasksNotifier, TasksState>((ref) {
   return TasksNotifier(ref.read(taskRepositoryProvider));
 });

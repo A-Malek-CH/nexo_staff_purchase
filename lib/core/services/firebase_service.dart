@@ -1,10 +1,17 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 
 class FirebaseService {
   static final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  
+  static GoRouter? _router;
+
+  /// Set the router reference for deep-link navigation
+  static void setRouter(GoRouter router) {
+    _router = router;
+  }
+
   /// Initialize Firebase
   static Future<void> initialize() async {
     try {
@@ -52,6 +59,19 @@ class FirebaseService {
       return null;
     }
   }
+
+  /// Navigate based on notification data
+  static void _handleNotificationNavigation(Map<String, dynamic> data) {
+    final type = data['type'] as String?;
+    if (type == 'task_assigned') {
+      final taskId = data['taskId'] as String?;
+      if (taskId != null) {
+        _router?.push('/tasks/$taskId');
+      }
+    } else if (type == 'order_assigned') {
+      _router?.push('/orders');
+    }
+  }
   
   /// Setup message handlers for foreground/background
   static void _setupMessageHandlers() {
@@ -59,8 +79,10 @@ class FirebaseService {
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
       if (kDebugMode) {
         debugPrint('Foreground message received: ${message.notification?.title}');
+        debugPrint('Message data: ${message.data}');
       }
-      // TODO: Show local notification or in-app alert
+      // Foreground notifications are shown by FCM automatically on Android 13+;
+      // additional local notification display can be added here if needed.
     });
     
     // Handle when user taps notification (app in background)
@@ -68,7 +90,17 @@ class FirebaseService {
       if (kDebugMode) {
         debugPrint('Notification tapped: ${message.notification?.title}');
       }
-      // TODO: Navigate to order details
+      _handleNotificationNavigation(message.data);
+    });
+
+    // Handle when app is launched from a terminated state via notification
+    FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+      if (message != null) {
+        if (kDebugMode) {
+          debugPrint('App launched from notification: ${message.notification?.title}');
+        }
+        _handleNotificationNavigation(message.data);
+      }
     });
   }
   

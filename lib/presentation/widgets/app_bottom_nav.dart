@@ -23,13 +23,13 @@ class AppBottomNav extends StatelessWidget {
             context.go('/dashboard');
             break;
           case 1:
-            context.go('/orders');
+            context.go('/tasks');
             break;
           case 2:
-            context.go('/products');
+            context.go('/orders');
             break;
           case 3:
-            context.go('/suppliers');
+            context.go('/products');
             break;
           case 4:
             context.go('/profile');
@@ -46,6 +46,11 @@ class AppBottomNav extends StatelessWidget {
           label: l10n.dashboard,
         ),
         BottomNavigationBarItem(
+          icon: const Icon(Icons.assignment_outlined),
+          activeIcon: const Icon(Icons.assignment),
+          label: l10n.tasks,
+        ),
+        BottomNavigationBarItem(
           icon: const Icon(Icons.shopping_cart_outlined),
           activeIcon: const Icon(Icons.shopping_cart),
           label: l10n.orders,
@@ -54,11 +59,6 @@ class AppBottomNav extends StatelessWidget {
           icon: const Icon(Icons.inventory_2_outlined),
           activeIcon: const Icon(Icons.inventory_2),
           label: l10n.products,
-        ),
-        BottomNavigationBarItem(
-          icon: const Icon(Icons.business_outlined),
-          activeIcon: const Icon(Icons.business),
-          label: l10n.suppliers,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.person_outlined),

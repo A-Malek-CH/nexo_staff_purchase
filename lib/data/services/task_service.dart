@@ -40,6 +40,18 @@ class TaskService {
     }
   }
 
+  Future<List<Task>> getMyTasks({
+    String? status,
+    int page = 1,
+    int limit = AppConstants.pageSize,
+  }) async {
+    return getTasks(status: status, page: page, limit: limit);
+  }
+
+  Future<void> markTaskAsDone(String taskId) async {
+    await updateTaskStatus(taskId, 'completed');
+  }
+
   Future<Task> getTaskById(String id) async {
     try {
       final response = await _dio.get('${AppConstants.tasksEndpoint}/$id');
