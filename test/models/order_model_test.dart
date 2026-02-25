@@ -89,7 +89,7 @@ void main() {
       final supplier = Supplier(
         id: "sup1",
         name: "Test Supplier",
-        phone: "1234567890",
+        phone1: "1234567890",
       );
 
       final user = User(
