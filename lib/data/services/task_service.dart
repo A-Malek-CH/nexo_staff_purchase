@@ -33,8 +33,11 @@ class TaskService {
         queryParameters: queryParams,
       );
 
-      final List<dynamic> data = response.data['data'] ?? response.data;
-      return data.map((json) => Task.fromJson(json)).toList();
+      final rawData = response.data;
+      final List<dynamic> data = rawData is List
+          ? rawData
+          : (rawData['data'] ?? rawData['tasks'] ?? rawData) as List<dynamic>;
+      return data.map((json) => Task.fromJson(json as Map<String, dynamic>)).toList();
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -55,7 +58,11 @@ class TaskService {
   Future<Task> getTaskById(String id) async {
     try {
       final response = await _dio.get('${AppConstants.tasksEndpoint}/$id');
-      return Task.fromJson(response.data);
+      final rawData = response.data;
+      final Map<String, dynamic> data = rawData is Map && rawData.containsKey('data')
+          ? rawData['data'] as Map<String, dynamic>
+          : rawData as Map<String, dynamic>;
+      return Task.fromJson(data);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -67,7 +74,11 @@ class TaskService {
         '${AppConstants.tasksEndpoint}/$id',
         data: data,
       );
-      return Task.fromJson(response.data);
+      final rawData = response.data;
+      final Map<String, dynamic> taskData = rawData is Map && rawData.containsKey('data')
+          ? rawData['data'] as Map<String, dynamic>
+          : rawData as Map<String, dynamic>;
+      return Task.fromJson(taskData);
     } on DioException catch (e) {
       throw _handleError(e);
     }

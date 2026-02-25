@@ -13,8 +13,8 @@ class Task {
   final DateTime deadline;
   final String? supplierId;
   final String? supplierName;
-  final String assignedTo;
-  final String assignedBy;
+  final String? assignedTo;
+  final String? assignedBy;
   final List<TaskItem> items;
   final String? notes;
   final DateTime createdAt;
@@ -30,8 +30,8 @@ class Task {
     required this.deadline,
     this.supplierId,
     this.supplierName,
-    required this.assignedTo,
-    required this.assignedBy,
+    this.assignedTo,
+    this.assignedBy,
     required this.items,
     this.notes,
     required this.createdAt,
