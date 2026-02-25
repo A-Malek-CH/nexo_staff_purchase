@@ -61,7 +61,9 @@ class TaskService {
       final rawData = response.data;
       final Map<String, dynamic> data = rawData is Map && rawData.containsKey('data')
           ? rawData['data'] as Map<String, dynamic>
-          : rawData as Map<String, dynamic>;
+          : rawData is Map && rawData.containsKey('task')
+              ? rawData['task'] as Map<String, dynamic>
+              : rawData as Map<String, dynamic>;
       return Task.fromJson(data);
     } on DioException catch (e) {
       throw _handleError(e);
