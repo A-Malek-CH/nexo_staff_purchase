@@ -1,42 +1,52 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'task_item_model.dart';
 
 part 'task_model.g.dart';
 
-@JsonSerializable(fieldRename: FieldRename.snake)
-class Task {
+class Staff {
   final String id;
-  final String title;
+  final String fullname;
+  final String email;
+
+  Staff({
+    required this.id,
+    required this.fullname,
+    required this.email,
+  });
+
+  factory Staff.fromJson(Map<String, dynamic> json) => Staff(
+        id: json['_id'] as String,
+        fullname: json['fullname'] as String,
+        email: json['email'] as String,
+      );
+
+  Map<String, dynamic> toJson() => {
+        '_id': id,
+        'fullname': fullname,
+        'email': email,
+      };
+}
+
+@JsonSerializable()
+class Task {
+  @JsonKey(name: '_id')
+  final String id;
+  final int taskNumber;
+  final Staff staffId;
   final String? description;
   final String status;
-  final String priority;
-  final DateTime deadline;
-  final String? supplierId;
-  final String? supplierName;
-  final String? assignedTo;
-  final String? assignedBy;
-  final List<TaskItem> items;
-  final String? notes;
+  final DateTime? deadline;
   final DateTime createdAt;
-  final DateTime? updatedAt;
-  final DateTime? completedAt;
+  final DateTime updatedAt;
 
   Task({
     required this.id,
-    required this.title,
+    required this.taskNumber,
+    required this.staffId,
     this.description,
     required this.status,
-    required this.priority,
-    required this.deadline,
-    this.supplierId,
-    this.supplierName,
-    this.assignedTo,
-    this.assignedBy,
-    required this.items,
-    this.notes,
+    this.deadline,
     required this.createdAt,
-    this.updatedAt,
-    this.completedAt,
+    required this.updatedAt,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);
@@ -44,37 +54,23 @@ class Task {
 
   Task copyWith({
     String? id,
-    String? title,
+    int? taskNumber,
+    Staff? staffId,
     String? description,
     String? status,
-    String? priority,
     DateTime? deadline,
-    String? supplierId,
-    String? supplierName,
-    String? assignedTo,
-    String? assignedBy,
-    List<TaskItem>? items,
-    String? notes,
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? completedAt,
   }) {
     return Task(
       id: id ?? this.id,
-      title: title ?? this.title,
+      taskNumber: taskNumber ?? this.taskNumber,
+      staffId: staffId ?? this.staffId,
       description: description ?? this.description,
       status: status ?? this.status,
-      priority: priority ?? this.priority,
       deadline: deadline ?? this.deadline,
-      supplierId: supplierId ?? this.supplierId,
-      supplierName: supplierName ?? this.supplierName,
-      assignedTo: assignedTo ?? this.assignedTo,
-      assignedBy: assignedBy ?? this.assignedBy,
-      items: items ?? this.items,
-      notes: notes ?? this.notes,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
-      completedAt: completedAt ?? this.completedAt,
     );
   }
 }

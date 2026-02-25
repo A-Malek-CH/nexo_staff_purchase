@@ -44,19 +44,24 @@ class TasksState {
   List<Task> get todayTasks {
     final now = DateTime.now();
     return tasks.where((task) {
-      return task.deadline.year == now.year &&
-          task.deadline.month == now.month &&
-          task.deadline.day == now.day;
+      if (task.deadline == null) return false;
+      return task.deadline!.year == now.year &&
+          task.deadline!.month == now.month &&
+          task.deadline!.day == now.day;
     }).toList();
   }
 
   List<Task> get urgentTasks {
-    return tasks.where((task) => task.priority == 'urgent').toList();
+    // Priority field removed from backend response format
+    return [];
   }
 
   List<Task> get overdueTasks {
     final now = DateTime.now();
-    return tasks.where((task) => task.deadline.isBefore(now) && task.status != 'completed').toList();
+    return tasks.where((task) =>
+        task.deadline != null &&
+        task.deadline!.isBefore(now) &&
+        task.status != 'completed').toList();
   }
 }
 

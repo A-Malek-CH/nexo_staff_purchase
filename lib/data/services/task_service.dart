@@ -33,11 +33,8 @@ class TaskService {
         queryParameters: queryParams,
       );
 
-      final rawData = response.data;
-      final List<dynamic> data = rawData is List
-          ? rawData
-          : (rawData['tasks'] ?? rawData['data'] ?? rawData) as List<dynamic>;
-      return data.map((json) => Task.fromJson(json as Map<String, dynamic>)).toList();
+      final tasks = response.data['tasks'] ?? [];
+      return (tasks as List<dynamic>).map((json) => Task.fromJson(json as Map<String, dynamic>)).toList();
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -58,13 +55,9 @@ class TaskService {
   Future<Task> getTaskById(String id) async {
     try {
       final response = await _dio.get('${AppConstants.tasksEndpoint}/$id');
-      final rawData = response.data;
-      final Map<String, dynamic> data = rawData is Map && rawData.containsKey('task')
-          ? rawData['task'] as Map<String, dynamic>
-          : rawData is Map && rawData.containsKey('data')
-              ? rawData['data'] as Map<String, dynamic>
-              : rawData as Map<String, dynamic>;
-      return Task.fromJson(data);
+      final json = response.data['task'];
+      if (json == null) throw 'Task not found in response';
+      return Task.fromJson(json as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }
@@ -76,13 +69,9 @@ class TaskService {
         '${AppConstants.tasksEndpoint}/$id',
         data: data,
       );
-      final rawData = response.data;
-      final Map<String, dynamic> taskData = rawData is Map && rawData.containsKey('task')
-          ? rawData['task'] as Map<String, dynamic>
-          : rawData is Map && rawData.containsKey('data')
-              ? rawData['data'] as Map<String, dynamic>
-              : rawData as Map<String, dynamic>;
-      return Task.fromJson(taskData);
+      final json = response.data['task'];
+      if (json == null) throw 'Task not found in response';
+      return Task.fromJson(json as Map<String, dynamic>);
     } on DioException catch (e) {
       throw _handleError(e);
     }
