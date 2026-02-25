@@ -150,7 +150,7 @@ class _SuppliersScreenState extends ConsumerState<SuppliersScreen> {
                         },
                       ),
       ),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 3),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 0),
     );
   }
 

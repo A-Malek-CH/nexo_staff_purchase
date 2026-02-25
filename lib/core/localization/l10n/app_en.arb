@@ -175,6 +175,9 @@
   "taskName": "Task Name",
   "taskStatus": "Task Status",
   "dueDate": "Due Date",
+  "markAsDone": "Mark as Done",
+  "markingAsDone": "Marking as Done...",
+  "taskMarkedDone": "Task marked as done",
   
   "home": "Home",
   "myOrders": "My Orders",

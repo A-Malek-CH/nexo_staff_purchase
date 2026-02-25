@@ -24,6 +24,9 @@ class MyApp extends ConsumerWidget {
     final router = ref.watch(goRouterProvider);
     final locale = ref.watch(localeProvider);
 
+    // Provide router to FirebaseService for deep-link navigation
+    FirebaseService.setRouter(router);
+
     return MaterialApp.router(
       title: 'Nexo Staff App',
       theme: AppTheme.lightTheme,

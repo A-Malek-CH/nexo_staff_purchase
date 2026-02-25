@@ -143,6 +143,9 @@
   "taskName": "اسم المهمة",
   "taskStatus": "حالة المهمة",
   "dueDate": "تاريخ الاستحقاق",
+  "markAsDone": "تحديد كمنجز",
+  "markingAsDone": "جاري التحديد...",
+  "taskMarkedDone": "تم تحديد المهمة كمنجزة",
   
   "_comment_navigation": "التنقل",
   "home": "الرئيسية",

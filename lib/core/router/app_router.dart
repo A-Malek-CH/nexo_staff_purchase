@@ -14,6 +14,8 @@ import '../../presentation/screens/products/product_details_screen.dart';
 import '../../presentation/screens/suppliers/suppliers_screen.dart';
 import '../../presentation/screens/suppliers/supplier_details_screen.dart';
 import '../../presentation/screens/profile/profile_screen.dart';
+import '../../presentation/screens/tasks/tasks_screen.dart';
+import '../../presentation/screens/tasks/task_details_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
@@ -107,6 +109,19 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/profile',
         name: 'profile',
         builder: (context, state) => const ProfileScreen(),
+      ),
+      GoRoute(
+        path: '/tasks',
+        name: 'tasks',
+        builder: (context, state) => const TasksScreen(),
+      ),
+      GoRoute(
+        path: '/tasks/:id',
+        name: 'task-details',
+        builder: (context, state) {
+          final taskId = state.pathParameters['id']!;
+          return TaskDetailsScreen(taskId: taskId);
+        },
       ),
     ],
   );
