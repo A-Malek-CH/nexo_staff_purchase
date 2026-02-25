@@ -3,7 +3,7 @@ import 'task_item_model.dart';
 
 part 'task_model.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(fieldRename: FieldRename.snake)
 class Task {
   final String id;
   final String title;

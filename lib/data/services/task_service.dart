@@ -36,7 +36,7 @@ class TaskService {
       final rawData = response.data;
       final List<dynamic> data = rawData is List
           ? rawData
-          : (rawData['data'] ?? rawData['tasks'] ?? rawData) as List<dynamic>;
+          : (rawData['tasks'] ?? rawData['data'] ?? rawData) as List<dynamic>;
       return data.map((json) => Task.fromJson(json as Map<String, dynamic>)).toList();
     } on DioException catch (e) {
       throw _handleError(e);
@@ -59,10 +59,10 @@ class TaskService {
     try {
       final response = await _dio.get('${AppConstants.tasksEndpoint}/$id');
       final rawData = response.data;
-      final Map<String, dynamic> data = rawData is Map && rawData.containsKey('data')
-          ? rawData['data'] as Map<String, dynamic>
-          : rawData is Map && rawData.containsKey('task')
-              ? rawData['task'] as Map<String, dynamic>
+      final Map<String, dynamic> data = rawData is Map && rawData.containsKey('task')
+          ? rawData['task'] as Map<String, dynamic>
+          : rawData is Map && rawData.containsKey('data')
+              ? rawData['data'] as Map<String, dynamic>
               : rawData as Map<String, dynamic>;
       return Task.fromJson(data);
     } on DioException catch (e) {
@@ -77,9 +77,11 @@ class TaskService {
         data: data,
       );
       final rawData = response.data;
-      final Map<String, dynamic> taskData = rawData is Map && rawData.containsKey('data')
-          ? rawData['data'] as Map<String, dynamic>
-          : rawData as Map<String, dynamic>;
+      final Map<String, dynamic> taskData = rawData is Map && rawData.containsKey('task')
+          ? rawData['task'] as Map<String, dynamic>
+          : rawData is Map && rawData.containsKey('data')
+              ? rawData['data'] as Map<String, dynamic>
+              : rawData as Map<String, dynamic>;
       return Task.fromJson(taskData);
     } on DioException catch (e) {
       throw _handleError(e);

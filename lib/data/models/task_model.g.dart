@@ -8,22 +8,22 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       status: json['status'] as String,
       priority: json['priority'] as String,
       deadline: DateTime.parse(json['deadline'] as String),
-      supplierId: json['supplierId'] as String?,
-      supplierName: json['supplierName'] as String?,
-      assignedTo: json['assignedTo'] as String?,
-      assignedBy: json['assignedBy'] as String?,
+      supplierId: json['supplier_id'] as String?,
+      supplierName: json['supplier_name'] as String?,
+      assignedTo: json['assigned_to'] as String?,
+      assignedBy: json['assigned_by'] as String?,
       items: (json['items'] as List<dynamic>?)
               ?.map((e) => TaskItem.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
       notes: json['notes'] as String?,
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: json['updatedAt'] == null
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: json['updated_at'] == null
           ? null
-          : DateTime.parse(json['updatedAt'] as String),
-      completedAt: json['completedAt'] == null
+          : DateTime.parse(json['updated_at'] as String),
+      completedAt: json['completed_at'] == null
           ? null
-          : DateTime.parse(json['completedAt'] as String),
+          : DateTime.parse(json['completed_at'] as String),
     );
 
 Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
@@ -33,13 +33,13 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
       'status': instance.status,
       'priority': instance.priority,
       'deadline': instance.deadline.toIso8601String(),
-      'supplierId': instance.supplierId,
-      'supplierName': instance.supplierName,
-      'assignedTo': instance.assignedTo,
-      'assignedBy': instance.assignedBy,
+      'supplier_id': instance.supplierId,
+      'supplier_name': instance.supplierName,
+      'assigned_to': instance.assignedTo,
+      'assigned_by': instance.assignedBy,
       'items': instance.items.map((e) => e.toJson()).toList(),
       'notes': instance.notes,
-      'createdAt': instance.createdAt.toIso8601String(),
-      'updatedAt': instance.updatedAt?.toIso8601String(),
-      'completedAt': instance.completedAt?.toIso8601String(),
+      'created_at': instance.createdAt.toIso8601String(),
+      'updated_at': instance.updatedAt?.toIso8601String(),
+      'completed_at': instance.completedAt?.toIso8601String(),
     };
