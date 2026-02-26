@@ -78,7 +78,8 @@ class _TaskDetailsScreenState extends ConsumerState<TaskDetailsScreen> {
                       _buildInfoRow(l10n.taskStatus, task.status.toUpperCase()),
                       if (task.deadline != null)
                         _buildInfoRow(l10n.dueDate, DateHelper.formatDeadline(task.deadline!)),
-                      _buildInfoRow('Staff', task.staffId.fullname),
+                      if (task.staffId != null)
+                        _buildInfoRow('Staff', task.staffId!.fullname),
                       _buildInfoRow('Created', DateHelper.formatDate(task.createdAt)),
                     ],
                   ),

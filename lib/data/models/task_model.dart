@@ -31,22 +31,22 @@ class Task {
   @JsonKey(name: '_id')
   final String id;
   final int taskNumber;
-  final Staff staffId;
+  final Staff? staffId;
   final String? description;
   final String status;
   final DateTime? deadline;
   final DateTime createdAt;
-  final DateTime updatedAt;
+  final DateTime? updatedAt;
 
   Task({
     required this.id,
     required this.taskNumber,
-    required this.staffId,
+    this.staffId,
     this.description,
     required this.status,
     this.deadline,
     required this.createdAt,
-    required this.updatedAt,
+    this.updatedAt,
   });
 
   factory Task.fromJson(Map<String, dynamic> json) => _$TaskFromJson(json);

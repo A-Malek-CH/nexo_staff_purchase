@@ -25,9 +25,10 @@ void main() {
 
       expect(task.id, 'task-001');
       expect(task.taskNumber, 42);
-      expect(task.staffId.id, 'staff-001');
-      expect(task.staffId.fullname, 'John Doe');
-      expect(task.staffId.email, 'john@example.com');
+      expect(task.staffId, isNotNull);
+      expect(task.staffId!.id, 'staff-001');
+      expect(task.staffId!.fullname, 'John Doe');
+      expect(task.staffId!.email, 'john@example.com');
       expect(task.description, 'Purchase pens, notebooks and paper');
       expect(task.status, 'pending');
       expect(task.deadline, DateTime.parse('2025-12-31T09:00:00.000Z'));
@@ -72,6 +73,42 @@ void main() {
       final task = Task.fromJson(json);
 
       expect(task.deadline, isNull);
+    });
+
+    test('should parse Task with null staffId', () {
+      final json = Map<String, dynamic>.from(sampleTaskJson);
+      json['staffId'] = null;
+
+      final task = Task.fromJson(json);
+
+      expect(task.staffId, isNull);
+    });
+
+    test('should parse Task without staffId key', () {
+      final json = Map<String, dynamic>.from(sampleTaskJson)
+        ..remove('staffId');
+
+      final task = Task.fromJson(json);
+
+      expect(task.staffId, isNull);
+    });
+
+    test('should parse Task with null updatedAt', () {
+      final json = Map<String, dynamic>.from(sampleTaskJson);
+      json['updatedAt'] = null;
+
+      final task = Task.fromJson(json);
+
+      expect(task.updatedAt, isNull);
+    });
+
+    test('should parse Task without updatedAt key', () {
+      final json = Map<String, dynamic>.from(sampleTaskJson)
+        ..remove('updatedAt');
+
+      final task = Task.fromJson(json);
+
+      expect(task.updatedAt, isNull);
     });
   });
 }
