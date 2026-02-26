@@ -150,33 +150,6 @@ class _TransferDetailsScreenState
                     onPressed: _isUpdating
                         ? null
                         : () => _updateStatus(
-                            context, l10n, transfer.id, 'in_progress',
-                            l10n.startTransfer,
-                            'Mark this transfer as In Progress?'),
-                    icon: _isUpdating
-                        ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(
-                                strokeWidth: 2, color: Colors.white),
-                          )
-                        : const Icon(Icons.play_arrow),
-                    label: Text(
-                        _isUpdating ? l10n.updating : l10n.startTransfer),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.all(16),
-                    ),
-                  ),
-                ),
-              if (transfer.status == 'in_progress')
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton.icon(
-                    onPressed: _isUpdating
-                        ? null
-                        : () => _updateStatus(
                             context, l10n, transfer.id, 'arrived',
                             l10n.markAsArrived,
                             'Mark this transfer as Arrived?'),

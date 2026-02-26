@@ -15,16 +15,6 @@ class TransfersScreen extends ConsumerStatefulWidget {
 }
 
 class _TransfersScreenState extends ConsumerState<TransfersScreen> {
-  String? _selectedStatus;
-
-  static const _statusFilters = [
-    {'label': 'All', 'value': null},
-    {'label': 'Pending', 'value': 'pending'},
-    {'label': 'In Progress', 'value': 'in_progress'},
-    {'label': 'Arrived', 'value': 'arrived'},
-    {'label': 'Canceled', 'value': 'canceled'},
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -44,45 +34,6 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
       ),
       body: Column(
         children: [
-          // Status filter chips
-          SizedBox(
-            height: 50,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              itemCount: _statusFilters.length,
-              itemBuilder: (context, index) {
-                final filter = _statusFilters[index];
-                final isSelected = _selectedStatus == filter['value'];
-                return Padding(
-                  padding: const EdgeInsets.only(right: 8),
-                  child: FilterChip(
-                    label: Text(filter['label'] as String),
-                    selected: isSelected,
-                    onSelected: (_) {
-                      setState(() {
-                        _selectedStatus = filter['value'] as String?;
-                      });
-                      ref
-                          .read(transfersProvider.notifier)
-                          .filterByStatus(_selectedStatus);
-                    },
-                    selectedColor: AppTheme.primaryOrange.withOpacity(0.2),
-                    checkmarkColor: AppTheme.primaryOrange,
-                    labelStyle: TextStyle(
-                      color: isSelected
-                          ? AppTheme.primaryOrange
-                          : AppTheme.mediumGrey,
-                      fontWeight: isSelected
-                          ? FontWeight.w600
-                          : FontWeight.normal,
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-          const Divider(height: 1),
           // List
           Expanded(
             child: RefreshIndicator(
@@ -117,10 +68,10 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
                             )
                           : ListView.builder(
                               padding: AppTheme.paddingM,
-                              itemCount: transfersState.transfers.length,
+                              itemCount: transfersState.sortedTransfers.length,
                               itemBuilder: (context, index) {
                                 final transfer =
-                                    transfersState.transfers[index];
+                                    transfersState.sortedTransfers[index];
                                 return Card(
                                   child: ListTile(
                                     leading: CircleAvatar(
