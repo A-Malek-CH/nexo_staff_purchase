@@ -58,7 +58,7 @@ class AppBottomNav extends StatelessWidget {
         BottomNavigationBarItem(
           icon: const Icon(Icons.swap_horiz_outlined),
           activeIcon: const Icon(Icons.swap_horiz),
-          label: 'Transfers',
+          label: l10n.transfers,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.person_outlined),

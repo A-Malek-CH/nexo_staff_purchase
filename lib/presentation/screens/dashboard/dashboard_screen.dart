@@ -131,7 +131,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 children: [
                   Expanded(
                     child: _StatCard(
-                      title: 'Pending Transfers',
+                      title: l10n.pendingTransfers,
                       count: transfersState.pendingTransfers.length,
                       icon: Icons.swap_horiz,
                       color: AppTheme.warningYellow,
@@ -140,7 +140,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   const SizedBox(width: AppTheme.spacingM),
                   Expanded(
                     child: _StatCard(
-                      title: 'In Progress',
+                      title: l10n.inProgress,
                       count: transfersState.inProgressTransfers.length,
                       icon: Icons.local_shipping_outlined,
                       color: AppTheme.successGreen,
@@ -169,7 +169,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   Expanded(
                     child: _QuickActionButton(
                       icon: Icons.swap_horiz,
-                      label: 'Transfers',
+                      label: l10n.transfers,
                       onPressed: () => context.push('/transfers'),
                     ),
                   ),

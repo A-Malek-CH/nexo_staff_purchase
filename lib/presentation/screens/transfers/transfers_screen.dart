@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_helper.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../../providers/transfer_provider.dart';
 import '../../widgets/app_bottom_nav.dart';
 
@@ -35,10 +36,11 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
   @override
   Widget build(BuildContext context) {
     final transfersState = ref.watch(transfersProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transfers'),
+        title: Text(l10n.transfers),
       ),
       body: Column(
         children: [
@@ -109,8 +111,8 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
                           ),
                         )
                       : transfersState.transfers.isEmpty
-                          ? const Center(
-                              child: Text('No transfers found',
+                          ? Center(
+                              child: Text(l10n.noTransfersFound,
                                   style: AppTheme.bodyMedium),
                             )
                           : ListView.builder(

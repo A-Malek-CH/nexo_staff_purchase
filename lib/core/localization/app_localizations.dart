@@ -191,6 +191,18 @@ class AppLocalizations {
   String get markingAsDone => translate('markingAsDone');
   String get taskMarkedDone => translate('taskMarkedDone');
 
+  // Transfers
+  String get transfers => translate('transfers');
+  String get transferDetails => translate('transferDetails');
+  String get noTransfersFound => translate('noTransfersFound');
+  String get pendingTransfers => translate('pendingTransfers');
+  String get inProgress => translate('inProgress');
+  String get viewTransfers => translate('viewTransfers');
+  String get startTransfer => translate('startTransfer');
+  String get markAsArrived => translate('markAsArrived');
+  String get transferUpdatedSuccess => translate('transferUpdatedSuccess');
+  String get updating => translate('updating');
+
   // Navigation
   String get home => translate('home');
   String get myOrders => translate('myOrders');

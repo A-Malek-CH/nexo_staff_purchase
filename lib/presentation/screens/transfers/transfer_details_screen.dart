@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/theme/app_theme.dart';
 import '../../../core/utils/date_helper.dart';
+import '../../../core/localization/app_localizations.dart';
 import '../../providers/transfer_provider.dart';
 
 class TransferDetailsScreen extends ConsumerStatefulWidget {
@@ -25,10 +26,11 @@ class _TransferDetailsScreenState
   Widget build(BuildContext context) {
     final transferAsync =
         ref.watch(transferDetailProvider(widget.transferId));
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Transfer Details'),
+        title: Text(l10n.transferDetails),
       ),
       body: transferAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
@@ -148,8 +150,8 @@ class _TransferDetailsScreenState
                     onPressed: _isUpdating
                         ? null
                         : () => _updateStatus(
-                            context, transfer.id, 'in_progress',
-                            'Start Transfer',
+                            context, l10n, transfer.id, 'in_progress',
+                            l10n.startTransfer,
                             'Mark this transfer as In Progress?'),
                     icon: _isUpdating
                         ? const SizedBox(
@@ -160,7 +162,7 @@ class _TransferDetailsScreenState
                           )
                         : const Icon(Icons.play_arrow),
                     label: Text(
-                        _isUpdating ? 'Updating...' : 'Start Transfer'),
+                        _isUpdating ? l10n.updating : l10n.startTransfer),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
@@ -175,8 +177,8 @@ class _TransferDetailsScreenState
                     onPressed: _isUpdating
                         ? null
                         : () => _updateStatus(
-                            context, transfer.id, 'arrived',
-                            'Mark as Arrived',
+                            context, l10n, transfer.id, 'arrived',
+                            l10n.markAsArrived,
                             'Mark this transfer as Arrived?'),
                     icon: _isUpdating
                         ? const SizedBox(
@@ -187,7 +189,7 @@ class _TransferDetailsScreenState
                           )
                         : const Icon(Icons.check_circle),
                     label: Text(
-                        _isUpdating ? 'Updating...' : 'Mark as Arrived'),
+                        _isUpdating ? l10n.updating : l10n.markAsArrived),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.successGreen,
                       foregroundColor: Colors.white,
@@ -203,8 +205,9 @@ class _TransferDetailsScreenState
     );
   }
 
-  Future<void> _updateStatus(BuildContext context, String transferId,
-      String newStatus, String actionTitle, String confirmMessage) async {
+  Future<void> _updateStatus(BuildContext context, AppLocalizations l10n,
+      String transferId, String newStatus, String actionTitle,
+      String confirmMessage) async {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -213,11 +216,11 @@ class _TransferDetailsScreenState
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(false),
-            child: const Text('Cancel'),
+            child: Text(l10n.cancel),
           ),
           ElevatedButton(
             onPressed: () => Navigator.of(ctx).pop(true),
-            child: const Text('Confirm'),
+            child: Text(l10n.confirm),
           ),
         ],
       ),
@@ -234,7 +237,7 @@ class _TransferDetailsScreenState
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Transfer updated successfully'),
+            content: Text(l10n.transferUpdatedSuccess),
             backgroundColor: AppTheme.successGreen,
           ),
         );
