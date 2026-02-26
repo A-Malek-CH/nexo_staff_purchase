@@ -70,6 +70,13 @@ class FirebaseService {
       }
     } else if (type == 'order_assigned') {
       _router?.push('/orders');
+    } else if (type == 'transfer_assigned' || type == 'transfer_updated') {
+      final transferId = data['transferId'] as String?;
+      if (transferId != null) {
+        _router?.push('/transfers/$transferId');
+      } else {
+        _router?.push('/transfers');
+      }
     }
   }
   

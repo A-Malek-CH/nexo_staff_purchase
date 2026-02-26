@@ -9,13 +9,13 @@ import '../../presentation/screens/orders/orders_screen.dart';
 import '../../presentation/screens/orders/order_details_screen.dart';
 import '../../presentation/screens/orders/submit_review_screen.dart';
 import '../../presentation/screens/notifications/notifications_screen.dart';
-import '../../presentation/screens/products/products_screen.dart';
-import '../../presentation/screens/products/product_details_screen.dart';
 import '../../presentation/screens/suppliers/suppliers_screen.dart';
 import '../../presentation/screens/suppliers/supplier_details_screen.dart';
 import '../../presentation/screens/profile/profile_screen.dart';
 import '../../presentation/screens/tasks/tasks_screen.dart';
 import '../../presentation/screens/tasks/task_details_screen.dart';
+import '../../presentation/screens/transfers/transfers_screen.dart';
+import '../../presentation/screens/transfers/transfer_details_screen.dart';
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
@@ -80,16 +80,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         builder: (context, state) => const NotificationsScreen(),
       ),
       GoRoute(
-        path: '/products',
-        name: 'products',
-        builder: (context, state) => const ProductsScreen(),
+        path: '/transfers',
+        name: 'transfers',
+        builder: (context, state) => const TransfersScreen(),
       ),
       GoRoute(
-        path: '/products/:id',
-        name: 'product-details',
+        path: '/transfers/:id',
+        name: 'transfer-details',
         builder: (context, state) {
-          final productId = state.pathParameters['id']!;
-          return ProductDetailsScreen(productId: productId);
+          final transferId = state.pathParameters['id']!;
+          return TransferDetailsScreen(transferId: transferId);
         },
       ),
       GoRoute(

@@ -22,6 +22,8 @@ class AppConstants {
   static const String ordersEndpoint = '/orders';
   static const String categoriesEndpoint = '/categories';
   static const String adminStaffsEndpoint = '/admin/staffs';
+  static const String transfersEndpoint = '/transfers';
+  static const String myTransfersEndpoint = '/transfers/my';
   
   // Storage Keys
   static const String accessTokenKey = 'access_token';

@@ -29,7 +29,7 @@ class AppBottomNav extends StatelessWidget {
             context.go('/orders');
             break;
           case 3:
-            context.go('/products');
+            context.go('/transfers');
             break;
           case 4:
             context.go('/profile');
@@ -56,9 +56,9 @@ class AppBottomNav extends StatelessWidget {
           label: l10n.orders,
         ),
         BottomNavigationBarItem(
-          icon: const Icon(Icons.inventory_2_outlined),
-          activeIcon: const Icon(Icons.inventory_2),
-          label: l10n.products,
+          icon: const Icon(Icons.swap_horiz_outlined),
+          activeIcon: const Icon(Icons.swap_horiz),
+          label: 'Transfers',
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.person_outlined),
