@@ -115,7 +115,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                                 ),
                               ),
                               title: Text(
-                                'Task #${task.taskNumber}',
+                                task.taskNumber,
                                 style: AppTheme.bodyLarge.copyWith(
                                   fontWeight: FontWeight.w600,
                                 ),

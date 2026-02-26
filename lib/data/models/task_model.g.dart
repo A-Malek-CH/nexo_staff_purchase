@@ -20,7 +20,7 @@ Map<String, dynamic> _$StaffToJson(Staff instance) => <String, dynamic>{
 
 Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       id: json['_id'] as String,
-      taskNumber: json['taskNumber'] as int,
+      taskNumber: json['taskNumber'] as String,
       staffId: json['staffId'] == null
           ? null
           : Staff.fromJson(json['staffId'] as Map<String, dynamic>),
