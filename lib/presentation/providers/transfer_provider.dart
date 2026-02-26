@@ -16,26 +16,22 @@ class TransfersState {
   final List<Transfer> transfers;
   final bool isLoading;
   final String? error;
-  final String? selectedStatus;
 
   TransfersState({
     this.transfers = const [],
     this.isLoading = false,
     this.error,
-    this.selectedStatus,
   });
 
   TransfersState copyWith({
     List<Transfer>? transfers,
     bool? isLoading,
     String? error,
-    String? selectedStatus,
   }) {
     return TransfersState(
       transfers: transfers ?? this.transfers,
       isLoading: isLoading ?? this.isLoading,
       error: error,
-      selectedStatus: selectedStatus ?? this.selectedStatus,
     );
   }
 
@@ -44,6 +40,13 @@ class TransfersState {
 
   List<Transfer> get inProgressTransfers =>
       transfers.where((t) => t.status == 'in_progress').toList();
+
+  /// Pending transfers first, then the rest.
+  List<Transfer> get sortedTransfers {
+    final pending = transfers.where((t) => t.status == 'pending').toList();
+    final others = transfers.where((t) => t.status != 'pending').toList();
+    return [...pending, ...others];
+  }
 }
 
 class TransfersNotifier extends StateNotifier<TransfersState> {
@@ -51,15 +54,14 @@ class TransfersNotifier extends StateNotifier<TransfersState> {
 
   TransfersNotifier(this._transferRepository) : super(TransfersState());
 
-  Future<void> loadTransfers({String? status}) async {
+  Future<void> loadTransfers() async {
     state = state.copyWith(
       isLoading: true,
       error: null,
-      selectedStatus: status,
     );
 
     try {
-      final transfers = await _transferRepository.getTransfers(status: status);
+      final transfers = await _transferRepository.getTransfers();
       state = state.copyWith(
         transfers: transfers,
         isLoading: false,
@@ -73,7 +75,7 @@ class TransfersNotifier extends StateNotifier<TransfersState> {
   }
 
   Future<void> refreshTransfers() async {
-    await loadTransfers(status: state.selectedStatus);
+    await loadTransfers();
   }
 
   Future<void> updateTransferStatus(String transferId, String status) async {
@@ -90,9 +92,5 @@ class TransfersNotifier extends StateNotifier<TransfersState> {
       state = state.copyWith(error: e.toString());
       rethrow;
     }
-  }
-
-  void filterByStatus(String? status) {
-    loadTransfers(status: status);
   }
 }
