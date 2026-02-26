@@ -65,7 +65,7 @@ class _TaskDetailsScreenState extends ConsumerState<TaskDetailsScreen> {
                         children: [
                           Flexible(
                             child: Text(
-                              'Task #${task.taskNumber}',
+                              task.taskNumber,
                               style: AppTheme.headingMedium,
                               overflow: TextOverflow.ellipsis,
                             ),

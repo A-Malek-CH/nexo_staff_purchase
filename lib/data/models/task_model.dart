@@ -23,7 +23,7 @@ class Staff {
 class Task {
   @JsonKey(name: '_id')
   final String id;
-  final int taskNumber;
+  final String taskNumber;
   final Staff? staffId;
   final String? description;
   final String status;
@@ -47,7 +47,7 @@ class Task {
 
   Task copyWith({
     String? id,
-    int? taskNumber,
+    String? taskNumber,
     Staff? staffId,
     String? description,
     String? status,
