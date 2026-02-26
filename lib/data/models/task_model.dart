@@ -2,7 +2,9 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'task_model.g.dart';
 
+@JsonSerializable()
 class Staff {
+  @JsonKey(name: '_id')
   final String id;
   final String fullname;
   final String email;
@@ -13,20 +15,11 @@ class Staff {
     required this.email,
   });
 
-  factory Staff.fromJson(Map<String, dynamic> json) => Staff(
-        id: json['_id'] as String,
-        fullname: json['fullname'] as String,
-        email: json['email'] as String,
-      );
-
-  Map<String, dynamic> toJson() => {
-        '_id': id,
-        'fullname': fullname,
-        'email': email,
-      };
+  factory Staff.fromJson(Map<String, dynamic> json) => _$StaffFromJson(json);
+  Map<String, dynamic> toJson() => _$StaffToJson(this);
 }
 
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Task {
   @JsonKey(name: '_id')
   final String id;
