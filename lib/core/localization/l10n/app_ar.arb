@@ -172,5 +172,16 @@
   "remove": "إزالة",
   "add": "إضافة",
   "clear": "مسح",
-  "apply": "تطبيق"
+  "apply": "تطبيق",
+
+  "transfers": "التحويلات",
+  "transferDetails": "تفاصيل التحويل",
+  "noTransfersFound": "لا توجد تحويلات",
+  "pendingTransfers": "تحويلات معلقة",
+  "inProgress": "قيد التنفيذ",
+  "viewTransfers": "عرض التحويلات",
+  "startTransfer": "بدء التحويل",
+  "markAsArrived": "تعيين كوصل",
+  "transferUpdatedSuccess": "تم تحديث التحويل بنجاح",
+  "updating": "جاري التحديث..."
 }

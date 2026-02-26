@@ -200,5 +200,16 @@
   "remove": "Remove",
   "add": "Add",
   "clear": "Clear",
-  "apply": "Apply"
+  "apply": "Apply",
+
+  "transfers": "Transfers",
+  "transferDetails": "Transfer Details",
+  "noTransfersFound": "No transfers found",
+  "pendingTransfers": "Pending Transfers",
+  "inProgress": "In Progress",
+  "viewTransfers": "View Transfers",
+  "startTransfer": "Start Transfer",
+  "markAsArrived": "Mark as Arrived",
+  "transferUpdatedSuccess": "Transfer updated successfully",
+  "updating": "Updating..."
 }

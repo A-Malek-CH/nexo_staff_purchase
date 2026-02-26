@@ -7,6 +7,7 @@ import '../../../core/localization/app_localizations.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/order_provider.dart';
 import '../../providers/notification_provider.dart';
+import '../../providers/transfer_provider.dart';
 import '../../widgets/app_bottom_nav.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -23,6 +24,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     Future.microtask(() {
       ref.read(ordersProvider.notifier).loadOrders();
       ref.read(notificationsProvider.notifier).loadNotifications();
+      ref.read(transfersProvider.notifier).loadTransfers();
     });
   }
 
@@ -31,6 +33,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final authState = ref.watch(authStateProvider);
     final ordersState = ref.watch(ordersProvider);
     final notificationsState = ref.watch(notificationsProvider);
+    final transfersState = ref.watch(transfersProvider);
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
@@ -80,6 +83,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
           await Future.wait([
             ref.read(ordersProvider.notifier).refreshOrders(),
             ref.read(notificationsProvider.notifier).refreshNotifications(),
+            ref.read(transfersProvider.notifier).refreshTransfers(),
           ]);
         },
         child: SingleChildScrollView(
@@ -127,18 +131,18 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 children: [
                   Expanded(
                     child: _StatCard(
-                      title: l10n.overdue,
-                      count: ordersState.overdueOrders.length,
-                      icon: Icons.warning_outlined,
+                      title: l10n.pendingTransfers,
+                      count: transfersState.pendingTransfers.length,
+                      icon: Icons.swap_horiz,
                       color: AppTheme.warningYellow,
                     ),
                   ),
                   const SizedBox(width: AppTheme.spacingM),
                   Expanded(
                     child: _StatCard(
-                      title: l10n.totalOrders,
-                      count: ordersState.orders.length,
-                      icon: Icons.shopping_cart_outlined,
+                      title: l10n.inProgress,
+                      count: transfersState.inProgressTransfers.length,
+                      icon: Icons.local_shipping_outlined,
                       color: AppTheme.successGreen,
                     ),
                   ),
@@ -164,9 +168,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                   const SizedBox(width: AppTheme.spacingM),
                   Expanded(
                     child: _QuickActionButton(
-                      icon: Icons.inventory_2,
-                      label: l10n.products,
-                      onPressed: () => context.push('/products'),
+                      icon: Icons.swap_horiz,
+                      label: l10n.transfers,
+                      onPressed: () => context.push('/transfers'),
                     ),
                   ),
                 ],
