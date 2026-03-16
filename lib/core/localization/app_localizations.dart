@@ -266,6 +266,36 @@ class AppLocalizations {
 
   String get confirmDelete => translate('confirmDelete');
   String get deleteConfirmMessage => translate('deleteConfirmMessage');
+
+  // Admin UI
+  String get noStaffFound => translate('noStaffFound');
+  String get noSuppliersFound => translate('noSuppliersFound');
+  String get noProductsFound => translate('noProductsFound');
+  String get noCategoriesFound => translate('noCategoriesFound');
+  String get noAnalyticsData => translate('noAnalyticsData');
+  String get noOrdersFound => translate('noOrdersFound');
+  String get confirmPayment => translate('confirmPayment');
+  String get uploadReceipt => translate('uploadReceipt');
+  String get orderConfirmation => translate('orderConfirmation');
+  String get billingNotes => translate('billingNotes');
+  String get selectCategory => translate('selectCategory');
+  String get noCategory => translate('noCategory');
+  String get isActive => translate('isActive');
+  String get roleAdmin => translate('roleAdmin');
+  String get roleStaff => translate('roleStaff');
+  String get supplierDescription => translate('supplierDescription');
+  String get contactPerson => translate('contactPerson');
+  String get supplierCity => translate('supplierCity');
+  String get supplierCountry => translate('supplierCountry');
+  String get minQuantity => translate('minQuantity');
+  String get recommendedQuantity => translate('recommendedQuantity');
+  String get unitLabel => translate('unitLabel');
+  String get barcode => translate('barcode');
+  String get imageUpload => translate('imageUpload');
+  String get changeImage => translate('changeImage');
+  String get categoryAnalytics => translate('categoryAnalytics');
+  String get monthlyAnalytics => translate('monthlyAnalytics');
+  String get all => translate('all');
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -34,7 +34,7 @@ class _OrdersListScreenState extends ConsumerState<OrdersListScreen> {
       AppConstants.orderStatusPaid,
     ];
     final statusLabels = [
-      'All',
+      l10n.all,
       l10n.statusNotAssigned,
       l10n.statusConfirmed,
       l10n.statusPaid,

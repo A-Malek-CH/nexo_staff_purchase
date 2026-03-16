@@ -73,7 +73,7 @@ class OrderDetailsScreen extends ConsumerWidget {
                         label: l10n.supplier,
                         value: order.supplierId.name),
                     if (order.staffId != null)
-                      _InfoRow(label: 'Staff', value: order.staffId!.fullname),
+                      _InfoRow(label: l10n.staffManagement, value: order.staffId!.fullname),
                     _InfoRow(
                       label: l10n.totalAmount,
                       value: '\$${order.totalAmount.toStringAsFixed(2)}',
@@ -110,7 +110,7 @@ class OrderDetailsScreen extends ConsumerWidget {
 
             if (order.statusHistory.isNotEmpty) ...[
               const SizedBox(height: AppTheme.spacingM),
-              Text('Status History', style: AppTheme.headingSmall),
+              Text(l10n.status, style: AppTheme.headingSmall),
               const SizedBox(height: AppTheme.spacingS),
               ...order.statusHistory.map(
                 (entry) => ListTile(
@@ -136,7 +136,7 @@ class OrderDetailsScreen extends ConsumerWidget {
                 width: double.infinity,
                 child: ElevatedButton.icon(
                   icon: const Icon(Icons.payment),
-                  label: Text('Confirm Payment'),
+                  label: Text(l10n.confirmPayment),
                   onPressed: () => context.push(
                     '/admin/orders/${order.id}/confirm',
                     extra: order,

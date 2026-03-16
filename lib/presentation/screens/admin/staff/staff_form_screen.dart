@@ -217,8 +217,8 @@ class _StaffFormScreenState extends ConsumerState<StaffFormScreen> {
                 value: _role,
                 decoration: InputDecoration(labelText: l10n.staffRole),
                 items: const [
-                  DropdownMenuItem(value: 'staff', child: Text('Staff')),
-                  DropdownMenuItem(value: 'admin', child: Text('Admin')),
+                  DropdownMenuItem(value: 'staff', child: Text(l10n.roleStaff)),
+                  DropdownMenuItem(value: 'admin', child: Text(l10n.roleAdmin)),
                 ],
                 onChanged: (v) => setState(() => _role = v ?? 'staff'),
               ),

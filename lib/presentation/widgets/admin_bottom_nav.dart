@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
+import '../../core/localization/app_localizations.dart';
 
 class AdminBottomNav extends StatelessWidget {
   final int currentIndex;
@@ -12,6 +13,7 @@ class AdminBottomNav extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) {
@@ -39,36 +41,36 @@ class AdminBottomNav extends StatelessWidget {
       type: BottomNavigationBarType.fixed,
       selectedItemColor: AppTheme.primaryOrange,
       unselectedItemColor: AppTheme.mediumGrey,
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.dashboard_outlined),
-          activeIcon: Icon(Icons.dashboard),
-          label: 'Dashboard',
+          icon: const Icon(Icons.dashboard_outlined),
+          activeIcon: const Icon(Icons.dashboard),
+          label: l10n.adminDashboard,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart_outlined),
-          activeIcon: Icon(Icons.shopping_cart),
-          label: 'Orders',
+          icon: const Icon(Icons.shopping_cart_outlined),
+          activeIcon: const Icon(Icons.shopping_cart),
+          label: l10n.orderManagement,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.people_outlined),
-          activeIcon: Icon(Icons.people),
-          label: 'Staff',
+          icon: const Icon(Icons.people_outlined),
+          activeIcon: const Icon(Icons.people),
+          label: l10n.staffManagement,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.business_outlined),
-          activeIcon: Icon(Icons.business),
-          label: 'Suppliers',
+          icon: const Icon(Icons.business_outlined),
+          activeIcon: const Icon(Icons.business),
+          label: l10n.supplierManagement,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.inventory_2_outlined),
-          activeIcon: Icon(Icons.inventory_2),
-          label: 'Products',
+          icon: const Icon(Icons.inventory_2_outlined),
+          activeIcon: const Icon(Icons.inventory_2),
+          label: l10n.productManagement,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.bar_chart_outlined),
-          activeIcon: Icon(Icons.bar_chart),
-          label: 'Analytics',
+          icon: const Icon(Icons.bar_chart_outlined),
+          activeIcon: const Icon(Icons.bar_chart),
+          label: l10n.analytics,
         ),
       ],
     );

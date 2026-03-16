@@ -129,7 +129,7 @@ class _StaffListScreenState extends ConsumerState<StaffListScreen> {
                         ),
                       )
                     : members.isEmpty
-                        ? Center(child: Text(l10n.staffList))
+                        ? Center(child: Text(l10n.noStaffFound))
                         : RefreshIndicator(
                             onRefresh: () =>
                                 ref.read(staffProvider.notifier).refreshStaff(),

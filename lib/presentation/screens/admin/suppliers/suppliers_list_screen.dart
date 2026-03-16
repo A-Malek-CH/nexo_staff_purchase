@@ -125,7 +125,7 @@ class _SuppliersListScreenState extends ConsumerState<SuppliersListScreen> {
                         ),
                       )
                     : suppliers.isEmpty
-                        ? Center(child: Text(l10n.supplierManagement))
+                        ? Center(child: Text(l10n.noSuppliersFound))
                         : RefreshIndicator(
                             onRefresh: () => ref
                                 .read(adminSupplierProvider.notifier)

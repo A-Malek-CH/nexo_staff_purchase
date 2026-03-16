@@ -139,14 +139,14 @@ class _SupplierFormScreenState extends ConsumerState<SupplierFormScreen> {
               TextFormField(
                 controller: _descController,
                 decoration:
-                    InputDecoration(labelText: '${l10n.supplierName} Description'),
+                    InputDecoration(labelText: l10n.supplierDescription),
                 maxLines: 2,
               ),
               const SizedBox(height: AppTheme.spacingM),
               TextFormField(
                 controller: _contactController,
                 decoration:
-                    InputDecoration(labelText: 'Contact Person'),
+                    InputDecoration(labelText: l10n.contactPerson),
               ),
               const SizedBox(height: AppTheme.spacingM),
               TextFormField(
@@ -169,18 +169,18 @@ class _SupplierFormScreenState extends ConsumerState<SupplierFormScreen> {
               const SizedBox(height: AppTheme.spacingM),
               TextFormField(
                 controller: _addressController,
-                decoration: InputDecoration(labelText: 'Address'),
+                decoration: InputDecoration(labelText: l10n.staffAddress),
                 maxLines: 2,
               ),
               const SizedBox(height: AppTheme.spacingM),
               TextFormField(
                 controller: _cityController,
-                decoration: InputDecoration(labelText: 'City'),
+                decoration: InputDecoration(labelText: l10n.supplierCity),
               ),
               const SizedBox(height: AppTheme.spacingM),
               TextFormField(
                 controller: _countryController,
-                decoration: InputDecoration(labelText: 'Country'),
+                decoration: InputDecoration(labelText: l10n.supplierCountry),
               ),
               const SizedBox(height: AppTheme.spacingM),
               TextFormField(
@@ -190,7 +190,7 @@ class _SupplierFormScreenState extends ConsumerState<SupplierFormScreen> {
               ),
               const SizedBox(height: AppTheme.spacingM),
               SwitchListTile(
-                title: const Text('Active'),
+                title: Text(l10n.isActive),
                 value: _isActive,
                 onChanged: (v) => setState(() => _isActive = v),
                 activeColor: AppTheme.primaryOrange,

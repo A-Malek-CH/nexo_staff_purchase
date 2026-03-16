@@ -105,7 +105,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
 
                         // Category analytics
                         if (analyticsState.categoryAnalytics.isNotEmpty) ...[
-                          Text('Category Analytics',
+                          Text(l10n.categoryAnalytics,
                               style: AppTheme.headingSmall),
                           const SizedBox(height: AppTheme.spacingM),
                           ...analyticsState.categoryAnalytics.map(
@@ -133,7 +133,7 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
 
                         // Monthly analytics
                         if (analyticsState.monthlyAnalytics.isNotEmpty) ...[
-                          Text('Monthly Analytics',
+                          Text(l10n.monthlyAnalytics,
                               style: AppTheme.headingSmall),
                           const SizedBox(height: AppTheme.spacingM),
                           ...analyticsState.monthlyAnalytics.map(
@@ -173,10 +173,10 @@ class _AnalyticsScreenState extends ConsumerState<AnalyticsScreen> {
                             analyticsState.categoryAnalytics.isEmpty &&
                             analyticsState.monthlyAnalytics.isEmpty)
                           Center(
-                            child: Text(
-                              'No analytics data available',
-                              style: AppTheme.bodyMedium,
-                            ),
+                              child: Text(
+                               l10n.noAnalyticsData,
+                               style: AppTheme.bodyMedium,
+                             ),
                           ),
                       ],
                     ),

@@ -49,7 +49,7 @@ class _OrderConfirmationScreenState
           );
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Payment confirmed successfully')),
+          SnackBar(content: Text(l10n.orderConfirmedSuccess)),
         );
         context.pop();
         context.pop();
@@ -73,7 +73,7 @@ class _OrderConfirmationScreenState
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Confirm Payment')),
+      appBar: AppBar(title: Text(l10n.confirmPayment)),
       body: SingleChildScrollView(
         padding: AppTheme.paddingM,
         child: Column(
@@ -164,7 +164,7 @@ class _OrderConfirmationScreenState
                         child: CircularProgressIndicator(
                             strokeWidth: 2, color: Colors.white),
                       )
-                    : const Text('Confirm Payment'),
+                    : Text(l10n.confirmPayment),
               ),
             ),
           ],

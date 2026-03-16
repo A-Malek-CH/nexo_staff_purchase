@@ -89,7 +89,7 @@ class _CategoriesListScreenState extends ConsumerState<CategoriesListScreen> {
                   ),
                 )
               : catState.categories.isEmpty
-                  ? Center(child: Text(l10n.categoryManagement))
+                  ? Center(child: Text(l10n.noCategoriesFound))
                   : RefreshIndicator(
                       onRefresh: () =>
                           ref.read(categoryProvider.notifier).loadCategories(),

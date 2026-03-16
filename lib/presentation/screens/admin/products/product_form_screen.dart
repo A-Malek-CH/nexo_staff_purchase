@@ -227,7 +227,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
               const SizedBox(height: AppTheme.spacingM),
               TextFormField(
                 controller: _barcodeController,
-                decoration: InputDecoration(labelText: 'Barcode'),
+                decoration: InputDecoration(labelText: l10n.barcode),
               ),
               const SizedBox(height: AppTheme.spacingM),
 
@@ -236,7 +236,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                 decoration: InputDecoration(labelText: l10n.category),
                 items: [
                   const DropdownMenuItem(
-                      value: null, child: Text('No Category')),
+                      value: null, child: Text(l10n.noCategory)),
                   ...categoryState.categories.map((c) => DropdownMenuItem(
                         value: c.id,
                         child: Text(c.name),
@@ -259,7 +259,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: _unitController,
-                      decoration: const InputDecoration(labelText: 'Unit'),
+                      decoration: InputDecoration(labelText: l10n.unitLabel),
                     ),
                   ),
                 ],
@@ -271,7 +271,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                   Expanded(
                     child: TextFormField(
                       controller: _minQtyController,
-                      decoration: const InputDecoration(labelText: 'Min Qty'),
+                      decoration: InputDecoration(labelText: l10n.minQuantity),
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -280,7 +280,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
                     child: TextFormField(
                       controller: _recQtyController,
                       decoration:
-                          const InputDecoration(labelText: 'Recommended Qty'),
+                          InputDecoration(labelText: l10n.recommendedQuantity),
                       keyboardType: TextInputType.number,
                     ),
                   ),
@@ -296,7 +296,7 @@ class _ProductFormScreenState extends ConsumerState<ProductFormScreen> {
               const SizedBox(height: AppTheme.spacingM),
 
               SwitchListTile(
-                title: const Text('Active'),
+                title: Text(l10n.isActive),
                 value: _isActive,
                 onChanged: (v) => setState(() => _isActive = v),
                 activeColor: AppTheme.primaryOrange,

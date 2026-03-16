@@ -118,7 +118,7 @@ class _ProductsListScreenState extends ConsumerState<ProductsListScreen> {
                 decoration:
                     InputDecoration(labelText: l10n.category),
                 items: [
-                  const DropdownMenuItem(value: null, child: Text('All Categories')),
+                  DropdownMenuItem(value: null, child: Text(l10n.noCategory)),
                   ...categoryState.categories.map((c) => DropdownMenuItem(
                         value: c.id,
                         child: Text(c.name),
@@ -148,7 +148,7 @@ class _ProductsListScreenState extends ConsumerState<ProductsListScreen> {
                         ),
                       )
                     : products.isEmpty
-                        ? Center(child: Text(l10n.productManagement))
+                        ? Center(child: Text(l10n.noProductsFound))
                         : RefreshIndicator(
                             onRefresh: () => ref
                                 .read(adminProductProvider.notifier)
