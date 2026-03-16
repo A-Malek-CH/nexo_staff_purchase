@@ -211,5 +211,56 @@
   "startTransfer": "Start Transfer",
   "markAsArrived": "Mark as Arrived",
   "transferUpdatedSuccess": "Transfer updated successfully",
-  "updating": "Updating..."
+  "updating": "Updating...",
+
+  "adminDashboard": "Admin Dashboard",
+  "staffManagement": "Staff",
+  "supplierManagement": "Suppliers",
+  "orderManagement": "Orders",
+  "productManagement": "Products",
+  "categoryManagement": "Categories",
+  "analytics": "Analytics",
+
+  "createStaff": "Create Staff",
+  "editStaff": "Edit Staff",
+  "deleteStaff": "Delete Staff",
+  "staffList": "Staff List",
+  "staffName": "Full Name",
+  "staffEmail": "Email",
+  "staffPhone": "Phone",
+  "staffRole": "Role",
+  "staffAddress": "Address",
+  "staffActive": "Active",
+  "activeStaff": "Show Inactive",
+  "inactiveStaff": "Show Active Only",
+
+  "createSupplier": "Create Supplier",
+  "editSupplier": "Edit Supplier",
+  "deleteSupplier": "Delete Supplier",
+
+  "createOrder": "Create Order",
+  "editOrder": "Edit Order",
+  "createNewOrder": "New Order",
+  "selectSupplier": "Select Supplier",
+  "addItem": "Add Item",
+  "removeItem": "Remove Item",
+  "orderItems": "Order Items",
+
+  "createProduct": "Create Product",
+  "editProduct": "Edit Product",
+  "deleteProduct": "Delete Product",
+
+  "createCategory": "Create Category",
+  "editCategory": "Edit Category",
+  "deleteCategory": "Delete Category",
+  "categoryName": "Category Name",
+  "categoryDescription": "Description",
+
+  "totalSpending": "Total Spending",
+  "pendingOrders": "Pending Orders",
+  "totalStaff": "Active Staff",
+  "lowStock": "Low Stock",
+
+  "confirmDelete": "Confirm Delete",
+  "deleteConfirmMessage": "Are you sure you want to delete this item? This action cannot be undone."
 }

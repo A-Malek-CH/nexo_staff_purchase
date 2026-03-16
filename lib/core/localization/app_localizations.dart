@@ -214,6 +214,58 @@ class AppLocalizations {
   String get tryAgainLater => translate('tryAgainLater');
   String get unexpectedError => translate('unexpectedError');
   String get loadingFailed => translate('loadingFailed');
+
+  // Admin
+  String get adminDashboard => translate('adminDashboard');
+  String get staffManagement => translate('staffManagement');
+  String get supplierManagement => translate('supplierManagement');
+  String get orderManagement => translate('orderManagement');
+  String get productManagement => translate('productManagement');
+  String get categoryManagement => translate('categoryManagement');
+  String get analytics => translate('analytics');
+
+  String get createStaff => translate('createStaff');
+  String get editStaff => translate('editStaff');
+  String get deleteStaff => translate('deleteStaff');
+  String get staffList => translate('staffList');
+  String get staffName => translate('staffName');
+  String get staffEmail => translate('staffEmail');
+  String get staffPhone => translate('staffPhone');
+  String get staffRole => translate('staffRole');
+  String get staffAddress => translate('staffAddress');
+  String get staffActive => translate('staffActive');
+  String get activeStaff => translate('activeStaff');
+  String get inactiveStaff => translate('inactiveStaff');
+
+  String get createSupplier => translate('createSupplier');
+  String get editSupplier => translate('editSupplier');
+  String get deleteSupplier => translate('deleteSupplier');
+
+  String get createOrder => translate('createOrder');
+  String get editOrder => translate('editOrder');
+  String get createNewOrder => translate('createNewOrder');
+  String get selectSupplier => translate('selectSupplier');
+  String get addItem => translate('addItem');
+  String get removeItem => translate('removeItem');
+  String get orderItems => translate('orderItems');
+
+  String get createProduct => translate('createProduct');
+  String get editProduct => translate('editProduct');
+  String get deleteProduct => translate('deleteProduct');
+
+  String get createCategory => translate('createCategory');
+  String get editCategory => translate('editCategory');
+  String get deleteCategory => translate('deleteCategory');
+  String get categoryName => translate('categoryName');
+  String get categoryDescription => translate('categoryDescription');
+
+  String get totalSpending => translate('totalSpending');
+  String get pendingOrders => translate('pendingOrders');
+  String get totalStaff => translate('totalStaff');
+  String get lowStock => translate('lowStock');
+
+  String get confirmDelete => translate('confirmDelete');
+  String get deleteConfirmMessage => translate('deleteConfirmMessage');
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
