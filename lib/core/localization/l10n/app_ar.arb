@@ -263,5 +263,16 @@
   "changeImage": "تغيير الصورة",
   "categoryAnalytics": "تحليلات الفئات",
   "monthlyAnalytics": "التحليلات الشهرية",
-  "all": "الكل"
+  "all": "الكل",
+
+  "quickAccess": "الوصول السريع",
+  "noPendingTasks": "لا توجد مهام معلقة",
+  "noPendingTransfers": "لا توجد تحويلات معلقة",
+  "noPendingOrders": "لا توجد طلبات معلقة",
+  "filterByDate": "تصفية حسب التاريخ",
+  "clearDateFilter": "مسح فلتر التاريخ",
+  "noTransfersInPeriod": "لا توجد تحويلات في هذه الفترة",
+  "results": "نتائج",
+  "from": "من",
+  "to": "إلى"
 }
