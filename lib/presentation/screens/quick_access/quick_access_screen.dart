@@ -410,7 +410,7 @@ class _OrderTile extends ConsumerWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           _StatusChip(
-            label: order.status.toUpperCase().replaceAll(' ', '\n'),
+            label: order.status.toUpperCase(),
             color: color,
           ),
           const SizedBox(width: 4),

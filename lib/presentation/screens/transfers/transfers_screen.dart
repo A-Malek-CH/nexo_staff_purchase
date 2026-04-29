@@ -141,6 +141,7 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
                           ),
                         )
                       : transfersState.sortedTransfers.isEmpty
+                          // sortedTransfers already incorporates the date filter via dateFilteredTransfers
                           ? Center(
                               child: Text(
                                 transfersState.hasDateFilter
