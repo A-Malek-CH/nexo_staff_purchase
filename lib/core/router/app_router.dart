@@ -35,6 +35,7 @@ import '../../presentation/screens/admin/categories/categories_list_screen.dart'
 import '../../presentation/screens/admin/categories/category_form_screen.dart';
 import '../../presentation/screens/quick_access/quick_access_screen.dart';
 import '../../presentation/screens/admin/analytics/analytics_screen.dart';
+import '../../presentation/screens/admin/reports/reports_screen.dart';
 
 
 final goRouterProvider = Provider<GoRouter>((ref) {
@@ -276,6 +277,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/admin/analytics',
         name: 'admin-analytics',
         builder: (context, state) => const AnalyticsScreen(),
+      ),
+
+      // Admin Reports
+      GoRoute(
+        path: '/admin/reports',
+        name: 'admin-reports',
+        builder: (context, state) => const ReportsScreen(),
       ),
     ],
   );

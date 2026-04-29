@@ -164,6 +164,11 @@ class _AdminDashboardScreenState extends ConsumerState<AdminDashboardScreen> {
                     label: l10n.analytics,
                     onTap: () => context.go('/admin/analytics'),
                   ),
+                  _ActionButton(
+                    icon: Icons.file_download,
+                    label: l10n.reports,
+                    onTap: () => context.go('/admin/reports'),
+                  ),
                 ],
               ),
             ],

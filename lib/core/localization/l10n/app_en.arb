@@ -302,5 +302,50 @@
   "noTransfersInPeriod": "No transfers in this period",
   "results": "results",
   "from": "From",
-  "to": "To"
+  "to": "To",
+
+  "reports": "Reports",
+  "generateReport": "Generate Report",
+  "downloadReport": "Download Report",
+  "reportGenerated": "Report generated successfully",
+  "reportFailed": "Failed to generate report: {error}",
+  "@reportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "selectDataTypes": "Select Data Types",
+  "selectPeriod": "Select Period",
+  "startDate": "Start Date",
+  "endDate": "End Date",
+  "ordersReport": "Orders",
+  "tasksReport": "Tasks",
+  "transfersReport": "Transfers",
+  "noDataSelected": "Please select at least one data type",
+  "noDateRange": "Please select a date range",
+  "generating": "Generating...",
+  "reportFileName": "nexo_report",
+  "sheetOrders": "Orders",
+  "sheetTasks": "Tasks",
+  "sheetTransfers": "Transfers",
+  "colOrderNumber": "Order #",
+  "colSupplier": "Supplier",
+  "colStaff": "Staff",
+  "colStatus": "Status",
+  "colTotalAmount": "Total Amount",
+  "colItems": "Items",
+  "colCreatedAt": "Created At",
+  "colExpectedDate": "Expected Date",
+  "colPaidDate": "Paid Date",
+  "colTaskNumber": "Task #",
+  "colDescription": "Description",
+  "colDeadline": "Deadline",
+  "colTransferId": "Transfer #",
+  "colFrom": "From",
+  "colTo": "To",
+  "colQuantity": "Quantity",
+  "colStartTime": "Start Time",
+  "colAssignedTo": "Assigned To"
 }

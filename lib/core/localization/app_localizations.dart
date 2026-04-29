@@ -308,6 +308,45 @@ class AppLocalizations {
   String get results => translate('results');
   String get from => translate('from');
   String get to => translate('to');
+
+  // Reports
+  String get reports => translate('reports');
+  String get generateReport => translate('generateReport');
+  String get downloadReport => translate('downloadReport');
+  String get reportGenerated => translate('reportGenerated');
+  String reportFailed(String error) => translate('reportFailed', params: {'error': error});
+  String get selectDataTypes => translate('selectDataTypes');
+  String get selectPeriod => translate('selectPeriod');
+  String get startDate => translate('startDate');
+  String get endDate => translate('endDate');
+  String get ordersReport => translate('ordersReport');
+  String get tasksReport => translate('tasksReport');
+  String get transfersReport => translate('transfersReport');
+  String get noDataSelected => translate('noDataSelected');
+  String get noDateRange => translate('noDateRange');
+  String get generating => translate('generating');
+  String get reportFileName => translate('reportFileName');
+  String get sheetOrders => translate('sheetOrders');
+  String get sheetTasks => translate('sheetTasks');
+  String get sheetTransfers => translate('sheetTransfers');
+  String get colOrderNumber => translate('colOrderNumber');
+  String get colSupplier => translate('colSupplier');
+  String get colStaff => translate('colStaff');
+  String get colStatus => translate('colStatus');
+  String get colTotalAmount => translate('colTotalAmount');
+  String get colItems => translate('colItems');
+  String get colCreatedAt => translate('colCreatedAt');
+  String get colExpectedDate => translate('colExpectedDate');
+  String get colPaidDate => translate('colPaidDate');
+  String get colTaskNumber => translate('colTaskNumber');
+  String get colDescription => translate('colDescription');
+  String get colDeadline => translate('colDeadline');
+  String get colTransferId => translate('colTransferId');
+  String get colFrom => translate('colFrom');
+  String get colTo => translate('colTo');
+  String get colQuantity => translate('colQuantity');
+  String get colStartTime => translate('colStartTime');
+  String get colAssignedTo => translate('colAssignedTo');
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

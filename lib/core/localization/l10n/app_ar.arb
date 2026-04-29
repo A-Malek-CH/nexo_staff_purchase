@@ -274,5 +274,50 @@
   "noTransfersInPeriod": "لا توجد تحويلات في هذه الفترة",
   "results": "نتائج",
   "from": "من",
-  "to": "إلى"
+  "to": "إلى",
+
+  "reports": "التقارير",
+  "generateReport": "إنشاء تقرير",
+  "downloadReport": "تحميل التقرير",
+  "reportGenerated": "تم إنشاء التقرير بنجاح",
+  "reportFailed": "فشل في إنشاء التقرير: {error}",
+  "@reportFailed": {
+    "placeholders": {
+      "error": {
+        "type": "String"
+      }
+    }
+  },
+  "selectDataTypes": "اختر أنواع البيانات",
+  "selectPeriod": "اختر الفترة الزمنية",
+  "startDate": "تاريخ البداية",
+  "endDate": "تاريخ النهاية",
+  "ordersReport": "الطلبات",
+  "tasksReport": "المهام",
+  "transfersReport": "التحويلات",
+  "noDataSelected": "يرجى اختيار نوع بيانات واحد على الأقل",
+  "noDateRange": "يرجى اختيار فترة زمنية",
+  "generating": "جاري الإنشاء...",
+  "reportFileName": "nexo_report",
+  "sheetOrders": "الطلبات",
+  "sheetTasks": "المهام",
+  "sheetTransfers": "التحويلات",
+  "colOrderNumber": "رقم الطلب",
+  "colSupplier": "المورد",
+  "colStaff": "الموظف",
+  "colStatus": "الحالة",
+  "colTotalAmount": "المبلغ الإجمالي",
+  "colItems": "العناصر",
+  "colCreatedAt": "تاريخ الإنشاء",
+  "colExpectedDate": "التاريخ المتوقع",
+  "colPaidDate": "تاريخ الدفع",
+  "colTaskNumber": "رقم المهمة",
+  "colDescription": "الوصف",
+  "colDeadline": "الموعد النهائي",
+  "colTransferId": "رقم التحويل",
+  "colFrom": "من",
+  "colTo": "إلى",
+  "colQuantity": "الكمية",
+  "colStartTime": "وقت البدء",
+  "colAssignedTo": "مكلف إلى"
 }

@@ -36,6 +36,9 @@ class AdminBottomNav extends StatelessWidget {
           case 5:
             context.go('/admin/analytics');
             break;
+          case 6:
+            context.go('/admin/reports');
+            break;
         }
       },
       type: BottomNavigationBarType.fixed,
@@ -71,6 +74,11 @@ class AdminBottomNav extends StatelessWidget {
           icon: const Icon(Icons.bar_chart_outlined),
           activeIcon: const Icon(Icons.bar_chart),
           label: l10n.analytics,
+        ),
+        BottomNavigationBarItem(
+          icon: const Icon(Icons.file_download_outlined),
+          activeIcon: const Icon(Icons.file_download),
+          label: l10n.reports,
         ),
       ],
     );
