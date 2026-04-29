@@ -132,8 +132,10 @@ class ReportsNotifier extends StateNotifier<ReportsState> {
 
     try {
       final excel = Excel.createExcel();
-      // Remove default sheet
-      excel.delete('Sheet1');
+      // Remove all default sheets
+      for (final sheetName in excel.sheets.keys.toList()) {
+        excel.delete(sheetName);
+      }
 
       final dateFormat = DateFormat('yyyy-MM-dd');
       final dateTimeFormat = DateFormat('yyyy-MM-dd HH:mm');
@@ -149,10 +151,9 @@ class ReportsNotifier extends StateNotifier<ReportsState> {
 
       // ── Orders Sheet ───────────────────────────────────────────────────────
       if (state.includeOrders) {
-        final orders = await _orderRepo.getAllOrders(limit: 1000);
+        final orders = await _orderRepo.getAllOrders(limit: 10000);
         final filtered = orders.where((o) =>
-            o.createdAt.isAfter(start.subtract(const Duration(seconds: 1))) &&
-            o.createdAt.isBefore(end.add(const Duration(seconds: 1)))).toList();
+            !o.createdAt.isBefore(start) && !o.createdAt.isAfter(end)).toList();
 
         final sheet = excel[ordersSheetLabel];
         _addHeaderRow(sheet, [
@@ -168,16 +169,13 @@ class ReportsNotifier extends StateNotifier<ReportsState> {
         ]);
 
         for (final order in filtered) {
-          final itemsSummary = order.items
-              .map((i) => '${i.productId.name} x${i.quantity}')
-              .join(', ');
           sheet.appendRow([
             TextCellValue(order.orderNumber),
             TextCellValue(order.supplierId.name),
             TextCellValue(order.staffId?.name ?? ''),
             TextCellValue(order.status),
             DoubleCellValue(order.totalAmount),
-            TextCellValue(itemsSummary),
+            TextCellValue(_orderItemsSummary(order.items)),
             TextCellValue(dateTimeFormat.format(order.createdAt.toLocal())),
             TextCellValue(order.expectedDate != null
                 ? dateFormat.format(order.expectedDate!.toLocal())
@@ -193,8 +191,7 @@ class ReportsNotifier extends StateNotifier<ReportsState> {
       if (state.includeTasks) {
         final tasks = await _taskRepo.getTasks();
         final filtered = tasks.where((t) =>
-            t.createdAt.isAfter(start.subtract(const Duration(seconds: 1))) &&
-            t.createdAt.isBefore(end.add(const Duration(seconds: 1)))).toList();
+            !t.createdAt.isBefore(start) && !t.createdAt.isAfter(end)).toList();
 
         final sheet = excel[tasksSheetLabel];
         _addHeaderRow(sheet, [
@@ -224,8 +221,7 @@ class ReportsNotifier extends StateNotifier<ReportsState> {
       if (state.includeTransfers) {
         final transfers = await _transferRepo.getTransfers();
         final filtered = transfers.where((t) =>
-            t.createdAt.isAfter(start.subtract(const Duration(seconds: 1))) &&
-            t.createdAt.isBefore(end.add(const Duration(seconds: 1)))).toList();
+            !t.createdAt.isBefore(start) && !t.createdAt.isAfter(end)).toList();
 
         final sheet = excel[transfersSheetLabel];
         _addHeaderRow(sheet, [
@@ -241,14 +237,11 @@ class ReportsNotifier extends StateNotifier<ReportsState> {
         ]);
 
         for (final transfer in filtered) {
-          final itemsSummary = transfer.items
-              .map((i) => '${i.productName ?? ''} x${i.quantity ?? 0}')
-              .join(', ');
           sheet.appendRow([
             TextCellValue(transfer.id),
             TextCellValue(transfer.takenFrom.name),
             TextCellValue(transfer.takenTo.name),
-            TextCellValue(itemsSummary),
+            TextCellValue(_transferItemsSummary(transfer.items)),
             IntCellValue(transfer.quantity),
             TextCellValue(transfer.assignedTo.fullname),
             TextCellValue(transfer.status),
@@ -268,10 +261,8 @@ class ReportsNotifier extends StateNotifier<ReportsState> {
       final file = File(filePath);
       await file.writeAsBytes(bytes);
 
-      await SharePlus.instance.share(
-        ShareParams(
-          files: [XFile(filePath, mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')],
-        ),
+      await Share.shareXFiles(
+        [XFile(filePath, mimeType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')],
       );
 
       state = state.copyWith(
@@ -283,23 +274,23 @@ class ReportsNotifier extends StateNotifier<ReportsState> {
     }
   }
 
+  String _orderItemsSummary(List<ProductOrder> items) =>
+      items.map((i) => '${i.productId.name} x${i.quantity}').join(', ');
+
+  String _transferItemsSummary(List<TransferItem> items) =>
+      items.map((i) => '${i.productName ?? ''} x${i.quantity ?? 0}').join(', ');
+
   void _addHeaderRow(Sheet sheet, List<String> headers) {
     final headerStyle = CellStyle(
       bold: true,
-      backgroundColorHex: ExcelColor.fromHexString('#FF8C42'),
-      fontColorHex: ExcelColor.fromHexString('#FFFFFF'),
+      backgroundColorHex: ExcelColor.fromInt(0xFFFF8C42),
+      fontColorHex: ExcelColor.fromInt(0xFFFFFFFF),
     );
-    final row = headers.map((h) {
-      final cell = TextCellValue(h);
-      return cell;
-    }).toList();
-    sheet.appendRow(row);
-
-    // Apply header style to the first row
     for (var col = 0; col < headers.length; col++) {
       final cellRef = sheet.cell(
-        CellIndex.indexByColumnRow(columnIndex: col, rowIndex: 0),
+        CellIndex.indexByColumnRow(columnIndex: col, rowIndex: sheet.maxRows),
       );
+      cellRef.value = TextCellValue(headers[col]);
       cellRef.cellStyle = headerStyle;
     }
   }
