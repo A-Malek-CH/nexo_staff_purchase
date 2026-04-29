@@ -296,6 +296,18 @@ class AppLocalizations {
   String get categoryAnalytics => translate('categoryAnalytics');
   String get monthlyAnalytics => translate('monthlyAnalytics');
   String get all => translate('all');
+
+  // Quick Access
+  String get quickAccess => translate('quickAccess');
+  String get noPendingTasks => translate('noPendingTasks');
+  String get noPendingTransfers => translate('noPendingTransfers');
+  String get noPendingOrders => translate('noPendingOrders');
+  String get filterByDate => translate('filterByDate');
+  String get clearDateFilter => translate('clearDateFilter');
+  String get noTransfersInPeriod => translate('noTransfersInPeriod');
+  String get results => translate('results');
+  String get from => translate('from');
+  String get to => translate('to');
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

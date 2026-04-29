@@ -23,6 +23,38 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
     });
   }
 
+  Future<void> _pickDateRange(BuildContext context) async {
+    final transfersState = ref.read(transfersProvider);
+    final now = DateTime.now();
+    final picked = await showDateRangePicker(
+      context: context,
+      firstDate: DateTime(now.year - 3),
+      lastDate: DateTime(now.year + 1),
+      initialDateRange: transfersState.filterStartDate != null &&
+              transfersState.filterEndDate != null
+          ? DateTimeRange(
+              start: transfersState.filterStartDate!,
+              end: transfersState.filterEndDate!,
+            )
+          : null,
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: AppTheme.primaryOrange,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      ref
+          .read(transfersProvider.notifier)
+          .setDateFilter(picked.start, picked.end);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final transfersState = ref.watch(transfersProvider);
@@ -31,9 +63,56 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.transfers),
+        actions: [
+          if (transfersState.hasDateFilter)
+            IconButton(
+              icon: const Icon(Icons.filter_alt_off),
+              tooltip: l10n.clearDateFilter,
+              onPressed: () =>
+                  ref.read(transfersProvider.notifier).clearDateFilter(),
+            ),
+          IconButton(
+            icon: Icon(
+              Icons.date_range,
+              color: transfersState.hasDateFilter
+                  ? AppTheme.primaryOrange
+                  : null,
+            ),
+            tooltip: l10n.filterByDate,
+            onPressed: () => _pickDateRange(context),
+          ),
+        ],
       ),
       body: Column(
         children: [
+          if (transfersState.hasDateFilter)
+            Container(
+              width: double.infinity,
+              color: AppTheme.primaryOrange.withOpacity(0.1),
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppTheme.spacingM, vertical: AppTheme.spacingS),
+              child: Row(
+                children: [
+                  const Icon(Icons.date_range,
+                      size: 16, color: AppTheme.primaryOrange),
+                  const SizedBox(width: AppTheme.spacingS),
+                  Expanded(
+                    child: Text(
+                      _buildDateRangeLabel(transfersState, l10n),
+                      style: AppTheme.bodySmall.copyWith(
+                        color: AppTheme.primaryOrange,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  Text(
+                    '${transfersState.sortedTransfers.length} ${l10n.results}',
+                    style: AppTheme.bodySmall
+                        .copyWith(color: AppTheme.primaryOrange),
+                  ),
+                ],
+              ),
+            ),
           // List
           Expanded(
             child: RefreshIndicator(
@@ -61,10 +140,14 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
                             ],
                           ),
                         )
-                      : transfersState.transfers.isEmpty
+                      : transfersState.sortedTransfers.isEmpty
                           ? Center(
-                              child: Text(l10n.noTransfersFound,
-                                  style: AppTheme.bodyMedium),
+                              child: Text(
+                                transfersState.hasDateFilter
+                                    ? l10n.noTransfersInPeriod
+                                    : l10n.noTransfersFound,
+                                style: AppTheme.bodyMedium,
+                              ),
                             )
                           : ListView.builder(
                               padding: AppTheme.paddingM,
@@ -148,8 +231,21 @@ class _TransfersScreenState extends ConsumerState<TransfersScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 3),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 4),
     );
+  }
+
+  String _buildDateRangeLabel(TransfersState state, AppLocalizations l10n) {
+    final start = state.filterStartDate;
+    final end = state.filterEndDate;
+    if (start != null && end != null) {
+      return '${DateHelper.formatDate(start)} – ${DateHelper.formatDate(end)}';
+    } else if (start != null) {
+      return '${l10n.from}: ${DateHelper.formatDate(start)}';
+    } else if (end != null) {
+      return '${l10n.to}: ${DateHelper.formatDate(end)}';
+    }
+    return '';
   }
 
   Color _getStatusColor(String status) {

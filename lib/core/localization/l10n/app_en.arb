@@ -291,5 +291,16 @@
   "changeImage": "Change Image",
   "categoryAnalytics": "Category Analytics",
   "monthlyAnalytics": "Monthly Analytics",
-  "all": "All"
+  "all": "All",
+
+  "quickAccess": "Quick Access",
+  "noPendingTasks": "No pending tasks",
+  "noPendingTransfers": "No pending transfers",
+  "noPendingOrders": "No pending orders",
+  "filterByDate": "Filter by date",
+  "clearDateFilter": "Clear date filter",
+  "noTransfersInPeriod": "No transfers in this period",
+  "results": "results",
+  "from": "From",
+  "to": "To"
 }

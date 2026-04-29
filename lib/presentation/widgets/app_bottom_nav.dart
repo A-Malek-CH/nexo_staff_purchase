@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../core/theme/app_theme.dart';
 import '../../core/localization/app_localizations.dart';
+import '../../core/constants/app_constants.dart';
+import '../providers/task_provider.dart';
+import '../providers/transfer_provider.dart';
+import '../providers/order_provider.dart';
 
-class AppBottomNav extends StatelessWidget {
+class AppBottomNav extends ConsumerWidget {
   final int currentIndex;
 
   const AppBottomNav({
@@ -12,9 +17,23 @@ class AppBottomNav extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-    
+
+    final tasksState = ref.watch(tasksProvider);
+    final transfersState = ref.watch(transfersProvider);
+    final ordersState = ref.watch(ordersProvider);
+
+    final pendingCount = tasksState.tasks
+            .where((t) =>
+                t.status == AppConstants.taskStatusPending ||
+                t.status == AppConstants.taskStatusInProgress)
+            .length +
+        transfersState.pendingTransfers.length +
+        ordersState.orders
+            .where((o) => o.status == AppConstants.orderStatusAssigned)
+            .length;
+
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: (index) {
@@ -23,15 +42,18 @@ class AppBottomNav extends StatelessWidget {
             context.go('/dashboard');
             break;
           case 1:
-            context.go('/tasks');
+            context.go('/quick-access');
             break;
           case 2:
-            context.go('/orders');
+            context.go('/tasks');
             break;
           case 3:
-            context.go('/transfers');
+            context.go('/orders');
             break;
           case 4:
+            context.go('/transfers');
+            break;
+          case 5:
             context.go('/profile');
             break;
         }
@@ -44,6 +66,11 @@ class AppBottomNav extends StatelessWidget {
           icon: const Icon(Icons.dashboard_outlined),
           activeIcon: const Icon(Icons.dashboard),
           label: l10n.dashboard,
+        ),
+        BottomNavigationBarItem(
+          icon: _QuickAccessIcon(pendingCount: pendingCount),
+          activeIcon: _QuickAccessIcon(pendingCount: pendingCount, active: true),
+          label: l10n.quickAccess,
         ),
         BottomNavigationBarItem(
           icon: const Icon(Icons.assignment_outlined),
@@ -65,6 +92,45 @@ class AppBottomNav extends StatelessWidget {
           activeIcon: const Icon(Icons.person),
           label: l10n.profile,
         ),
+      ],
+    );
+  }
+}
+
+class _QuickAccessIcon extends StatelessWidget {
+  final int pendingCount;
+  final bool active;
+
+  const _QuickAccessIcon({required this.pendingCount, this.active = false});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        Icon(active ? Icons.flash_on : Icons.flash_on_outlined),
+        if (pendingCount > 0)
+          Positioned(
+            right: -6,
+            top: -4,
+            child: Container(
+              padding: const EdgeInsets.all(2),
+              decoration: const BoxDecoration(
+                color: AppTheme.errorRed,
+                shape: BoxShape.circle,
+              ),
+              constraints: const BoxConstraints(minWidth: 14, minHeight: 14),
+              child: Text(
+                pendingCount > 99 ? '99+' : pendingCount.toString(),
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 9,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
       ],
     );
   }

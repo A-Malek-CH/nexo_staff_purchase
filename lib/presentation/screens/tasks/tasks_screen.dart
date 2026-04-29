@@ -155,7 +155,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                         },
                       ),
       ),
-      bottomNavigationBar: const AppBottomNav(currentIndex: 1),
+      bottomNavigationBar: const AppBottomNav(currentIndex: 2),
     );
   }
 

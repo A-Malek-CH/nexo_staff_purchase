@@ -33,7 +33,9 @@ import '../../presentation/screens/admin/products/products_list_screen.dart';
 import '../../presentation/screens/admin/products/product_form_screen.dart';
 import '../../presentation/screens/admin/categories/categories_list_screen.dart';
 import '../../presentation/screens/admin/categories/category_form_screen.dart';
+import '../../presentation/screens/quick_access/quick_access_screen.dart';
 import '../../presentation/screens/admin/analytics/analytics_screen.dart';
+
 
 final goRouterProvider = Provider<GoRouter>((ref) {
   final authState = ref.watch(authStateProvider);
@@ -77,6 +79,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
         path: '/dashboard',
         name: 'dashboard',
         builder: (context, state) => const DashboardScreen(),
+      ),
+      GoRoute(
+        path: '/quick-access',
+        name: 'quick-access',
+        builder: (context, state) => const QuickAccessScreen(),
       ),
       GoRoute(
         path: '/orders',
